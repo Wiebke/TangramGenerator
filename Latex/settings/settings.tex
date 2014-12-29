@@ -1,0 +1,54 @@
+\bibliography{bibliography/literature}
+
+\setkomafont{disposition}{\normalfont\bfseries} % use serif font for headings
+\linespread{1.05} % adjust line spread for mathpazo font
+
+%Colors
+\definecolor{TUMBlack}{cmyk}{0.00,0.00,0.00,1.00}  % Black
+\definecolor{TUMWhite}{cmyk}{0.00,0.00,0.00,0.00}  % White
+%TUMBlue color (logo)
+\definecolor{TUMBlue} {cmyk}{1.00,0.43,0.00,0.00}  % Pantone 300 C
+%Additional TUM blue colors
+\definecolor{TUMDarkBlue}{cmyk}{1.00,0.57,0.12,0.70}  % Pantone 540 C
+\definecolor{TUMDarkerBlue}{cmyk}{1.00,0.54,0.04,0.19}  % Pantone 301 C
+\definecolor{TUMMediumBlue}{cmyk}{0.90,0.48,0.00,0.00}  % Pantone 285 C
+\definecolor{TUMLighterBlue}{cmyk}{0.65,0.19,0.01,0.04}  % Pantone 542 C
+\definecolor{TUMLightBlue} {cmyk}{0.42,0.09,0.00,0.00}  % Pantone 283 C
+%Additional TUM gray colors
+\definecolor{TUMDarkGray}{cmyk}{0.00,0.00,0.00,0.80}  % DarkGray   80% Black
+\definecolor{TUMMediumGray}{cmyk}{0.00,0.00,0.00,0.50}  % MediumGray 50% Black
+\definecolor{TUMLightGray} {cmyk}{0.00,0.00,0.00,0.20}  % LightGray  20% Black
+%TUM Highlight colors
+\definecolor{TUMGreen}{cmyk}{0.35,0.00,1.00,0.20}  % Pantone 383 C
+\definecolor{TUMOrange}{cmyk}{0.00,0.65,0.95,0.00}  % Pantone 158 C
+\definecolor{TUMIvory}{cmyk}{0.03,0.04,0.14,0.08}  % Pantone 7527 C
+\definecolor{TUMBeamerYellow}{rgb} {1.000,0.706,0.000}% RGB 255,180,000
+\definecolor{TUMBeamerOrange}{rgb} {1.000,0.502,0.000}% RGB 255,128,000
+\definecolor{TUMBeamerRed} {rgb} {0.898,0.204,0.094}% RGB 229,052,024
+\definecolor{TUMBeamerDarkRed}{rgb} {0.792,0.129,0.247}% RGB 202,033,063
+\definecolor{TUMBeamerBlue}{rgb} {0.000,0.600,1.000}% RGB 000,153,255
+\definecolor{TUMBeamerLightBlue} {rgb} {0.255,0.745,1.000}% RGB 065,190,255
+\definecolor{TUMBeamerGreen}{rgb} {0.569,0.675,0.420}% RGB 145,172,107
+\definecolor{TUMBeamerLightGreen}{rgb} {0.710,0.792,0.510}% RGB 181,202,130
+
+% Settings for pgfplots
+\pgfplotsset{compat=newest} 
+\pgfplotsset{
+  % For available color names, see http://www.latextemplates.com/svgnames-colors
+  cycle list={TUMBeamerBlue\\TUMBeamerRed\\TUMBeamerGreen\\TUMBeamerOrange\\},}
+
+% Settings for lstlistings
+\lstset{%
+  basicstyle=\ttfamily,
+  columns=fullflexible,
+  autogobble,
+  keywordstyle=\bfseries\color{TUMBlue},
+  stringstyle=\color{TUMGreen}
+}
+
+%Mathematics
+% nice R, N, C, Z
+\newcommand{\nat}{\mathbb{N}}
+\newcommand{\real}{\mathbb{R}}
+\newcommand{\compl}{\mathbb{C}}
+\newcommand{\whole}{\mathbb{Z}}
