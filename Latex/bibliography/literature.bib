@@ -2,20 +2,62 @@
 %% http://bibdesk.sourceforge.net/
 
 
-%% Created for Wiebke Koepp at 2015-01-19 22:12:33 +0100 
+%% Created for Wiebke Koepp at 2015-01-26 13:28:55 +0100 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
 
+@online{cai08,
+	Annote = {- description of three ways to calculate the probability of the pattern, each requires to know all possible solutions to the pattern
+- 1. way: probability based on correct placement of a piece and number of ways it could be placed (number of rotations that result into a different piece) - measure should result in the same probability for each solution and is just scaled by number of solutions (which is later scaled according to experiments again?)
+- 2. way: probabilty based on possibilites to reach a certain length, unclear which length are being taken into account 
+- 3. way: probability based on cutting of basic shapes
+- overall: 
+ - patterns that are more regular are harder, patterns where there is only one possibilty to place a piece a easier.
+ - seems computationally costly to automate (full solution computation and multiple orders of placement)
+(- very bad English, should this be cited?)},
+	Author = {Shujun Cai and Yizhi Jiang and Minyu Zeng},
+	Date-Added = {2015-01-26 10:39:35 +0000},
+	Date-Modified = {2015-01-26 12:26:32 +0000},
+	Keywords = {Difficulty, Features},
+	Organization = {Shenzheng Foreign Languages School},
+	Rating = {2},
+	Read = {1},
+	Title = {The Research on the Difficulty Grade and the Piecing Skills of Tangram},
+	Url = {http://www.yau-awards.org/Notice.php},
+	Urlday = {19},
+	Urlmonth = {1},
+	Urlyear = {2015},
+	Year = {2008},
+	Bdsk-Url-1 = {http://www.yau-awards.org/Notice.php}}
+
 @book{cocchini10,
+	Annote = {- hard patterns have as many matched edges and vertices as possible
+- percentage X of how far of the patters is from being convex
+- not written very good, only 3 chapters available},
 	Author = {Franco Cocchini},
-	Date-Added = {2015-01-19 21:11:27 +0000},
-	Date-Modified = {2015-01-19 21:12:33 +0000},
+	Date-Added = {2015-01-26 10:39:35 +0000},
+	Date-Modified = {2015-01-26 10:39:35 +0000},
+	Keywords = {Features, Paradox},
 	Publisher = {Lulu.com},
+	Rating = {3},
+	Read = {1},
 	Title = {Wanderings Around Tangram},
 	Year = {2010}}
+
+@inproceedings{orellanarodriguez14,
+	Author = {Orellana-Rodriguez, Claudia and Nejdl, Wolfgang and Diaz-Aviles, Ernesto and Altingovde, Ismail Sengor},
+	Booktitle = {Proceedings of the Companion Publication of the 23rd International Conference on World Wide Web Companion},
+	Date-Added = {2015-01-20 12:24:42 +0000},
+	Date-Modified = {2015-01-20 12:25:41 +0000},
+	Pages = {569--570},
+	Series = {WWW Companion '14},
+	Title = {Learning to Rank for Joy},
+	Year = {2014},
+	Bdsk-Url-1 = {http://dx.doi.org.eaccess.ub.tum.de/10.1145/2567948.2576961},
+	Bdsk-Url-2 = {http://dx.doi.org/10.1145/2567948.2576961}}
 
 @inproceedings{murray12,
 	Author = {Naila Murray and Luca Marchesotti and Florent Perronnin},
@@ -57,22 +99,21 @@
 @article{xu09,
 	Author = {Xu, Chungen and Xu, Weng},
 	Date-Added = {2015-01-19 20:55:42 +0000},
-	Date-Modified = {2015-01-19 20:56:10 +0000},
-	Journal = {Journal of Mathematics Research},
+	Date-Modified = {2015-01-20 12:29:43 +0000},
+	Journaltitle = {Journal of Mathematics Research},
 	Number = {2},
 	Pages = {43--46},
-	Title = {The model and algorithm to estimate the difficulty levels of Sudoku puzzles},
+	Title = {The Model and Algorithm to Estimate the Difficulty Levels of Sudoku Puzzles},
 	Volume = {1},
 	Year = {2009}}
 
 @article{wang42,
 	Author = {Wang, Fu Traing and Hsiung, Chuan-Chih},
 	Date-Added = {2015-01-19 20:54:34 +0000},
-	Date-Modified = {2015-01-19 20:54:55 +0000},
-	Journal = {The American Mathematical Monthly},
+	Date-Modified = {2015-01-20 10:42:25 +0000},
+	Journaltitle = {The American Mathematical Monthly},
 	Number = {9},
-	Pages = {pp. 596-599},
-	Publisher = {Mathematical Association of America},
+	Pages = {596--599},
 	Title = {A Theorem on the Tangram},
 	Volume = {49},
 	Year = {1942},
@@ -80,9 +121,9 @@
 
 @inproceedings{wang14,
 	Author = {Wang, Lidan and Lin, Jimmy and Metzler, Donald and Han, Jiawei},
-	Booktitle = {Proceedings of the companion publication of the 23rd international conference on World wide web companion},
+	Booktitle = {Proceedings of the Companion Publication of the 23rd International Conference on World Wide Web Companion},
 	Date-Added = {2015-01-19 20:53:36 +0000},
-	Date-Modified = {2015-01-19 20:53:55 +0000},
+	Date-Modified = {2015-01-20 12:29:01 +0000},
 	Organization = {International World Wide Web Conferences Steering Committee},
 	Pages = {209--210},
 	Title = {Learning to Efficiently Rank on Big Data},
@@ -101,20 +142,22 @@
 @article{walravens07,
 	Author = {Walravens, Hartmut},
 	Date-Added = {2015-01-19 20:45:46 +0000},
-	Date-Modified = {2015-01-19 20:49:11 +0000},
-	Journal = {Cubism For Fun},
+	Date-Modified = {2015-01-20 12:28:06 +0000},
+	Eprint = {CFF 72},
+	Eprinttype = {Cubism For Fun},
 	Title = {Notes on the Early History of the Tangram in Germany},
-	Volume = {CFF 72},
-	Year = {2007}}
+	Url = {http://cff.helm.lu/files/CFF72.html},
+	Year = {2007},
+	Bdsk-Url-1 = {http://cff.helm.lu/files/CFF72.html}}
 
 @incollection{vembu11,
 	Author = {Vembu, Shankar and G{\"a}rtner, Thomas},
 	Booktitle = {Preference learning},
 	Date-Added = {2015-01-19 20:45:11 +0000},
-	Date-Modified = {2015-01-19 20:45:19 +0000},
+	Date-Modified = {2015-01-20 12:26:46 +0000},
 	Pages = {45--64},
 	Publisher = {Springer},
-	Title = {Label ranking algorithms: A survey},
+	Title = {Label ranking algorithms: A Survey},
 	Year = {2011}}
 
 @inproceedings{spencer05,
@@ -138,25 +181,25 @@
 	Year = {2009}}
 
 @article{scott06,
+	Addendum = {ERIC},
 	Author = {Scott, Paul},
 	Date-Added = {2015-01-19 20:42:09 +0000},
-	Date-Modified = {2015-01-19 20:42:16 +0000},
-	Journal = {Australian Mathematics Teacher},
+	Date-Modified = {2015-01-20 12:26:19 +0000},
+	Journaltitle = {Australian Mathematics Teacher},
 	Number = {2},
 	Pages = {2--5},
-	Publisher = {ERIC},
 	Title = {Convex Tangrams.},
 	Volume = {62},
 	Year = {2006}}
 
 @article{roberge77,
+	Addendum = {National Council of Teachers of Mathematics},
 	Author = {Roberge, James J.},
 	Date-Added = {2015-01-19 20:40:48 +0000},
-	Date-Modified = {2015-01-19 20:41:27 +0000},
-	Journal = {The Mathematics Teacher},
+	Date-Modified = {2015-01-20 12:26:06 +0000},
+	Journaltitle = {The Mathematics Teacher},
 	Number = {3},
 	Pages = {239--242},
-	Publisher = {National Council of Teachers of Mathematics},
 	Title = {Tangram Geometry},
 	Volume = {70},
 	Year = {1977},
@@ -180,28 +223,21 @@
 	Title = {Automatic classification of question difficulty level: Teachers' estimation vs. students' perception},
 	Year = {2012}}
 
-@article{orellana14,
-	Author = {Orellana-Rodriguez, Claudia and Nejdl, Wolfgang and Diaz-Aviles, Ernesto and Altingovde, Ismail Sengor},
-	Date-Added = {2015-01-19 20:36:42 +0000},
-	Date-Modified = {2015-01-19 20:36:48 +0000},
-	Title = {Learning to Rank for Joy: Leveraged Features and Related Work},
-	Year = {2014}}
-
 @article{nicholls84,
+	Addendum = {JSTOR},
 	Author = {Nicholls, John G and Miller, Arden T},
 	Date-Added = {2015-01-19 20:33:53 +0000},
-	Date-Modified = {2015-01-19 20:34:58 +0000},
-	Journal = {Child Development},
+	Date-Modified = {2015-01-20 12:21:47 +0000},
+	Journaltitle = {Child Development},
 	Pages = {951--959},
-	Publisher = {JSTOR},
 	Title = {The Differentiation of the Concepts of Difficulty and Ability},
 	Year = {1983}}
 
 @article{martins10,
 	Author = {T.C. Martins and M.S.G. Tsuzuki},
 	Date-Added = {2015-01-19 20:31:35 +0000},
-	Date-Modified = {2015-01-19 20:32:33 +0000},
-	Journal = {Expert Systems with Applications},
+	Date-Modified = {2015-01-20 12:21:08 +0000},
+	Journaltitle = {Expert Systems with Applications},
 	Number = {3},
 	Pages = {1955 - 1972},
 	Title = {Simulated Annealing Applied to the Irregular Rotational Placement of Shapes Over Containers with Fixed Dimensions},
@@ -211,32 +247,32 @@
 	Bdsk-Url-2 = {http://dx.doi.org/10.1016/j.eswa.2009.06.081}}
 
 @article{marchesotti14,
+	Addendum = {Springer},
 	Author = {Marchesotti, Luca and Murray, Naila and Perronnin, Florent},
 	Date-Added = {2015-01-19 20:26:43 +0000},
-	Date-Modified = {2015-01-19 20:27:40 +0000},
-	Journal = {International Journal of Computer Vision},
+	Date-Modified = {2015-01-20 12:20:28 +0000},
+	Journaltitle = {International Journal of Computer Vision},
 	Pages = {1-21},
-	Publisher = {Springer},
 	Title = {Discovering Beautiful Attributes for Aesthetic Image Analysis},
 	Year = {2014}}
 
 @article{malone81,
+	Addendum = {ERIC},
 	Author = {Malone, Thomas W},
 	Date-Added = {2015-01-19 20:23:14 +0000},
-	Date-Modified = {2015-01-19 20:23:48 +0000},
-	Journal = {Pipeline},
+	Date-Modified = {2015-01-20 12:20:11 +0000},
+	Journaltitle = {Pipeline},
 	Number = {2},
 	Pages = {50},
-	Publisher = {ERIC},
 	Title = {What Makes Things Fun to Learn? A Study of Intrinsically Motivating Computer Games.},
 	Volume = {6},
 	Year = {1981}}
 
 @inproceedings{malone80,
 	Author = {Malone, Thomas W},
-	Booktitle = {Proceedings of the 3rd ACM SIGSMALL symposium and the first SIGPC symposium on Small systems},
+	Booktitle = {Proceedings of the 3rd ACM SIGSMALL Symposium and the First SIGPC Symposium on Small Systems},
 	Date-Added = {2015-01-19 20:22:12 +0000},
-	Date-Modified = {2015-01-19 20:23:14 +0000},
+	Date-Modified = {2015-01-20 12:20:45 +0000},
 	Organization = {ACM},
 	Pages = {162--169},
 	Title = {What Makes Things Fun to Learn? Heuristics for Designing Instructional Computer Games},
@@ -245,8 +281,8 @@
 @article{mcwhinnie68,
 	Author = {McWhinnie, Harold J},
 	Date-Added = {2015-01-19 20:21:06 +0000},
-	Date-Modified = {2015-01-19 20:21:24 +0000},
-	Journal = {Acta Psychologica},
+	Date-Modified = {2015-01-20 12:21:16 +0000},
+	Journaltitle = {Acta Psychologica},
 	Pages = {363--375},
 	Publisher = {Elsevier},
 	Title = {A Review of Research on Aesthetic Measure},
@@ -265,11 +301,10 @@
 @article{li11,
 	Author = {Hang Li},
 	Date-Added = {2015-01-19 20:11:12 +0000},
-	Date-Modified = {2015-01-19 20:13:13 +0000},
-	Journal = {IEICE TRANSACTIONS on Information and Systems},
+	Date-Modified = {2015-01-20 12:19:26 +0000},
+	Journaltitle = {IEICE Transactions on Information and Systems},
 	Number = {10},
 	Pages = {1854--1862},
-	Publisher = {The Institute of Electronics, Information and Communication Engineers},
 	Title = {A Short Introduction to Learning to Rank},
 	Volume = {94},
 	Year = {2011}}
@@ -290,10 +325,13 @@
 @article{kovalsky14,
 	Author = {Kovalsky, Shahar Z and Glasner, Daniel and Basri, Ronen},
 	Date-Added = {2015-01-19 20:07:30 +0000},
-	Date-Modified = {2015-01-19 20:07:44 +0000},
-	Journal = {arXiv preprint arXiv:1409.5957},
+	Date-Modified = {2015-01-20 12:16:55 +0000},
+	Eprint = {arXiv:1409.5957v1 [cs.CV]},
+	Eprinttype = {arXiv preprint},
 	Title = {A Global Approach for Solving Edge-Matching Puzzles},
-	Year = {2014}}
+	Url = {http://arxiv.org/abs/1409.5957v1},
+	Year = {2014},
+	Bdsk-Url-1 = {http://arxiv.org/abs/1409.5957v1}}
 
 @article{joshi11,
 	Author = {Joshi, Dhiraj and Datta, Ritendra and Fedorovskaya, Elena and Luong, Quang-Tuan and Wang, James Z and Li, Jia and Luo, Jiebo},
@@ -328,9 +366,9 @@
 
 @inproceedings{he08,
 	Author = {He, Chuan and Wang, Cong and Zhong, Yi-Xin and Li, Rui-Fan},
-	Booktitle = {Machine Learning and Cybernetics, 2008 International Conference on},
+	Booktitle = {2008 International Conference on Machine Learning and Cybernetics},
 	Date-Added = {2015-01-19 18:58:54 +0000},
-	Date-Modified = {2015-01-19 18:59:17 +0000},
+	Date-Modified = {2015-01-20 12:15:23 +0000},
 	Organization = {IEEE},
 	Pages = {1734--1739},
 	Title = {A Survey on Learning to Rank},
@@ -340,33 +378,32 @@
 @article{haraguchi12,
 	Author = {Haraguchi, Kazuya and Abe, Yasutaka and Maruoka, Akira},
 	Date-Added = {2015-01-19 18:57:35 +0000},
-	Date-Modified = {2015-01-19 18:57:50 +0000},
-	Journal = {Journal of Information Processing},
+	Date-Modified = {2015-01-20 12:36:47 +0000},
+	Journaltitle = {Journal of Information Processing},
 	Number = {3},
 	Pages = {727--737},
-	Publisher = {一般社団法人 情報処理学会},
 	Title = {How to Produce BlockSum Instances with Various Levels of Difficulty},
 	Volume = {20},
 	Year = {2012}}
 
 @inproceedings{goldberg02,
 	Author = {Goldberg, David and Malon, Christopher and Bern, Marshall},
-	Booktitle = {Proceedings of the eighteenth annual symposium on Computational geometry},
+	Booktitle = {Proceedings of the Eighteenth Annual Symposium on Computational Geometry},
 	Date-Added = {2015-01-19 18:56:24 +0000},
-	Date-Modified = {2015-01-19 18:56:46 +0000},
+	Date-Modified = {2015-01-20 12:14:19 +0000},
 	Organization = {ACM},
 	Pages = {82--87},
 	Title = {A Global Approach to Automatic Solution of Jigsaw Puzzles},
 	Year = {2002}}
 
 @article{garabedian34,
+	Addendum = {American Mathematical Society},
 	Author = {Garabedian, C. A.},
 	Date-Added = {2015-01-19 18:54:39 +0000},
-	Date-Modified = {2015-01-19 18:55:45 +0000},
-	Journal = {Bulletin of the American Mathematical Society},
+	Date-Modified = {2015-01-20 12:14:39 +0000},
+	Journaltitle = {Bulletin of the American Mathematical Society},
 	Number = {1},
 	Pages = {7--10},
-	Publisher = {American Mathematical Society},
 	Title = {Birkhoff on Aesthetic Measure},
 	Volume = {40},
 	Year = {1934}}
@@ -374,16 +411,19 @@
 @article{foxepstein14,
 	Author = {Fox-Epstein, Eli and Uehara, Ryuhei},
 	Date-Added = {2015-01-19 18:48:07 +0000},
-	Date-Modified = {2015-01-19 18:49:52 +0000},
-	Journal = {arXiv preprint arXiv:1407.1923},
+	Date-Modified = {2015-01-20 12:13:40 +0000},
+	Eprint = {arxiv: 1407.1923v1 [cs.CG]},
+	Eprinttype = {arxiv preprint},
 	Title = {The Convex Configurations of ``Sei Shonagon Chie no Ita'' and Other Dissection Puzzles},
-	Year = {2014}}
+	Url = {http://arxiv.org/abs/1407.1923v1},
+	Year = {2014},
+	Bdsk-Url-1 = {http://arxiv.org/abs/1407.1923v1}}
 
 @inproceedings{filonik09,
 	Author = {Filonik, Daniel and Baur, Dominikus},
 	Booktitle = {Information Visualisation, 2009 13th International Conference},
 	Date-Added = {2015-01-19 18:46:04 +0000},
-	Date-Modified = {2015-01-19 18:46:28 +0000},
+	Date-Modified = {2015-01-20 12:12:33 +0000},
 	Organization = {IEEE},
 	Pages = {579--584},
 	Title = {Measuring Aesthetics for Information Visualization},
@@ -391,9 +431,9 @@
 
 @inproceedings{faria20,
 	Author = {Faria, Fabio F and Veloso, Adriano and Almeida, Humberto M and Valle, Eduardo and Torres, Ricardo da S and Gon{\c{c}}alves, Marcos A and Meira Jr, Wagner},
-	Booktitle = {Proceedings of the international conference on Multimedia information retrieval},
+	Booktitle = {Proceedings of the International Conference on Multimedia Information Retrieval},
 	Date-Added = {2015-01-19 18:44:55 +0000},
-	Date-Modified = {2015-01-19 18:45:13 +0000},
+	Date-Modified = {2015-01-20 11:58:13 +0000},
 	Organization = {ACM},
 	Pages = {285--294},
 	Title = {Learning to Rank for Content-Based Image Retrieval},
@@ -402,16 +442,16 @@
 @book{elffers76,
 	Author = {Joost Elffers},
 	Date-Added = {2015-01-19 18:40:30 +0000},
-	Date-Modified = {2015-01-19 18:44:08 +0000},
-	Publisher = {DuMont},
+	Date-Modified = {2015-01-20 11:57:48 +0000},
+	Publisher = {Du Mont},
 	Title = {Tangram. Das alte chinesische Formenspiel},
 	Year = {1978}}
 
 @article{eberle14,
 	Author = {R. Scott Eberle},
 	Date-Added = {2015-01-19 18:38:00 +0000},
-	Date-Modified = {2015-01-19 18:40:05 +0000},
-	Journal = {The Journal of Mathematical Behavior},
+	Date-Modified = {2015-01-20 11:57:37 +0000},
+	Journaltitle = {The Journal of Mathematical Behavior},
 	Pages = {129 - 143},
 	Title = {The Role of Children's Mathematical Aesthetics: The Case of Tessellations},
 	Volume = {35},
@@ -421,54 +461,56 @@
 
 @inproceedings{duh08,
 	Author = {Duh, Kevin and Kirchhoff, Katrin},
-	Booktitle = {Proceedings of the 31st annual international ACM SIGIR conference on Research and development in information retrieval},
+	Booktitle = {Proceedings of the 31st Annual International ACM SIGIR Conference on Research and Development in Information Retrieval},
 	Date-Added = {2015-01-19 18:32:39 +0000},
-	Date-Modified = {2015-01-19 18:33:10 +0000},
+	Date-Modified = {2015-01-20 11:56:24 +0000},
 	Organization = {ACM},
 	Pages = {251--258},
 	Title = {Learning to Rank with Partially-Labeled Data},
 	Year = {2008}}
 
 @article{deutsch72,
-	Author = {E. S. Deutsch and K. C. {Hayes Jr.} },
+	Addendum = {Edinburgh University Press},
+	Author = {E. S. Deutsch and K. C. {Hayes Jr.}},
 	Date-Added = {2015-01-19 18:19:19 +0000},
-	Date-Modified = {2015-01-19 18:29:56 +0000},
-	Journal = {Machine Intelligence},
+	Date-Modified = {2015-01-20 11:53:56 +0000},
+	Journaltitle = {Machine Intelligence},
 	Number = {Bernard Meltzer and Donald Michie},
 	Pages = {205--240},
-	Publisher = {Edinburgh University Press},
 	Title = {A Heuristic Solution to the Tangram Puzzle},
 	Volume = {7},
 	Year = {1972}}
 
 @article{cohene02,
+	Annote = {- description of the design of a physical imlementation of a Tangram game in several steps
+- much analysis and evaluation based on HCI principles (as development of the prototype was part of an HCI course)
+- Tangram also called "seven shapes of cleverness"},
 	Author = {Cohene, Tira and Dack, Stu and Dufourmantelle, Olivier and Saunders, Matthew},
 	Date-Added = {2015-01-19 18:14:14 +0000},
-	Date-Modified = {2015-01-19 18:17:13 +0000},
-	Journal = {Human-Computer Interaction},
+	Date-Modified = {2015-01-26 12:22:55 +0000},
+	Journaltitle = {Human-Computer Interaction},
+	Keywords = {Game Implementation},
 	Pages = {424B},
+	Rating = {1},
+	Read = {1},
 	Title = {The Making of the Tangrambler},
 	Volume = {304},
 	Year = {2002}}
 
 @inproceedings{cheng08,
+	Annote = {- automatic difficulty estimation for computer-adaptive testing
+- somehow based on response time
+- more about how to construct the optimal test for each student using Item Responce Theory (more difficult when correct answer, easier when wrong answer)},
 	Author = {Cheng, Irene and Shen, Rui and Basu, Anup},
-	Booktitle = {Advanced Learning Technologies, 2008. ICALT'08. Eighth IEEE International Conference on},
+	Booktitle = {ICALT '08 Proceedings of the 2008 Eighth IEEE International Conference on Advanced Learning Technologies},
 	Date-Added = {2015-01-19 18:11:37 +0000},
-	Date-Modified = {2015-01-19 18:12:20 +0000},
+	Date-Modified = {2015-01-26 10:54:58 +0000},
+	Keywords = {Difficulty},
 	Organization = {IEEE},
 	Pages = {175--179},
+	Rating = {1},
+	Read = {1},
 	Title = {An Algorithm for Automatic Difficulty Level Estimation of Multimedia Mathematical Test Items},
-	Year = {2008}}
-
-@url{cai08,
-	Author = {Shujun Cai and Yizhi Jiang and Minyu Zeng},
-	Date-Added = {2015-01-19 18:04:21 +0000},
-	Date-Modified = {2015-01-19 18:10:03 +0000},
-	Institution = {Shenzheng Foreign Languages School},
-	Lastchecked = {January 19, 2015 },
-	Title = {The Research on the Difficulty Grade and the Riecing Skills of Tangram},
-	Url = {http://www.yau-awards.org/Notice.php},
 	Year = {2008}}
 
 @incollection{galanter12b,
@@ -502,13 +544,16 @@
 	Author = {Baran, Bahar and Dogusoy, Berrin and Cagiltay, Kursat},
 	Booktitle = {Human-Computer Interaction. HCI Intelligent Multimodal Interaction Environments},
 	Date-Added = {2015-01-19 17:38:13 +0000},
-	Date-Modified = {2015-01-19 17:39:22 +0000},
+	Date-Modified = {2015-01-26 12:28:54 +0000},
+	Editor = {Julie A. Jacko},
 	Keywords = {Solution},
 	Pages = {555--563},
 	Publisher = {Springer},
 	Rating = {2},
 	Read = {1},
+	Series = {LNCS},
 	Title = {How Do Adults Solve Digital Tangram Problems? Analyzing Cognitive Strategies Through Eye Tracking Approach},
+	Volume = {4552},
 	Year = {2007}}
 
 @inproceedings{ayaz12,
@@ -519,7 +564,7 @@
 	Author = {Ayaz, Hasan and Shewokis, Patricia A and Izzetoglu, M and Cakir, MP and Onaral, Banu},
 	Booktitle = {Engineering in Medicine and Biology Society (EMBC), 2012 Annual International Conference of the IEEE},
 	Date-Added = {2015-01-19 17:31:00 +0000},
-	Date-Modified = {2015-01-19 17:37:25 +0000},
+	Date-Modified = {2015-01-26 12:28:18 +0000},
 	Keywords = {Education},
 	Organization = {IEEE},
 	Pages = {4724--4727},
@@ -529,17 +574,18 @@
 	Year = {2012}}
 
 @article{ailon10,
+	Addendum = {Springer},
 	Annote = {- useful keywords for future search: prefence-learning to rank, prefernce-based, score-based
 - some pointers to other learning to rank literature
-- otherwise based on binary classification, thus probably not relevant here},
+- otherwise based on binary classification, thus probably not relevant here
+- TODO: References},
 	Author = {Ailon, Nir and Mohri, Mehryar},
 	Date-Added = {2015-01-19 17:25:29 +0000},
-	Date-Modified = {2015-01-19 17:29:29 +0000},
-	Journal = {Machine Learning},
+	Date-Modified = {2015-01-26 12:25:21 +0000},
+	Journaltitle = {Machine Learning},
 	Keywords = {Ranking},
 	Number = {2-3},
 	Pages = {189--211},
-	Publisher = {Springer},
 	Rating = {1},
 	Read = {1},
 	Title = {Preference-Based Learning to Rank},
@@ -563,3 +609,126 @@
 	Read = {1},
 	Title = {The Tangram Book},
 	Year = {2003}}
+
+@comment{BibDesk Smart Groups{
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>conditions</key>
+		<array>
+			<dict>
+				<key>comparison</key>
+				<integer>4</integer>
+				<key>key</key>
+				<string>Rating</string>
+				<key>value</key>
+				<string>1</string>
+				<key>version</key>
+				<string>1</string>
+			</dict>
+		</array>
+		<key>conjunction</key>
+		<integer>0</integer>
+		<key>group name</key>
+		<string>1 - Nicht relevant</string>
+	</dict>
+	<dict>
+		<key>conditions</key>
+		<array>
+			<dict>
+				<key>comparison</key>
+				<integer>4</integer>
+				<key>key</key>
+				<string>Rating</string>
+				<key>value</key>
+				<string>2</string>
+				<key>version</key>
+				<string>1</string>
+			</dict>
+		</array>
+		<key>conjunction</key>
+		<integer>0</integer>
+		<key>group name</key>
+		<string>2 - Etwas relevant</string>
+	</dict>
+	<dict>
+		<key>conditions</key>
+		<array>
+			<dict>
+				<key>comparison</key>
+				<integer>4</integer>
+				<key>key</key>
+				<string>Rating</string>
+				<key>value</key>
+				<string>3</string>
+				<key>version</key>
+				<string>1</string>
+			</dict>
+		</array>
+		<key>conjunction</key>
+		<integer>0</integer>
+		<key>group name</key>
+		<string>3 - Relevant</string>
+	</dict>
+	<dict>
+		<key>conditions</key>
+		<array>
+			<dict>
+				<key>comparison</key>
+				<integer>4</integer>
+				<key>key</key>
+				<string>Rating</string>
+				<key>value</key>
+				<string>4</string>
+				<key>version</key>
+				<string>1</string>
+			</dict>
+		</array>
+		<key>conjunction</key>
+		<integer>0</integer>
+		<key>group name</key>
+		<string>4 - Sehr relevant</string>
+	</dict>
+	<dict>
+		<key>conditions</key>
+		<array>
+			<dict>
+				<key>comparison</key>
+				<integer>2</integer>
+				<key>key</key>
+				<string>Annote</string>
+				<key>value</key>
+				<string>TODO</string>
+				<key>version</key>
+				<string>1</string>
+			</dict>
+		</array>
+		<key>conjunction</key>
+		<integer>0</integer>
+		<key>group name</key>
+		<string>TODO</string>
+	</dict>
+	<dict>
+		<key>conditions</key>
+		<array>
+			<dict>
+				<key>comparison</key>
+				<integer>4</integer>
+				<key>key</key>
+				<string>Read</string>
+				<key>value</key>
+				<string>0</string>
+				<key>version</key>
+				<string>1</string>
+			</dict>
+		</array>
+		<key>conjunction</key>
+		<integer>0</integer>
+		<key>group name</key>
+		<string>Ungelesen</string>
+	</dict>
+</array>
+</plist>
+}}
