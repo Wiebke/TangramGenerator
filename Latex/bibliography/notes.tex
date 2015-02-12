@@ -1,0 +1,35 @@
+\documentclass[12pt]{article}
+
+\usepackage[left=2.5cm,right=2.5cm, bottom= 3cm,top=3cm]{geometry}
+
+\usepackage{graphics,graphicx}
+\usepackage{amsmath, amssymb, amstext, amsfonts}
+\usepackage{pgfplots} 
+
+\usepackage[margin=2cm]{caption}
+\usepackage{subcaption}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[sc]{mathpazo}
+\usepackage[american]{babel}
+\usepackage[%
+  backend=biber,
+  url=false,
+  style=reading,
+  maxnames=4,
+  minnames=3,
+  maxbibnames=99,
+  firstinits,
+  uniquename=init]{biblatex}
+
+\bibliography{literature}
+
+\DeclareFieldFormat{annotation}{\begin{itemize}\begin{itemize}#1\end{itemize}\end{itemize}\par}
+\renewbibmacro*{finentry}{
+  \printfield{annotation}}
+
+\begin{document}
+\nocite{*}
+\printbibliography{}
+\end{document}

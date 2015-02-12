@@ -2,12 +2,23 @@
 %% http://bibdesk.sourceforge.net/
 
 
-%% Created for Wiebke Koepp at 2015-02-01 21:12:07 +0100 
+%% Created for Wiebke Koepp at 2015-02-12 18:33:19 +0100 
 
 
 %% Saved with string encoding Unicode (UTF-8) 
 
 
+
+@article{oflazer93,
+	Author = {Oflazer, Kemal},
+	Date-Added = {2015-02-12 12:55:29 +0000},
+	Date-Modified = {2015-02-12 12:55:36 +0000},
+	Journaltitle = {International Journal of Intelligent Systems},
+	Number = {5},
+	Pages = {603--616},
+	Title = {Solving tangram puzzles: A connectionist approach},
+	Volume = {8},
+	Year = {1993}}
 
 @online{koeller99,
 	Author = {J{\"u}rgen K{\"o}ller},
@@ -18,32 +29,50 @@
 	Urlday = {01},
 	Urlmonth = {02},
 	Urlyear = {2015},
-	Year = {1999}}
+	Year = {1999},
+	Bdsk-Url-1 = {http://www.mathematische-basteleien.de/tangram.htm}}
 
 @online{coffin98,
+	Annote = {\item tangram pieces arise when putting a diagonal square grid over the sqare -> each dissection line either follows the grid or diagonals of the grid (Figure 7) 
+\item pieces made up of unit triangles, three of them "made up of two unit triangles joined all possible ways"
+\item figures created by arranging the pieces artistically are usually not considered to be true geometrical constructions since they to not conform to a regular grid
+\item examples for paradoxes (Figure 11)
+\item mentions multiple other dissection puzzles similar to the tangram, e.g. formed by using a finer grid, or cutting differently along the original square grid
+\item geometrical dissection usually refers to something else: "two different polygons being formed from the same set of pieces"},
 	Author = {Stewart T. Coffin},
 	Date-Added = {2015-02-01 20:05:48 +0000},
-	Date-Modified = {2015-02-01 20:09:08 +0000},
+	Date-Modified = {2015-02-12 13:32:37 +0000},
 	Editor = {John Rausch},
+	Keywords = {Paradox, Geometry},
+	Rating = {3},
+	Read = {1},
 	Title = {The Puzzling World of Polyhedral Dissections - Chapter 1 - Two-Dimensional Dissections},
 	Url = {http://www.johnrausch.com/PuzzlingWorld/chap01.htm},
 	Urlday = {01},
 	Urlmonth = {02},
 	Urlyear = {2015},
-	Year = {1998}}
+	Year = {1998},
+	Bdsk-Url-1 = {http://www.johnrausch.com/PuzzlingWorld/chap01.htm}}
 
 @online{bell12,
+	Annote = {\item difficulties when using floating point arithmetic
+\item take advantage of symmetry of the tangram pieces (e.g. use only one line segment of the sqare and only 2 of the 3 line segments of trianges)
+\item use heuristitcs when deciding which piece to fit first (e.g. use bigger pieces first and skip pieces when an identical piece has already failed to fit into a space (could this be relevant in generation)},
 	Author = {Bryan Bell},
 	Date-Added = {2015-02-01 19:41:24 +0000},
-	Date-Modified = {2015-02-01 19:42:30 +0000},
+	Date-Modified = {2015-02-12 13:32:59 +0000},
 	Day = {24},
+	Keywords = {Solution, Generation},
 	Month = {09},
+	Rating = {2},
+	Read = {1},
 	Title = {Solving Tangrams Using JTS},
 	Url = {https://bjbell.wordpress.com/2012/09/24/solving-tangrams-using-jts/},
 	Urlday = {01},
 	Urlmonth = {02},
 	Urlyear = {2015},
-	Year = {2012}}
+	Year = {2012},
+	Bdsk-Url-1 = {https://bjbell.wordpress.com/2012/09/24/solving-tangrams-using-jts/}}
 
 @article{eisenman64,
 	Author = {Eisenman,Russell and Coffee,Sandra},
@@ -78,20 +107,21 @@
 	Urlday = {01},
 	Urlmonth = {02},
 	Urlyear = {2015},
-	Year = {2002}}
+	Year = {2002},
+	Bdsk-Url-1 = {http://www.mathematik.uni-bielefeld.de/~ringel/puzzle/puzzle02/tangram.htm}}
 
 @online{cai08,
-	Annote = {- description of three ways to calculate the probability of the pattern, each requires to know all possible solutions to the pattern
-- 1. way: probability based on correct placement of a piece and number of ways it could be placed (number of rotations that result into a different piece) - measure should result in the same probability for each solution and is just scaled by number of solutions (which is later scaled according to experiments again?)
-- 2. way: probabilty based on possibilites to reach a certain length, unclear which length are being taken into account 
-- 3. way: probability based on cutting of basic shapes
-- overall: 
- - patterns that are more regular are harder, patterns where there is only one possibilty to place a piece a easier.
- - seems computationally costly to automate (full solution computation and multiple orders of placement)
-(- very bad English, should this be cited?)},
+	Annote = {\item description of three ways to calculate the probability of the pattern, each requires to know all possible solutions to the pattern
+\item 1. way: probability based on correct placement of a piece and number of ways it could be placed (number of rotations that result into a different piece) - measure should result in the same probability for each solution and is just scaled by number of solutions (which is later scaled according to experiments again?)
+\item 2. way: probabilty based on possibilites to reach a certain length, unclear which length are being taken into account 
+\item 3. way: probability based on cutting of basic shapes
+\item overall: 
+\item patterns that are more regular are harder, patterns where there is only one possibilty to place a piece a easier.
+\item seems computationally costly to automate (full solution computation and multiple orders of placement)
+\item (very bad English, should this be cited?)},
 	Author = {Shujun Cai and Yizhi Jiang and Minyu Zeng},
 	Date-Added = {2015-01-26 10:39:35 +0000},
-	Date-Modified = {2015-01-26 12:26:32 +0000},
+	Date-Modified = {2015-02-12 12:19:36 +0000},
 	Keywords = {Difficulty, Features},
 	Organization = {Shenzheng Foreign Languages School},
 	Rating = {2},
@@ -105,12 +135,12 @@
 	Bdsk-Url-1 = {http://www.yau-awards.org/Notice.php}}
 
 @book{cocchini10,
-	Annote = {- hard patterns have as many matched edges and vertices as possible
-- percentage X of how far of the patters is from being convex
-- not written very good, only 3 chapters available},
+	Annote = {\item hard patterns have as many matched edges and vertices as possible
+\item percentage X of how far of the patters is from being convex
+\item not written very good, only 3 chapters available},
 	Author = {Franco Cocchini},
 	Date-Added = {2015-01-26 10:39:35 +0000},
-	Date-Modified = {2015-01-26 10:39:35 +0000},
+	Date-Modified = {2015-02-12 12:19:54 +0000},
 	Keywords = {Features, Paradox},
 	Publisher = {Lulu.com},
 	Rating = {3},
@@ -520,9 +550,11 @@
 @article{eberle14,
 	Author = {R. Scott Eberle},
 	Date-Added = {2015-01-19 18:38:00 +0000},
-	Date-Modified = {2015-01-20 11:57:37 +0000},
+	Date-Modified = {2015-02-12 17:33:08 +0000},
 	Journaltitle = {The Journal of Mathematical Behavior},
-	Pages = {129 - 143},
+	Keywords = {Aesthetics},
+	Pages = {129--143},
+	Rating = {3},
 	Title = {The Role of Children's Mathematical Aesthetics: The Case of Tessellations},
 	Volume = {35},
 	Year = {2014},
@@ -530,34 +562,54 @@
 	Bdsk-Url-2 = {http://dx.doi.org/10.1016/j.jmathb.2014.07.004}}
 
 @inproceedings{duh08,
+	Annote = {\item usage of unlabeled test data to improve ranking, generating better features and incoorporating those features 
+\item unsupervised learning algorithm to find pattern, then project training data onto these patterns and use resulting numerical values as new features
+\item keyword: Learning to Rank with missing labels
+},
 	Author = {Duh, Kevin and Kirchhoff, Katrin},
 	Booktitle = {Proceedings of the 31st Annual International ACM SIGIR Conference on Research and Development in Information Retrieval},
 	Date-Added = {2015-01-19 18:32:39 +0000},
-	Date-Modified = {2015-01-20 11:56:24 +0000},
+	Date-Modified = {2015-02-12 13:33:42 +0000},
+	Keywords = {Ranking},
 	Organization = {ACM},
 	Pages = {251--258},
+	Rating = {1},
+	Read = {1},
 	Title = {Learning to Rank with Partially-Labeled Data},
 	Year = {2008}}
 
 @article{deutsch72,
 	Addendum = {Edinburgh University Press},
+	Annote = {\item pieces are either three\item or four-sided -> reduces the number of common edges two or more pieces can share
+\item proposed solution does not work for every tangram (puzzles with holes for example)
+\item combinatorics approach involves large amount of computation
+\item heuristic approach uses number of rules that are applied successively in a certain order
+\item based on splitting the puzzle in easier subpuzzles
+\item "number of corners or vertices of a tangram shape contains considerable information" -> less corners give less information about the structure and how pieces are placed -> solution for puzzles for 11 corners or more
+\item save tangram (Figure 4) as vertices' numbers and edge links (node \item (x,y) cords \item linked to node, edge length, direction)
+\item computation of so-called extension lines -> convex (location of a piece) and concave (location of a line connecting two pieces) type vertices -> disregard lines that are too short to support a puzzle piece or extension lines that are too close to a parallel edge
+\item multiple matching rules -> direct, trying to fit multiple pieces all at once (composites also only three\item or four-sided)
+\item possible hints on how to find all possible location for one puzzle piece (?)},
 	Author = {E. S. Deutsch and K. C. {Hayes Jr.}},
 	Date-Added = {2015-01-19 18:19:19 +0000},
-	Date-Modified = {2015-01-20 11:53:56 +0000},
+	Date-Modified = {2015-02-12 12:20:42 +0000},
 	Journaltitle = {Machine Intelligence},
+	Keywords = {Solution, Difficulty},
 	Number = {Bernard Meltzer and Donald Michie},
 	Pages = {205--240},
+	Rating = {4},
+	Read = {1},
 	Title = {A Heuristic Solution to the Tangram Puzzle},
 	Volume = {7},
 	Year = {1972}}
 
 @article{cohene02,
-	Annote = {- description of the design of a physical imlementation of a Tangram game in several steps
-- much analysis and evaluation based on HCI principles (as development of the prototype was part of an HCI course)
-- Tangram also called "seven shapes of cleverness"},
+	Annote = {\item description of the design of a physical imlementation of a Tangram game in several steps
+\item much analysis and evaluation based on HCI principles (as development of the prototype was part of an HCI course)
+\item Tangram also called "seven shapes of cleverness"},
 	Author = {Cohene, Tira and Dack, Stu and Dufourmantelle, Olivier and Saunders, Matthew},
 	Date-Added = {2015-01-19 18:14:14 +0000},
-	Date-Modified = {2015-01-26 12:22:55 +0000},
+	Date-Modified = {2015-02-12 12:20:33 +0000},
 	Journaltitle = {Human-Computer Interaction},
 	Keywords = {Game Implementation},
 	Pages = {424B},
@@ -568,13 +620,13 @@
 	Year = {2002}}
 
 @inproceedings{cheng08,
-	Annote = {- automatic difficulty estimation for computer-adaptive testing
-- somehow based on response time
-- more about how to construct the optimal test for each student using Item Responce Theory (more difficult when correct answer, easier when wrong answer)},
+	Annote = {\item automatic difficulty estimation for computer-adaptive testing
+\item somehow based on response time
+\item more about how to construct the optimal test for each student using Item Responce Theory (more difficult when correct answer, easier when wrong answer)},
 	Author = {Cheng, Irene and Shen, Rui and Basu, Anup},
 	Booktitle = {ICALT '08 Proceedings of the 2008 Eighth IEEE International Conference on Advanced Learning Technologies},
 	Date-Added = {2015-01-19 18:11:37 +0000},
-	Date-Modified = {2015-01-26 10:54:58 +0000},
+	Date-Modified = {2015-02-12 12:19:44 +0000},
 	Keywords = {Difficulty},
 	Organization = {IEEE},
 	Pages = {175--179},
@@ -608,13 +660,12 @@
 	Bdsk-Url-2 = {http://dx.doi.org/10.1145/2343483.2343497}}
 
 @incollection{baran07,
-	Annote = {- comparision of solution approaches for tangrams with vayring difficulty
-- differences shown in fixation cound, task completion duration and transition number, part of the screen most focused on
-},
+	Annote = {\item comparision of solution approaches for tangrams with vayring difficulty
+\item differences shown in fixation cound, task completion duration and transition number, part of the screen most focused on},
 	Author = {Baran, Bahar and Dogusoy, Berrin and Cagiltay, Kursat},
 	Booktitle = {Human-Computer Interaction. HCI Intelligent Multimodal Interaction Environments},
 	Date-Added = {2015-01-19 17:38:13 +0000},
-	Date-Modified = {2015-01-26 12:28:54 +0000},
+	Date-Modified = {2015-02-12 12:19:25 +0000},
 	Editor = {Julie A. Jacko},
 	Keywords = {Solution},
 	Pages = {555--563},
@@ -627,14 +678,14 @@
 	Year = {2007}}
 
 @inproceedings{ayaz12,
-	Annote = {- experiment to measure brain activity during solving of a tangram
-- right hemisphere is more active
-- increase in brain activity similar to other cognitive tasks
-- difference to arithmetic tasks with linguistic representation?},
+	Annote = {\item experiment to measure brain activity during solving of a tangram
+\item right hemisphere is more active
+\item increase in brain activity similar to other cognitive tasks
+\item difference to arithmetic tasks with linguistic representation?},
 	Author = {Ayaz, Hasan and Shewokis, Patricia A and Izzetoglu, M and Cakir, MP and Onaral, Banu},
 	Booktitle = {Engineering in Medicine and Biology Society (EMBC), 2012 Annual International Conference of the IEEE},
 	Date-Added = {2015-01-19 17:31:00 +0000},
-	Date-Modified = {2015-01-26 12:28:18 +0000},
+	Date-Modified = {2015-02-12 12:19:14 +0000},
 	Keywords = {Education},
 	Organization = {IEEE},
 	Pages = {4724--4727},
@@ -645,16 +696,16 @@
 
 @article{ailon10,
 	Addendum = {Springer},
-	Annote = {- useful keywords for future search: prefence-learning to rank, prefernce-based, score-based
-- some pointers to other learning to rank literature
-- otherwise based on binary classification, thus probably not relevant here
-- TODO: References},
+	Annote = {\item useful keywords for future search: prefence-learning to rank, prefernce-based, score-based
+\item some pointers to other learning to rank literature
+\item otherwise based on binary classification, thus probably not relevant here
+\item TODO: References},
 	Author = {Ailon, Nir and Mohri, Mehryar},
 	Date-Added = {2015-01-19 17:25:29 +0000},
-	Date-Modified = {2015-01-26 12:25:21 +0000},
+	Date-Modified = {2015-02-12 13:34:58 +0000},
 	Journaltitle = {Machine Learning},
 	Keywords = {Ranking},
-	Number = {2-3},
+	Number = {2--3},
 	Pages = {189--211},
 	Rating = {1},
 	Read = {1},
@@ -663,16 +714,16 @@
 	Year = {2010}}
 
 @book{slocum03,
-	Annote = {- Sam Loyds book full of errors (7)
-- mention of Japanese dissection puzzle (Sei Shonagon) (12)
-- proof of pythagoran theorem as origin of tangrams? (15)
-- name not originally chinese (23)
-- found original, mostly later, dates to published tangrams claimed to have other publishing dates (60)
-- paradoxal tangrams (100)
-- many tangram examples},
+	Annote = {\item Sam Loyds book full of errors (7)
+\item mention of Japanese dissection puzzle (Sei Shonagon) (12)
+\item proof of pythagoran theorem as origin of tangrams? (15)
+\item name not originally chinese (23)
+\item found original, mostly later, dates to published tangrams claimed to have other publishing dates (60)
+\item paradoxal tangrams (100)
+\item many tangram examples},
 	Author = {Jerry Slocum},
 	Date-Added = {2015-01-19 16:52:20 +0000},
-	Date-Modified = {2015-01-19 17:29:42 +0000},
+	Date-Modified = {2015-02-12 12:28:06 +0000},
 	Keywords = {History, Examples, Paradox},
 	Publisher = {Sterling Publishing},
 	Rating = {3},

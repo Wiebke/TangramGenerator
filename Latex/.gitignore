@@ -1,3 +1,6 @@
 main.*
 !main.pdf
 !main.tex
+bibliography/notes.*
+!bibliography/notes.tex
+!bibliography/notes.pdf
