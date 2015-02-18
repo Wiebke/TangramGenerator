@@ -1,0 +1,37 @@
+html {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0 auto;
+    background-color: #f5f5f5;
+}
+
+header,footer,section,aside{
+    display: block;
+}
+
+#banner, #content, footer{
+    padding-left: 5%;
+    padding-right: 5%;
+    width:90%;
+}
+
+#banner{
+    background-color: #d3d3d3;
+}
+
+footer{
+    background-color: #d3d3d3;
+    position:fixed;
+    bottom:0;
+    left:0;
+}
+
+#state{
+    text-align:center;
+    float: right;
+}
+
+
