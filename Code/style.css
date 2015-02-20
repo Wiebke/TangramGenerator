@@ -22,6 +22,12 @@ header,footer,section,aside{
     background-color: #d3d3d3;
 }
 
+#gameArea{
+    float: left;
+    width: 100%;
+    padding: 5%;
+}
+
 footer{
     background-color: #d3d3d3;
     position:fixed;
