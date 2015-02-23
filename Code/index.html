@@ -7,17 +7,49 @@
     <script src="script.js"></script>
 </head>
 <body>
-<header id = "banner">
+<header>
     <img src="logo.svg" onerror="this.src='your.png'">
-    <div id = "state">possibly timer/progress/whatever</div>
+
+    <div id="state">possibly timer/progress/whatever</div>
 </header>
 
-<section id = "content">
-    <div id = "gameArea"></div> <!--Actual content, shapes and game goes here-->
-    <div id = "buttons"></div>
+<!--Actual content, shapes and game goes here-->
+<section id="content">
+    <div id="gameArea">
+        <div id=playing>
+            <div class="tangram">
+                <svg id="first" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+            <div class="tangram">
+                <svg id="second" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+            <div class="tangram">
+                <svg id="fourth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+            <div class="tangram">
+                <svg id="fifth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+        </div>
+        <div id=pieces>
+            <div class="tangram">
+                <svg id="third" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+            <div class="tangram">
+                <svg id="sixth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+        </div>
+    </div>
+    <div id="buttons"></div>
     <hr>
-    <aside id = "explain">
-        Some kind of explanation for what is to be done here (either choose a shape or play the game)
+    <aside id="explain">
+        Some kind of explanation for what is to be done here (either choose a
+        shape or play the game)
     </aside>
 </section>
 
