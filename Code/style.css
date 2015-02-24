@@ -24,6 +24,7 @@ header, #content, footer {
 }
 
 .tangram {
+    display: none;
     width: 20%;
     margin-left: 6.66%;
     margin-right: 6.66%;

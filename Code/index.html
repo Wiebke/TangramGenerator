@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <title>Random Tangram Generator</title>
     <link rel="stylesheet" href="style.css">
+    <script src="intadjoinsqrt2.js"></script>
+    <script src="point.js"></script>
+    <script src="directions.js"></script>
+    <script src="tan.js"></script>
+    <script src="tangram.js"></script>
+    <script src="exampleTangrams.js"></script>
     <script src="script.js"></script>
 </head>
 <body>
@@ -16,13 +22,16 @@
 <!--Actual content, shapes and game goes here-->
 <section id="content">
     <div id="gameArea">
-        <div id=playing>
             <div class="tangram">
                 <svg id="first" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
                 <svg id="second" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                </svg>
+            </div>
+            <div class="tangram">
+                <svg id="third" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
@@ -33,17 +42,10 @@
                 <svg id="fifth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
-        </div>
-        <div id=pieces>
-            <div class="tangram">
-                <svg id="third" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
             <div class="tangram">
                 <svg id="sixth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
-        </div>
     </div>
     <div id="buttons"></div>
     <hr>
