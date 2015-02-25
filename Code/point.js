@@ -37,6 +37,72 @@ Point.prototype.dup = function () {
     return new Point(this.x.dup(), this.y.dup(), this.z.dup());
 };
 
+/* Conversion and Dehomogenization to floating point numbers of x- and
+ * y-coordinates */
+Point.prototype.toFloatX = function () {
+    return this.x.toFloat() / this.z.toFloat();
+};
+
+Point.prototype.toFloatY = function () {
+    return this.y.toFloat() / this.z.toFloat();
+};
+
+/* Dehomogenization without conversion to floating point numbers -> might cause
+ * floating point numbers as coefficients of the coordinate numbers and is only
+ * possible when z != 0 */
+
+Point.prototype.dehomogenizeX = function () {
+    if (this.z.isZero()){
+        return;
+    } else {
+        return this.x.div(this.z);
+    }
+};
+
+Point.prototype.dehomogenizeY = function () {
+    if (this.z.isZero()){
+        return;
+    } else {
+        return this.y.div(this.z);
+    }
+};
+
+/* Comparison of Points by first x- and then y-coordinate, returns -1 if
+ * this point is "smaller" than the other one and 1, if this one is "bigger" than
+ * the other one*/
+Point.prototype.compare = function(other){
+    if (this.z.isZero() || other.z.isZero()){
+        console.log("Comparison between the points is not possible!");
+        return;
+    }
+    var xCompare;
+    var yCompare;
+    if(this.z.eq(other.z)){
+        xCompare = this.x.compare(other.z);
+        yCompare = this.y.compare(other.z);
+    } else {
+        xCompare = this.dehomogenizeX().compare(other.z);
+        yCompare = this.dehomogenizeY().compare(other.z);
+    }
+    if (xCompare != 0){
+        return xCompare;
+    } else {
+        return yCompare;
+    }
+};
+
+var comparePoints = function (pointA, pointB){
+    return pointA.compare(pointB);
+}
+
+Point.prototype.eq = function(other){
+    return this.compare(other) === 0;
+};
+
+Point.prototype.isZero = function () {
+    return this.x.isZero() && this.y.isZero() && this.z.isZero();
+};
+
 /* Combinations of Points */
 Point.prototype.add = function (other) {
     this.x.add(other.x);
@@ -115,12 +181,4 @@ Point.prototype.rotate = function (angle) {
         [sin, cos, new IntAdjoinSqrt2(0, 0)],
         [new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)]];
     this.transform(rotationMatrix);
-};
-
-Point.prototype.toFloatX = function () {
-    return this.x.toFloat() / this.z.toFloat();
-};
-
-Point.prototype.toFloatY = function () {
-    return this.y.toFloat() / this.z.toFloat();
 };

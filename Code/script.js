@@ -13,14 +13,5 @@ window.onload = function () {
     }
     console.log(JSON.stringify(Directions));
 
-    /**
-     * var s=["Hscript.js","checkRobert.js","Hscript.js"];
-     for(i=0;i<s.length;i++){
-  var script=document.createElement("script");
-  script.type="text/javascript";
-  script.src=s[i];
-  document.getElementsByTagName("head")[0].appendChild(script)
-};
-     */
 };
 
