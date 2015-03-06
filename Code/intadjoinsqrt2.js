@@ -29,7 +29,7 @@ IntAdjoinSqrt2.prototype.toFloat = function () {
 /* Checking if this number is equal to another one, since only whole numbers are
  * used === can be used for comparison */
 IntAdjoinSqrt2.prototype.eq = function (other) {
-    return (this.coeffInt === other.coeffInt && this.coeffSqrt === other.coeffSqrt);
+    return (numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt));
 };
 
 /* Compare this number to another one, returns 0 is the numbers are equal, -1 is
@@ -54,7 +54,7 @@ var compareIntAdjoinSqrt2s = function (numberA, numberB){
 };
 
 IntAdjoinSqrt2.prototype.isZero = function () {
-    return (this.coeffInt === 0 && this.coeffSqrt === 0);
+    return (numberEq(this.coeffInt,0) && numberEq(this.coeffSqrt,0));
 };
 
 /* Basic arithmetic - Adding another number to this one */
@@ -84,7 +84,7 @@ IntAdjoinSqrt2.prototype.multiply = function (other) {
  * in floating point coefficients */
 IntAdjoinSqrt2.prototype.div = function (other) {
     var denominator = other.coeffInt*other.coeffInt - 2*other.coeffSqrt*other.coeffSqrt;
-    if (denominator === 0){
+    if (numberEq(denominator,0)){
         console.log("Division by 0 is not possible!");
         return;
     }
@@ -100,5 +100,16 @@ IntAdjoinSqrt2.prototype.div = function (other) {
 IntAdjoinSqrt2.prototype.neg = function () {
     this.coeffInt = -this.coeffInt;
     this.coeffSqrt = -this.coeffSqrt;
+    return this;
+};
+
+/* Basic arithmetic - Scaling of the coefficients */
+IntAdjoinSqrt2.prototype.scale = function (factor){
+    if (numberEq(factor,0)){
+        console.log("Scaling by 0 is not possible!");
+        return;
+    }
+    this.coeffInt *= factor;
+    this.coeffSqrt *= factor;
     return this;
 };
