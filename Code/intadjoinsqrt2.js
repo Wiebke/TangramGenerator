@@ -113,3 +113,22 @@ IntAdjoinSqrt2.prototype.scale = function (factor){
     this.coeffSqrt *= factor;
     return this;
 };
+
+/* Min and max operations for this special number type */
+var IntAdjoinSqrt2Min = function (a, b){
+    var compare = a.compare(b);
+    if (compare <= 0){
+        return a;
+    } else {
+        return b;
+    }
+};
+
+var IntAdjoinSqrt2Max = function (a, b){
+    var compare = a.compare(b);
+    if (compare >= 0){
+        return a;
+    } else {
+        return b;
+    }
+};

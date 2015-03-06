@@ -40,6 +40,45 @@ LineSegment.prototype.dup = function() {
     return new LineSegment(this.point1.dup(), this.point2.dup());
 };
 
+/* Properties of the segment */
+
+LineSegment.prototype.length = function (){
+    return this.point1.distance(this.point2);
+};
+
+LineSegment.prototype.direction = function (){
+    return this.point2.dup().subtract(this.point1);
+};
+
+LineSegment.prototype.lineParameters = function (){
+    /* For each point on a line segment the following equation holds: point_1 +
+     * t*(point_2 - point_1). The points on the segment have t between 0 and 1,
+     * for t outside that interval, the point lies only on the line formed by the
+     * connection of the two points, not on the segment itself. By using one
+     * equation for both x- and y-coordinates, solving for t and than setting the
+     * two equations equal, the calculation below for the line parameters can be
+     * derived. Cases where the line is parallel to either the x- or y-axis have
+     * to be treated specially (as they would to lead to e.g. division by 0) */
+    var parameters = [];
+    if (this.point1.x.eq(this.point2.x)) {
+        parameters[0] = 1.0;
+        parameters[1] = 0.0;
+        parameters[2] = this.point1.x.dup().neg().toFloat();
+    } else if (this.point1.y.eq(this.point2.y)){
+        parameters[0] = 0.0;
+        parameters[1] = 1.0;
+        parameters[2] = this.point1.y.dup().neg().toFloat();
+    } else {
+        /* Comes from line equations using points -> solve for t, set equal */
+        var direction = this.direction();
+        parameters[0] = direction.toFloatX() / direction.toFloatY();
+        parameters[1] = -1.0;
+        parameters[2] = this.point2.crossProduct(this.point1).toFloat()
+            / direction.toFloatX();
+    }
+    return parameters;
+};
+
 /* Comparison - equality of two line segments */
 LineSegment.prototype.eq = function(other){
     return (this.point1.eq(other.point1) && this.point2.eq(other.point2)) ||
@@ -75,32 +114,81 @@ LineSegment.prototype.split = function(splitPoints){
     /* Sort points along segment */
     splitPoints.sort(comparePoints);
     /* Create new segments - staring from this */
+    var segments = [];
+    segments[0] = new LineSegment(this.point1,splitPoints[0]);
+    var i;
+    for (i = 1; i < splitPoints.length; i++){
+        segments[i] = new LineSegment(splitPoints[i-1], splitPoints[i]);
+    }
+    segments[i] = new LineSegment(splitPoints[i-1], this.point2);
+    return segments;
 };
 
 /* Returns true if the given point is on the segment, but is not equal to either
  * of the endpoints */
 LineSegment.prototype.onSegment = function (point){
-    /*
-    * if (point_1 == point_2) {
-     return (point == point_1);
-     }
-     // Calculate twice the area of the triangle of the two segment points and the given point,
-     // if the area is 0, the three points are colinear
-     if (Point2D<T>::RelativeOrientation(point_1, point_2, point) == 0) {
-     double parameter = ProjectedParameter(point);
-     if (parameter >= 0 && parameter <=1){
-     return true;
-     } else {
-     return false;
-     }
-     }
-     return false;
-    * */
+    if (point.eq(this.point1) || point.eq(this.point2)){
+        return false;
+    }
+    /* Calculate twice the area of the triangle of the two segment points and the
+     * given point, if the area is 0, the three points are collinear */
+    if (relativeOrientation(this.point1, this.point2,point) === 0) {
+        var parameter = ProjectedParameter(point);
+        /* Check if parameter is so that the point lies within the two segment points */
+        if (parameter >= 0 && parameter <=1){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
 };
 
-/* Returns the angle between two lineSegments */
+/* Returns the angle between two lineSegments if they have an endpoint in common */
 LineSegment.prototype.angleTo = function(other){
+    /* Find common endpoint and calculate direction vectors from the common point
+     * to two other points */
+    var thisDirection;
+    var otherDirection;
+    if (this.point1.eq(other.point1)){
+        thisDirection = this.direction();
+        otherDirection = other.direction();
+    } else if (this.point1.eq(other.point2)){
+        thisDirection = this.direction();
+        otherDirection = other.direction().scale(-1);
+    } else if (this.point2.eq(other.point1)){
+        thisDirection = this.direction().scale(-1);
+        otherDirection = other.direction();
+    } else if (this.point2.eq(other.point2)){
+        thisDirection = this.direction().scale(-1);
+        otherDirection = other.direction().scale(-1);
+    } else {
+        // No common point
+        return;
+    }
+    /* Angle between those is Angle between the segments */
+    return thisDirection.angleTo(otherDirection);
+};
 
+/* Calculates the parameter for the projection of the given point onto the line
+ * formed by the two points in this line segment (projected_point = point_1 +
+ * t*(point_2 - point_1), t is calculated) */
+LineSegment.prototype.projectedParameter = function (point){
+    if (this.point1.eq(this.point2)){
+        return 1;
+    }
+    /* Projection of point onto line is the same as projection of the vector start
+     * to point onto the direction vector. This projection vector p is parallel
+     * to the direction vector (thus just a scaled version of it) => p = s *
+     * normalized_direction. s is equal to the length of the vector to project
+     * times the cos of the angle the two vectors enclose. This again is equal
+     * to the dot product of the vector to project and the normalized other vector,
+     * leading to the calculation below */
+    var startToPoint = point.dup().subtract(this.point1);
+    var direction = this.direction();
+    var parameter = startToPoint.dotProduct(direction).toFloat()
+        / (direction.dotProduct(direction)).toFloat;
+    return parameter;
 };
 
 

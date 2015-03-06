@@ -19,26 +19,26 @@ var fillDirections = function () {
     // Fill the first entry of each array with the direction vectors for when
     // a piece is not rotated
     Directions[0][0] =
-        [new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0))];
+        [new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0)),
+            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2))];
     Directions[1][0] =
-        [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0))];
+        [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
+            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(2, 0))];
     Directions[2][0] =
-        [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0))];
+        [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
+            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1))];
     Directions[3][0] =
-        [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0))];
+        [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
+            new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1)),
+            new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1))];
     Directions[4][0] =
-        [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(0, 0))];
+        [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
+            new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(1, 0)),
+            new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(1, 0))];
     Directions[5][0] =
-        [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(-1, 0), new IntAdjoinSqrt2(0, 0)),
-            new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(-1, 0), new IntAdjoinSqrt2(0, 0))];
+        [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
+            new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(-1, 0)),
+            new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(-1, 0))];
     // Matrix for rotating by 45 degrees
     var rotationMatrix =
         [[new IntAdjoinSqrt2(0, 0.5), new IntAdjoinSqrt2(0, -0.5), new IntAdjoinSqrt2(0, 0)],

@@ -78,6 +78,11 @@ Point.prototype.angle = function () {
     return Math.round(angle); // TODO check if this causes problems
 };
 
+Point.prototype.distance = function (other) {
+    var toOther = other.dup().subtract(this);
+    return toOther.length();
+};
+
 Point.prototype.angleTo = function (other) {
     /* The angle is calculated with atan2, which is not defined for (0,0).
      * Therefore, handle cases where one point is (0,0) first */
@@ -218,5 +223,4 @@ var relativeOrientation = function (pointA, pointB, pointC){
     } else {
         return crossProduct > 0 ? 1 : -1;
     }
-
 };
