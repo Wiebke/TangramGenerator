@@ -16,7 +16,7 @@ function LineSegment(point1, point2){
     }
     /* Order the points so that the point with lower x and lower y values is
      * saved in point1 */
-    if(!this.point1.isZero() && this.point2.isZero()){
+    if(!this.point1.isZero() && !this.point2.isZero() || this.point2.isZero() && !this.point1.isZero()) {
         var compare = this.point1.compare(this.point2);
         if (compare === 1){
             var point1Copy = this.point1;
@@ -112,7 +112,10 @@ var compareLineSegments = function (segmentA, segmentB){
  */
 LineSegment.prototype.split = function(splitPoints){
     /* Sort points along segment */
-    splitPoints.sort(comparePoints);
+    if (splitPoints.length === 0){
+        return [this];
+    }
+    splitPoints = splitPoints.sort(comparePoints);
     /* Create new segments - staring from this */
     var segments = [];
     segments[0] = new LineSegment(this.point1,splitPoints[0]);
@@ -124,6 +127,27 @@ LineSegment.prototype.split = function(splitPoints){
     return segments;
 };
 
+/* Calculates the parameter for the projection of the given point onto the line
+ * formed by the two points in this line segment (projected_point = point_1 +
+ * t*(point_2 - point_1), t is calculated) */
+LineSegment.prototype.projectedParameter = function (point){
+    if (this.point1.eq(this.point2)){
+        return 1;
+    }
+    /* Projection of point onto line is the same as projection of the vector start
+     * to point onto the direction vector. This projection vector p is parallel
+     * to the direction vector (thus just a scaled version of it) => p = s *
+     * normalized_direction. s is equal to the length of the vector to project
+     * times the cos of the angle the two vectors enclose. This again is equal
+     * to the dot product of the vector to project and the normalized other vector,
+     * leading to the calculation below */
+    var startToPoint = point.dup().subtract(this.point1);
+    var direction = this.direction();
+    var parameter = startToPoint.dotProduct(direction).toFloat()
+        / (direction.dotProduct(direction)).toFloat();
+    return parameter;
+};
+
 /* Returns true if the given point is on the segment, but is not equal to either
  * of the endpoints */
 LineSegment.prototype.onSegment = function (point){
@@ -133,7 +157,7 @@ LineSegment.prototype.onSegment = function (point){
     /* Calculate twice the area of the triangle of the two segment points and the
      * given point, if the area is 0, the three points are collinear */
     if (relativeOrientation(this.point1, this.point2,point) === 0) {
-        var parameter = ProjectedParameter(point);
+        var parameter = this.projectedParameter(point);
         /* Check if parameter is so that the point lies within the two segment points */
         if (parameter >= 0 && parameter <=1){
             return true;
@@ -170,25 +194,5 @@ LineSegment.prototype.angleTo = function(other){
     return thisDirection.angleTo(otherDirection);
 };
 
-/* Calculates the parameter for the projection of the given point onto the line
- * formed by the two points in this line segment (projected_point = point_1 +
- * t*(point_2 - point_1), t is calculated) */
-LineSegment.prototype.projectedParameter = function (point){
-    if (this.point1.eq(this.point2)){
-        return 1;
-    }
-    /* Projection of point onto line is the same as projection of the vector start
-     * to point onto the direction vector. This projection vector p is parallel
-     * to the direction vector (thus just a scaled version of it) => p = s *
-     * normalized_direction. s is equal to the length of the vector to project
-     * times the cos of the angle the two vectors enclose. This again is equal
-     * to the dot product of the vector to project and the normalized other vector,
-     * leading to the calculation below */
-    var startToPoint = point.dup().subtract(this.point1);
-    var direction = this.direction();
-    var parameter = startToPoint.dotProduct(direction).toFloat()
-        / (direction.dotProduct(direction)).toFloat;
-    return parameter;
-};
 
 

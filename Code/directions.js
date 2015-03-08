@@ -11,7 +11,6 @@
  */
 var Directions = [];
 
-var fillDirections = function () {
     // Create Array for each tan piece
     for (var i = 0; i <= 5; i++) {
         Directions[i] = [];
@@ -55,4 +54,3 @@ var fillDirections = function () {
             }
         }
     }
-};

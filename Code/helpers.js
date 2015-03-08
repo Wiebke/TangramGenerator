@@ -24,6 +24,7 @@ var clipAngle = function (angle){
             angle -= 360;
         }
     }
+    return angle;
 };
 
 /* Comparison of to Numbers taking into account precision */

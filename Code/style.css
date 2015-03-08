@@ -13,9 +13,9 @@ header, footer, section, aside {
 }
 
 header, #content, footer {
-    padding-left: 15%;
-    padding-right: 15%;
-    width: 70%;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: 80%;
 }
 
 #gameArea {
@@ -37,14 +37,28 @@ header, #content, footer {
     background-color: #7ab2ff;
 }
 
+#explain {
+    padding-top: 2%
+}
+
 footer {
     bottom: 0;
     left: 0;
+    margin-top: 2%
 }
 
 #state {
     text-align: center;
     float: right;
 }
+
+@media all and (max-width: 600px) {
+    .tangram{
+        width: 100%;
+        margin-left: 0%;
+        margin-right: 0%;
+    }
+}
+
 
 

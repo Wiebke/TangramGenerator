@@ -86,13 +86,13 @@ Point.prototype.distance = function (other) {
 Point.prototype.angleTo = function (other) {
     /* The angle is calculated with atan2, which is not defined for (0,0).
      * Therefore, handle cases where one point is (0,0) first */
-    if (this.isZero){
+    if (this.isZero()){
         return other.angle();
     }
     if (other.isZero()){
         return this.angle();
     }
-    var angle = other.angle() - this.angle;
+    var angle = 360 - (other.angle() - this.angle());
     angle = clipAngle(angle);
     return angle;
 };
@@ -115,7 +115,6 @@ Point.prototype.middle = function (other) {
 Point.prototype.subtract = function (other) {
     this.x.subtract(other.x);
     this.y.subtract(other.y);
-    this.z.subtract(other.z);
     return this;
 };
 
