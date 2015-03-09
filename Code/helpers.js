@@ -53,6 +53,25 @@ var crossProduct3D = function (a, b){
     return result;
 };
 
+/* Shuffle an array, algorithm based on Fisher-Yates-Shuffle */
+var shuffleArray = function (array){
+    var elementsLeft = array.length;
+    var elementCopy, index;
+    /* while there are still element left */
+    while (elementsLeft) {
+        /* Pick one of the remaining elements (index between 0 and elementsLeft -1 */
+        index = Math.floor(Math.random() * elementsLeft);
+        elementsLeft--;
+        /* Switch the chosen element with the one at index elementsLeft, this
+         * results in filling the array with randomly chosen elements from the back */
+        elementCopy = array[elementsLeft];
+        array[elementsLeft] = array[index];
+        array[index] = elementCopy;
+    }
+    console.log(array);
+    return array;
+};
+
 
 
 

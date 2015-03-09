@@ -11,6 +11,11 @@ function Tan(tanType, anchor, orientation) {
     this.orientation = orientation;
 }
 
+Tan.prototype.area = function () {
+    var areas = [4,2,1,2,2,2];
+    return areas[this.tanType];
+};
+
 Tan.prototype.getPoints = function () {
     var points = [];
     points[0] = this.anchor;
@@ -40,4 +45,169 @@ Tan.prototype.toSVG = function () {
         pointsString += points[i].toFloatX() + ", " + points[i].toFloatY() + " ";
     }
     return pointsString;
+};
+
+/* Functions based on multiple tans */
+
+var getAllPoints = function (tans) {
+    var points = [];
+    for (var i = 0; i < tans.length; i++) {
+        var currentPoints = tans[i].getPoints();
+        points = points.concat(currentPoints);
+    }
+    /* Eliminate duplicates */
+    points = points.sort(comparePoints);
+    points = points.filter(function (element, index) {
+        return !index || !element.eq(points[index - 1]);
+    });
+    return points;
+};
+
+var computeOutline = function (tans) {
+    /* First calculate all line segments involved in the tangram. These line
+     * segments are the segments of each individual tan however split up at points
+     * from other tans */
+    var allPoints = getAllPoints(tans);
+    var allSegments = [];
+    var currentSegments;
+    for (var tanId = 0; tanId < tans.length; tanId++) {
+        /* For the line segment of each tan, check if there exists points from
+         * other tans on the segment, if that is the case, split the segment at
+         * these points */
+        currentSegments = tans[tanId].getSegments();
+        for (var segmentId = 0; segmentId < currentSegments.length; segmentId++) {
+            var splitPoints = [];
+            for (var pointID = 0; pointID < allPoints.length; pointID++) {
+                if (currentSegments[segmentId].onSegment(allPoints[pointID])) {
+                    splitPoints.push(allPoints[pointID]);
+                }
+            }
+            allSegments = allSegments.concat(currentSegments[segmentId].split(splitPoints));
+        }
+    }
+    /* Eliminate duplicates */
+    allSegments = allSegments.sort(compareLineSegments);
+    allSegments = allSegments.filter(function (element, index) {
+        return !index || !element.eq(allSegments[index - 1]);
+    });
+    /* Since the points are sorted, the upper left corner is saved at index 0 */
+    var lastPoint = allPoints[0];
+    var helperPoint = lastPoint.dup();
+    helperPoint.subtract(new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)));
+    var outline = [];
+    outline.push(lastPoint);
+    var lastSegment = new LineSegment(helperPoint, lastPoint);
+    var firstSegment = true;
+    do {
+        currentSegments = allSegments.filter(function (element) {
+            return !lastSegment.eq(element) && (element.point1.eq(lastPoint) || element.point2.eq(lastPoint));
+        });
+        var maxAngle = 0;
+        var maxIndex = -1;
+        for (segmentId = 0; segmentId < currentSegments.length; segmentId++) {
+            var currentAngle = currentSegments[segmentId].angleTo(lastSegment);
+            if (currentAngle > maxAngle){
+                maxIndex = segmentId;
+                maxAngle = currentAngle;
+            }
+        }
+        if (maxAngle === 180 && !firstSegment) {
+            outline.pop();
+        }
+        if (currentSegments[maxIndex].point1.eq(lastPoint)){
+            outline.push(currentSegments[maxIndex].point2);
+            lastPoint = currentSegments[maxIndex].point2;
+        } else {
+            outline.push(currentSegments[maxIndex].point1);
+            lastPoint = currentSegments[maxIndex].point1;
+        }
+        lastSegment = currentSegments[maxIndex];
+        allSegments = allSegments.filter(function(element){
+            return !lastSegment.eq(element);
+        });
+        if (firstSegment){
+            firstSegment = false;
+        }
+    } while (!lastPoint.eq(allPoints[0]));
+    /* When the last point is equal to the first if can be deleted */
+    outline.pop();
+    return outline;
+};
+
+var computeBoundingBox = function (tans, outline) {
+    if (outline === "undefined"){
+        outline = computeOutline(tans);
+    }
+    var minX = 100;
+    var minY = 100;
+    var maxX = -100;
+    var maxY = -100;
+    for (var pointId = 0; pointId < outline.length; pointId++){
+        var currentX = outline[pointId].toFloatX();
+        var currentY = outline[pointId].toFloatY();
+        if (currentX < minX) minX = currentX;
+        if (currentY < minY) minY = currentY;
+        if (currentX > maxX) maxX = currentX;
+        if (currentY > maxY) maxY = currentY;
+    }
+    return [minX,minY,maxX,maxY];
+};
+
+var outlineArea = function (outline){
+    var area = 0;
+    for (var pointId = 0; pointId < outline.length; pointId++){
+        /* Calculate the cross product of consecutive points. This corresponds
+         * to twice the area of the triangle (0,0) - vertices[p] -
+         * vertices[(p+1)%num_vertices]. This area is positive if the vertices
+         * of that triangle are arranged in a counterclockwise order and negative
+         * if the vertices are arranged in a clockwise order
+         */
+        area += outline[pointId].crossProduct(outline[(pointId+1)%outline.length])
+            .toFloat();
+    }
+    return Math.abs(area)/2.0;
+};
+
+var tanSumArea = function (tans){
+    var area = 0;
+    for (var tanId = 0; tanId < tans.length; tanId++){
+        area += tans[tanId].area();
+    }
+    return area;
+};
+
+/* Returns true if the given point is inside the polygon given by outline,
+ * return false if the point lies on the outline  */
+var containsPoint = function (outline, point){
+    /* Compute the winding number for the given point and the polygon, which
+     * counts how often the polygon "winds" around the point. The point lies
+     * outside, only when the winding number is 0 */
+    var winding = 0;
+    for (var pointId = 0 ; pointId < outline.length; pointId++) {
+        /* Check each segment for containment */
+        if (point.eq(outline[pointId]) || point.eq(outline[(pointId+1)%outline.length])
+            || new LineSegment(outline[pointId],outline[(pointId+1)%outline.length]).onSegment(point)) {
+            return false;
+        }
+        /* Line segments are only considered if they are either pointing upward or
+         * downward (therefore excluding horizontal lines) and if the intersection
+         * point is strictly to the right of the point, for upwards segments,
+         * this means that the point must lie to the left of the segment for downwards
+         * segments, this means that the point must lie to the right of the segment
+         * (when looking into the segment direction) */
+        if (outline[pointId].y.compare(point.y) <= 0) {
+            /* Upwards edge */
+            if (outline[(pointId+1)%outline.length].y.compare(point.y) === 1
+                && relativeOrientation(outline[(pointId+1)%outline.length], point, outline[pointId]) > 0) {
+                winding++;
+            }
+        } else {
+            /* Downwards edge */
+            if (outline[(pointId+1)%outline.length].y.compare(point.y) <= 0
+                && relativeOrientation(outline[(pointId+1)%outline.length], point, outline[pointId]) < 0) {
+                winding--;
+            }
+        }
+    }
+    return !(winding === 0);
 };

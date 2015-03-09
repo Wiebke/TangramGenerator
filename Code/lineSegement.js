@@ -168,6 +168,29 @@ LineSegment.prototype.onSegment = function (point){
     return false;
 };
 
+/* Returns true if the this segment and the other segment intersect in exactly one
+ * point which is not equal to either of the endpoints of either segment */
+LineSegment.prototype.intersects = function (other){
+    /* First check if any of the endpoints are equal*/
+    if (this.point1.eq(other.point1) || this.point2.eq(other.point2) ||
+        this.point2.eq(other.point1) || this.point1.eq(other.point2)) {
+        return false;
+    }
+    /* Find the four relative orientations for all combinations of one line segments
+     * and one point from the respective other line segment */
+    var orient1 = relativeOrientation(this.point1, this.point2, other.point1);
+    var orient2 = relativeOrientation(this.point1, this.point2, other.point2);
+    var orient3 = relativeOrientation(other.point1, other.point2, this.point1);
+    var orient4 = relativeOrientation(other.point1, other.point2, this.point2);
+    /* The lines intersect if the points from one line segments do not lie on the
+     * same side of the other line segment (and the other way around) */
+    if (orient1 != orient2 && orient3 != orient4) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 /* Returns the angle between two lineSegments if they have an endpoint in common */
 LineSegment.prototype.angleTo = function(other){
     /* Find common endpoint and calculate direction vectors from the common point
@@ -187,7 +210,7 @@ LineSegment.prototype.angleTo = function(other){
         thisDirection = this.direction().scale(-1);
         otherDirection = other.direction().scale(-1);
     } else {
-        // No common point
+        /* No common point */
         return;
     }
     /* Angle between those is Angle between the segments */

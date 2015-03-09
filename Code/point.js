@@ -75,7 +75,8 @@ Point.prototype.angle = function () {
     }
     var angle = Math.atan2(this.toFloatY(), this.toFloatX());
     angle = clipAngle(toDegrees(angle));
-    return Math.round(angle); // TODO check if this causes problems
+    /* (Angles should be multiples of 45 degrees, so this shouldn't cause problems */
+    return Math.round(angle);
 };
 
 Point.prototype.distance = function (other) {
