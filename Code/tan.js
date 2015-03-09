@@ -79,7 +79,6 @@ var outlineArea = function (outline){
 };
 
 var tanSumArea = function (tans){
-    console.log(JSON.stringify(tans));
     var area = 0;
     for (var tanId = 0; tanId < tans.length; tanId++){
         area += tans[tanId].area();
@@ -147,12 +146,6 @@ var computeOutline = function (tans) {
         if (maxAngle === 180 && !firstSegment) {
             outline.pop();
         }
-        if (maxIndex === -1){
-            var outlineA = outlineArea(outline);
-            var TanA = tanSumArea(tans);
-            console.log("???");
-        }
-        console.log(maxIndex + " " + JSON.stringify(tans));
         if (currentSegments[maxIndex].point1.eq(lastPoint)){
             outline.push(currentSegments[maxIndex].point2);
             lastPoint = currentSegments[maxIndex].point2;

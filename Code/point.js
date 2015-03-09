@@ -208,6 +208,10 @@ Point.prototype.rotate = function (angle) {
 };
 
 Point.prototype.scale = function (factor) {
+    if (numberEq(0, factor)){
+        console.log("Attempt to scale by 0!");
+        return;
+    }
     this.x.scale(factor);
     this.y.scale(factor);
     return this;

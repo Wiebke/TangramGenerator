@@ -107,6 +107,7 @@ IntAdjoinSqrt2.prototype.neg = function () {
 IntAdjoinSqrt2.prototype.scale = function (factor){
     if (numberEq(factor,0)){
         console.log("Scaling by 0 is not possible!");
+        console.log(JSON.stringify(this));
         return;
     }
     this.coeffInt *= factor;
