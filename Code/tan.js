@@ -63,6 +63,39 @@ var getAllPoints = function (tans) {
     return points;
 };
 
+var outlineArea = function (outline){
+    var area = 0;
+    for (var pointId = 0; pointId < outline.length; pointId++){
+        /* Calculate the cross product of consecutive points. This corresponds
+         * to twice the area of the triangle (0,0) - vertices[p] -
+         * vertices[(p+1)%num_vertices]. This area is positive if the vertices
+         * of that triangle are arranged in a counterclockwise order and negative
+         * if the vertices are arranged in a clockwise order
+         */
+        area += outline[pointId].crossProduct(outline[(pointId+1)%outline.length])
+            .toFloat();
+    }
+    return Math.abs(area)/2.0;
+};
+
+var tanSumArea = function (tans){
+    console.log(JSON.stringify(tans));
+    var area = 0;
+    for (var tanId = 0; tanId < tans.length; tanId++){
+        area += tans[tanId].area();
+    }
+    return area;
+};
+
+var outlineContainsAll = function (outline, allPoints){
+    for (var pointId = 0; pointId < allPoints.length; pointId++){
+        if (containsPoint(outline,allPoints[pointId]) === -1){
+            return false;
+        }
+    }
+    return true;
+};
+
 var computeOutline = function (tans) {
     /* First calculate all line segments involved in the tangram. These line
      * segments are the segments of each individual tan however split up at points
@@ -114,6 +147,12 @@ var computeOutline = function (tans) {
         if (maxAngle === 180 && !firstSegment) {
             outline.pop();
         }
+        if (maxIndex === -1){
+            var outlineA = outlineArea(outline);
+            var TanA = tanSumArea(tans);
+            console.log("???");
+        }
+        console.log(maxIndex + " " + JSON.stringify(tans));
         if (currentSegments[maxIndex].point1.eq(lastPoint)){
             outline.push(currentSegments[maxIndex].point2);
             lastPoint = currentSegments[maxIndex].point2;
@@ -128,7 +167,9 @@ var computeOutline = function (tans) {
         if (firstSegment){
             firstSegment = false;
         }
-    } while (!lastPoint.eq(allPoints[0]));
+        var areaOutline = outlineArea(outline);
+        var areaTans = tanSumArea(tans);
+    } while (!lastPoint.eq(allPoints[0]) || !outlineContainsAll(outline, allPoints));
     /* When the last point is equal to the first if can be deleted */
     outline.pop();
     return outline;
@@ -153,31 +194,8 @@ var computeBoundingBox = function (tans, outline) {
     return [minX,minY,maxX,maxY];
 };
 
-var outlineArea = function (outline){
-    var area = 0;
-    for (var pointId = 0; pointId < outline.length; pointId++){
-        /* Calculate the cross product of consecutive points. This corresponds
-         * to twice the area of the triangle (0,0) - vertices[p] -
-         * vertices[(p+1)%num_vertices]. This area is positive if the vertices
-         * of that triangle are arranged in a counterclockwise order and negative
-         * if the vertices are arranged in a clockwise order
-         */
-        area += outline[pointId].crossProduct(outline[(pointId+1)%outline.length])
-            .toFloat();
-    }
-    return Math.abs(area)/2.0;
-};
-
-var tanSumArea = function (tans){
-    var area = 0;
-    for (var tanId = 0; tanId < tans.length; tanId++){
-        area += tans[tanId].area();
-    }
-    return area;
-};
-
-/* Returns true if the given point is inside the polygon given by outline,
- * return false if the point lies on the outline  */
+/* Returns 1 if the given point is inside the polygon given by outline,
+ * return -1 if the point lies on the outline and 0 is the point lies on the outline */
 var containsPoint = function (outline, point){
     /* Compute the winding number for the given point and the polygon, which
      * counts how often the polygon "winds" around the point. The point lies
@@ -187,7 +205,7 @@ var containsPoint = function (outline, point){
         /* Check each segment for containment */
         if (point.eq(outline[pointId]) || point.eq(outline[(pointId+1)%outline.length])
             || new LineSegment(outline[pointId],outline[(pointId+1)%outline.length]).onSegment(point)) {
-            return false;
+            return 0;
         }
         /* Line segments are only considered if they are either pointing upward or
          * downward (therefore excluding horizontal lines) and if the intersection
@@ -209,5 +227,5 @@ var containsPoint = function (outline, point){
             }
         }
     }
-    return !(winding === 0);
+    return (winding === 0) ? -1 : 1;
 };

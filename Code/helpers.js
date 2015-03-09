@@ -68,7 +68,6 @@ var shuffleArray = function (array){
         array[elementsLeft] = array[index];
         array[index] = elementCopy;
     }
-    console.log(array);
     return array;
 };
 

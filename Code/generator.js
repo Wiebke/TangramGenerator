@@ -5,7 +5,7 @@ var checkNewTan = function (currentTans, currentOutline, newTan){
      * the already placed pieces */
     var points = newTan.getPoints();
     for (var pointId = 0; pointId < points.length; pointId++){
-        if (containsPoint(currentOutline, points[pointId])){
+        if (containsPoint(currentOutline, points[pointId]) === 1){
             return false;
         }
     }
@@ -20,17 +20,24 @@ var checkNewTan = function (currentTans, currentOutline, newTan){
             }
         }
     }
-    currentTans.push(newTan);
-    var newOutline = computeOutline(currentTans);
+    var newTans = currentTans.slice(0);
+    newTans[currentTans.length] = newTan;
+    var newOutline = computeOutline(newTans);
+    /* Check if the placement of newTan results in the creation of a hole or an
+     * overlap not detected by the point containment or the segment intersection */
+    var areaOutline = outlineArea(newOutline);
+    var areaTans = tanSumArea(newTans);
+    /* if areaOutline is larger than the sum of tan areas a hole has been created
+     * if the areaOutline is smaller an overlap that could not be detected by
+     * the other checks exists */
+    if (numberNEq(areaOutline, areaTans)){
+        return false;
+    }
     /* Check if placement of newTan results in a tangram with a to large range
      * assuming that tangrams with a too large range are not interesting */
-    var boundingBox = computeBoundingBox(currentTans,newOutline);
-    /*if (boundingBox[2] - boundingBox[0] > range
+    var boundingBox = computeBoundingBox(newTans,newOutline);
+    if (boundingBox[2] - boundingBox[0] > range
         || boundingBox[3] - boundingBox[1] > range){
-        return false;
-    }*/
-    /* Check if the placement of newTan results in the creation of a hole */
-    if (outlineArea(newOutline) > tanSumArea(currentTans)){
         return false;
     }
     return true;
@@ -76,7 +83,6 @@ var generateTangram = function (){
                     tanPlaced = true;
                 }
                 pointId++;
-                console.log(tanId);
             } while (!tanPlaced && pointId < ((tanOrder[tanId] < 3) ? 3 : 4));
         }
     }

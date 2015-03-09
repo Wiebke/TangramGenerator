@@ -13,8 +13,8 @@ window.onload = function () {
     generated[2].toSVGTans("third");
     generated[2].toSVGOutline("sixth");
 
-    /* ExampleTangrams[0].toSVGOutline("first");
-     ExampleTangrams[1].toSVGOutline("second");
+    /*ExampleTangrams[0].toSVGOutline("first");
+    ExampleTangrams[1].toSVGOutline("second");
     ExampleTangrams[2].toSVGOutline("third");
     ExampleTangrams[3].toSVGOutline("fourth");
     ExampleTangrams[4].toSVGOutline("fifth");

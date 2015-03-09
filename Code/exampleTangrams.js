@@ -52,7 +52,6 @@ var parallelogram_3 = new Tan(4, anchorP_3, 7);
 
 var catTangram = new Tangram([bigTriangle1_3, bigTriangle2_3, mediumTriangle_3, smallTriangle1_3, smallTriangle2_3, square_3, parallelogram_3]);
 
-
 /* Test tangram - Bird */
 var anchorBT1_4 = new Point(new IntAdjoinSqrt2(4, 0), new IntAdjoinSqrt2(0, 0));
 var bigTriangle1_4 = new Tan(0, anchorBT1_4, 1);
@@ -107,5 +106,15 @@ var anchorP_6 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0));
 var parallelogram_6 = new Tan(5, anchorP_6, 3);
 
 var arrowTangram = new Tangram([bigTriangle1_6, bigTriangle2_6, mediumTriangle_6, smallTriangle1_6, smallTriangle2_6, square_6, parallelogram_6]);
+
+var outlineFail =  new Tangram(
+    [new Tan(1, new Point(new IntAdjoinSqrt2(5,0), new IntAdjoinSqrt2(5,0)), 3),
+        new Tan(2, new Point(new IntAdjoinSqrt2(5,-2), new IntAdjoinSqrt2(5,1)), 0),
+            new Tan(0, new Point(new IntAdjoinSqrt2(3,-2), new IntAdjoinSqrt2(3,1)), 1),
+                new Tan(5, new Point(new IntAdjoinSqrt2(5,0), new IntAdjoinSqrt2(3,0)), 2),
+                    new Tan(2, new Point(new IntAdjoinSqrt2(5,-2), new IntAdjoinSqrt2(5,2)), 4),
+                        new Tan(0, new Point(new IntAdjoinSqrt2(1,-2), new IntAdjoinSqrt2(5,1)), 5),
+                            new Tan(3, new Point(new IntAdjoinSqrt2(6,0), new IntAdjoinSqrt2(6,0)), 5)
+]);
 
 var ExampleTangrams = [squareTangram,swanTangram,catTangram,birdTangram,mountainTangram,arrowTangram];
