@@ -205,6 +205,7 @@ Point.prototype.rotate = function (angle) {
         [sin, cos, new IntAdjoinSqrt2(0, 0)],
         [new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)]];
     this.transform(rotationMatrix);
+    return this;
 };
 
 Point.prototype.scale = function (factor) {

@@ -92,3 +92,12 @@ var generateTangram = function (){
     }
     return new Tangram(tans);
 };
+
+var generateTangrams = function(number){
+    var generated = [];
+    for (var i = 0; i < number; i++){
+    generated[i] = generateTangram();
+    }
+    generated = generated.sort(compareTangrams);
+    return generated;
+};

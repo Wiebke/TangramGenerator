@@ -108,22 +108,25 @@ var parallelogram_6 = new Tan(5, anchorP_6, 3);
 var arrowTangram = new Tangram([bigTriangle1_6, bigTriangle2_6, mediumTriangle_6, smallTriangle1_6, smallTriangle2_6, square_6, parallelogram_6]);
 
 /* Original outline for the game */
-var anchorBT1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(3.15, -1.25));
-var bigTriangle1_G = new Tan(0, anchorBT1_G, 0);
-var anchorBT2_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(3.15, 0.75));
-var bigTriangle2_G = new Tan(0, anchorBT2_G, 4);
-var anchorM_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(4.85, 1.25));
-var mediumTriangle_G = new Tan(1, anchorM_G, 0);
-var anchorST1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(4.35, 0.25));
-var smallTriangle1_G = new Tan(2, anchorST1_G, 0);
-var anchorST2_G = new Point(new IntAdjoinSqrt2(12.5, 0), new IntAdjoinSqrt2(4.35, 1.25));
-var smallTriangle2_G = new Tan(2, anchorST2_G, 4);
-var anchorS_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(4.35, 1.25));
-var square_G = new Tan(3, anchorS_G, 4);
-var anchorP_G = new Point(new IntAdjoinSqrt2(10,1), new IntAdjoinSqrt2(6.85, 1.25));
-var parallelogram_G = new Tan(5, anchorP_G, 0);
+var gameOutline;
 
-var gameOutline = [bigTriangle1_G, bigTriangle2_G, mediumTriangle_G, smallTriangle1_G, smallTriangle2_G, square_G, parallelogram_G];
+var resetPieces = function (){
+    var anchorBT1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(3.15, -1.25));
+    var bigTriangle1_G = new Tan(0, anchorBT1_G, 0);
+    var anchorBT2_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(3.15, 0.75));
+    var bigTriangle2_G = new Tan(0, anchorBT2_G, 4);
+    var anchorM_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(4.85, 1.25));
+    var mediumTriangle_G = new Tan(1, anchorM_G, 0);
+    var anchorST1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(4.35, 0.25));
+    var smallTriangle1_G = new Tan(2, anchorST1_G, 0);
+    var anchorST2_G = new Point(new IntAdjoinSqrt2(12.5, 0), new IntAdjoinSqrt2(4.35, 1.25));
+    var smallTriangle2_G = new Tan(2, anchorST2_G, 4);
+    var anchorS_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(4.35, 1.25));
+    var square_G = new Tan(3, anchorS_G, 4);
+    var anchorP_G = new Point(new IntAdjoinSqrt2(10,1), new IntAdjoinSqrt2(6.85, 1.25));
+    var parallelogram_G = new Tan(5, anchorP_G, 0);
+    gameOutline = [bigTriangle1_G, bigTriangle2_G, mediumTriangle_G, smallTriangle1_G, smallTriangle2_G, square_G, parallelogram_G];
+};
 
 
 var ExampleTangrams = [squareTangram,swanTangram,catTangram,birdTangram,mountainTangram,arrowTangram];

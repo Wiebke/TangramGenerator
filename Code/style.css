@@ -44,11 +44,15 @@ header, #content, footer {
     background-color: #BCBCBC;
     border-radius: 5%;
     margin-top: 2%;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .tangram:hover {
     background-color: #FF9900;
-
 }
 
 .clear {
@@ -76,6 +80,12 @@ header, #content, footer {
 .re:hover {
     color: #3299BB;
     background-color: #BCBCBC;
+}
+
+#select, #set, #hint, #sol {
+    display: none;
+    margin-left: 2%;
+    margin-right: 2%
 }
 
 #explain {

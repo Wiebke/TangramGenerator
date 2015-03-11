@@ -11,6 +11,10 @@ function Tan(tanType, anchor, orientation) {
     this.orientation = orientation;
 }
 
+Tan.prototype.dup = function (){
+    return new Tan(this.tanType, this.anchor.dup(), this.orientation);
+}
+
 Tan.prototype.area = function () {
     var areas = [4,2,1,2,2,2];
     return areas[this.tanType];
