@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Random Tangram Generator</title>
     <link rel="stylesheet" href="style.css">
+    <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
     <script src="helpers.js"></script>
     <script src="intadjoinsqrt2.js"></script>
     <script src="point.js"></script>
@@ -19,39 +20,42 @@
 <body>
 <header>
     <img src="logo.svg" onerror="this.src='your.png'">
-
-    <div id="state">possibly timer/progress/whatever</div>
 </header>
 
 <!--Actual content, shapes and game goes here-->
 <section id="content">
     <div id="gameArea">
+            <svg id="game" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 15 10" preserveAspectRatio="xMinYMin meet">
+            </svg>
             <div class="tangram">
-                <svg id="first" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                <svg id="first0" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
-                <svg id="second" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                <svg id="second1" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
-                <svg id="third" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                <svg id="third2" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
-                <svg id="fourth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                <svg id="fourth3" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
-                <svg id="fifth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                <svg id="fifth4" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
             <div class="tangram">
-                <svg id="sixth" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
+                <svg id="sixth5" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
                 </svg>
             </div>
     </div>
-    <div id="buttons"></div>
+    <div class = "clear"></div>
+    <div id="buttons">
+        <button class = re onclick="window.location.reload()">Regenerate</button>
+    </div>
     <aside id="explain">
         Some kind of explanation for what is to be done here (either choose a
         shape or play the game)

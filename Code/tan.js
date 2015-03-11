@@ -56,10 +56,7 @@ var getAllPoints = function (tans) {
         points = points.concat(currentPoints);
     }
     /* Eliminate duplicates */
-    points = points.sort(comparePoints);
-    points = points.filter(function (element, index) {
-        return !index || !element.eq(points[index - 1]);
-    });
+    points = eliminateDuplicates(points, comparePoints);
     return points;
 };
 
@@ -118,10 +115,7 @@ var computeOutline = function (tans) {
         }
     }
     /* Eliminate duplicates */
-    allSegments = allSegments.sort(compareLineSegments);
-    allSegments = allSegments.filter(function (element, index) {
-        return !index || !element.eq(allSegments[index - 1]);
-    });
+    allSegments = eliminateDuplicates(allSegments, compareLineSegments);
     /* Since the points are sorted, the upper left corner is saved at index 0 */
     var lastPoint = allPoints[0];
     var helperPoint = lastPoint.dup();

@@ -72,5 +72,14 @@ var shuffleArray = function (array){
 };
 
 
+/* Eliminate duplicates in an array, based on a given compare function */
+var eliminateDuplicates = function (array, compareFunction){
+    array = array.sort(compareFunction);
+    array = array.filter(function (element, index) {
+        return !index || compareFunction(element, array[index - 1]) != 0;
+    });
+    return array;
+};
+
 
 

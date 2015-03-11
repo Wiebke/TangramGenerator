@@ -107,14 +107,30 @@ var parallelogram_6 = new Tan(5, anchorP_6, 3);
 
 var arrowTangram = new Tangram([bigTriangle1_6, bigTriangle2_6, mediumTriangle_6, smallTriangle1_6, smallTriangle2_6, square_6, parallelogram_6]);
 
-var outlineFail =  new Tangram(
-    [new Tan(1, new Point(new IntAdjoinSqrt2(5,0), new IntAdjoinSqrt2(5,0)), 3),
-        new Tan(2, new Point(new IntAdjoinSqrt2(5,-2), new IntAdjoinSqrt2(5,1)), 0),
-            new Tan(0, new Point(new IntAdjoinSqrt2(3,-2), new IntAdjoinSqrt2(3,1)), 1),
-                new Tan(5, new Point(new IntAdjoinSqrt2(5,0), new IntAdjoinSqrt2(3,0)), 2),
-                    new Tan(2, new Point(new IntAdjoinSqrt2(5,-2), new IntAdjoinSqrt2(5,2)), 4),
-                        new Tan(0, new Point(new IntAdjoinSqrt2(1,-2), new IntAdjoinSqrt2(5,1)), 5),
-                            new Tan(3, new Point(new IntAdjoinSqrt2(6,0), new IntAdjoinSqrt2(6,0)), 5)
-]);
+/* Original outline for the game */
+var anchorBT1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(3.15, -1.25));
+var bigTriangle1_G = new Tan(0, anchorBT1_G, 0);
+var anchorBT2_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(3.15, 0.75));
+var bigTriangle2_G = new Tan(0, anchorBT2_G, 4);
+var anchorM_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(4.85, 1.25));
+var mediumTriangle_G = new Tan(1, anchorM_G, 0);
+var anchorST1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(4.35, 0.25));
+var smallTriangle1_G = new Tan(2, anchorST1_G, 0);
+var anchorST2_G = new Point(new IntAdjoinSqrt2(12.5, 0), new IntAdjoinSqrt2(4.35, 1.25));
+var smallTriangle2_G = new Tan(2, anchorST2_G, 4);
+var anchorS_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(4.35, 1.25));
+var square_G = new Tan(3, anchorS_G, 4);
+var anchorP_G = new Point(new IntAdjoinSqrt2(10,1), new IntAdjoinSqrt2(6.85, 1.25));
+var parallelogram_G = new Tan(5, anchorP_G, 0);
+
+var gameOutline = [bigTriangle1_G, bigTriangle2_G, mediumTriangle_G, smallTriangle1_G, smallTriangle2_G, square_G, parallelogram_G];
+
 
 var ExampleTangrams = [squareTangram,swanTangram,catTangram,birdTangram,mountainTangram,arrowTangram];
+
+/*ExampleTangrams[0].toSVGOutline("first");
+ ExampleTangrams[1].toSVGOutline("second");
+ ExampleTangrams[2].toSVGOutline("third");
+ ExampleTangrams[3].toSVGOutline("fourth");
+ ExampleTangrams[4].toSVGOutline("fifth");
+ ExampleTangrams[5].toSVGOutline("sixth");*/

@@ -1,4 +1,8 @@
-var range = 10;
+var range = 9.5;
+
+var compareTangrams = function (tangramA, tangramB){
+    return tangramA.outline.length - tangramB.outline.length;
+}
 
 var checkNewTan = function (currentTans, currentOutline, newTan){
     /* For each point of the new piece, check if it lies within the outline of
