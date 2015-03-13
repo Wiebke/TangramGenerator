@@ -56,8 +56,28 @@ var comparePoints = function (pointA, pointB){
     return pointA.compare(pointB);
 };
 
+var comparePointsFloat = function (pointA, pointB){
+    var pointAX = pointA.toFloatX();
+    var pointAY = pointA.toFloatY();
+    var pointBX = pointB.toFloatX();
+    var pointBY = pointB.toFloatY();
+    if (numberEq(pointAX, pointBX)){
+        if(numberEq(pointAY, pointBY)){
+            return 0;
+        } else {
+            return pointAY < pointBY ? -1: 1;
+        }
+    } else {
+        return pointAX < pointBX ? -1: 1;
+    }
+};
+
 Point.prototype.eq = function(other){
     return this.compare(other) === 0;
+};
+
+Point.prototype.closePoints = function (other, range) {
+    return this.x.closeNumbers(other.x, range) && this.y.closeNumbers(other.y, range);
 };
 
 Point.prototype.isZero = function () {

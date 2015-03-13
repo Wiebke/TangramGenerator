@@ -53,6 +53,10 @@ var compareIntAdjoinSqrt2s = function (numberA, numberB){
     return numberA.compare(numberB);
 };
 
+IntAdjoinSqrt2.prototype.closeNumbers = function (other, range){
+    return numberRange(this.toFloat(), other.toFloat(), range);
+};
+
 IntAdjoinSqrt2.prototype.isZero = function () {
     return (numberEq(this.coeffInt,0) && numberEq(this.coeffSqrt,0));
 };

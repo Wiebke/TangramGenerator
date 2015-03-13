@@ -35,6 +35,12 @@ var numberEq = function (a,b){
     return Math.abs(a-b) < 0.000000000001;
 };
 
+/* Returns true, if the absolute error between two given doubles is smaller than a
+ * given range */
+var numberRange = function (a,b, range){
+    return Math.abs(a-b) < range;
+}
+
 /* Returns true, if the two given numbers are not within a a set threshold of
  * each other */
 var numberNEq = function (a,b){
@@ -78,6 +84,21 @@ var eliminateDuplicates = function (array, compareFunction){
         return !index || compareFunction(element, array[index - 1]) != 0;
     });
     return array;
+};
+
+/* Check if two array have equal content, based on a given compare function */
+var arrayEq = function (arrayA, arrayB, compareFunction){
+    if (arrayA.length != arrayB.length){
+        return false;
+    }
+    arrayA = arrayA.sort(compareFunction);
+    arrayB = arrayB.sort(compareFunction);
+    for (var index = 0; index < arrayA.length; index++){
+        if (compareFunction(arrayA[index], arrayB[index]) != 0){
+            return false;
+        }
+    }
+    return true;
 };
 
 
