@@ -87,14 +87,14 @@ var eliminateDuplicates = function (array, compareFunction){
 };
 
 /* Check if two array have equal content, based on a given compare function */
-var arrayEq = function (arrayA, arrayB, compareFunction){
+var arrayEq = function (arrayA, arrayB, compareFunction, closeFunction){
     if (arrayA.length != arrayB.length){
         return false;
     }
     arrayA = arrayA.sort(compareFunction);
     arrayB = arrayB.sort(compareFunction);
     for (var index = 0; index < arrayA.length; index++){
-        if (compareFunction(arrayA[index], arrayB[index]) != 0){
+        if (!closeFunction(arrayA[index], arrayB[index])){
             return false;
         }
     }

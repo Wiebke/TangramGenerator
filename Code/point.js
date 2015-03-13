@@ -76,8 +76,8 @@ Point.prototype.eq = function(other){
     return this.compare(other) === 0;
 };
 
-Point.prototype.closePoints = function (other, range) {
-    return this.x.closeNumbers(other.x, range) && this.y.closeNumbers(other.y, range);
+var closePoint = function (pointA, pointB){
+    return pointA.x.closeNumbers(pointB.x, 0.05) && pointA.y.closeNumbers(pointA.y, 0.05);
 };
 
 Point.prototype.isZero = function () {

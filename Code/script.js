@@ -15,6 +15,7 @@ var mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
 var lastMouse = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
 var generated;
 var chosen;
+var solvedBy = [-1,-1,-1,-1,-1,-1,-1];
 
 var getMouseCoordinates = function (event){
     var svg = document.getElementById("game");
@@ -30,11 +31,12 @@ var checkSolved = function (tanIndex){
     if (typeof tanIndex === 'undefined'){
         /* If no tanId is given check if all  */
         solved = true;
-        for (var i = 0; i < 7; i++){
-            solved = solved && checkSolved(i);
-            if (!solved){
-                return false;
-            }
+        for (var tanIndices = 0; tanIndices < 7; tanIndices++){
+            checkSolved(tanIndices);
+            solved = solved && (solvedBy[tanIndices]!= -1);
+        }
+        if (!solved){
+            return false;
         }
         return true;
     } else {
@@ -50,11 +52,32 @@ var checkSolved = function (tanIndex){
         var tanPoints;
         for (var pTansId = 0; pTansId < possibleTans.length; pTansId++){
             tanPoints = possibleTans[pTansId].getPoints();
-            solved = solved || arrayEq(tanPoints, tangramPoints, comparePointsFloat);
+            solved = solved || arrayEq(tanPoints, tangramPoints, comparePointsFloat, closePoint);
             if (solved){
+                switch (tan.tanType){
+                    case 0:
+                        solvedBy[tanIndex] = pTansId;
+                        break;
+                    case 1:
+                        solvedBy[tanIndex] = 2;
+                        break;
+                    case 2:
+                        solvedBy[tanIndex] = 3 + pTansId;
+                        break;
+                    case 3:
+                        solvedBy[tanIndex] = 5;
+                        break;
+                    case 4:
+                    case 5:
+                        solvedBy[tanIndex] = 6;
+                        break;
+                    default:
+                        return -1;
+                };
                 return true;
             }
         }
+        solvedBy[tanIndex] = -1;
         return false;
     }
 };
@@ -62,40 +85,56 @@ var checkSolved = function (tanIndex){
 /* Returns index in gameOutline of the tan which has been set to the solution,
  * if no tan can be placed -1 is returned */
 var setToSol = function (){
-    var tanIndex = Math.floor(Math.random()*7);
+    /* Get the index of the first tan of the tangrams that has no solution yet */
+    var tanIndex = solvedBy.indexOf(-1);
+    console.log(solvedBy);
+    if (tanIndex === -1) {
+        return tanIndex;
+    }
+    var tanType = generated[chosen].tans[tanIndex].tanType;
     var center = generated[chosen].center();
-    var generatedTan = generated[chosen].tans.filter(function (element) {
-        return element.tanType === gameOutline[tanIndex].tanType
-            || (gameOutline[tanIndex].tanType === 4 && element.tanType === 5)
-            || (gameOutline[tanIndex].tanType === 5 && element.tanType === 4);
-    });
-    console.log(tanIndex + " " + JSON.stringify(generatedTan));
-    // TODO: Special cases for big and small triangles
-    gameOutline[tanIndex] = generatedTan[0].dup();
-    gameOutline[tanIndex].anchor = gameOutline[tanIndex].anchor.dup().add(
-        new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
-    return tanIndex;
-};
-
-var snapToEdge = function (tanIndex) {
-    var segments = gameOutline[tanIndex].getSegments();
-    /* Check if an edge of another tan is close to this one */
-    var currentSegments;
+    var generatedTans = generated[chosen].tans[tanIndex];
+    var gameTans = [];
+    switch (tanType) {
+        case 0:
+            gameTans = [0,1];
+            break;
+        case 1:
+            gameTans = [2];
+            break;
+        case 2:
+            gameTans = [3,4];
+            break;
+        case 3:
+            gameTans = [5];
+            break;
+        case 4:
+            gameTans = [6];
+            break;
+        case 5:
+            gameTans = [6];
+            break;
+        default:
+            return -1;
+    }
     for (var tanIndices = 0; tanIndices < 7; tanIndices++){
-        if (tanIndices != tanIndex){
-            currentSegments = gameOutline[tanIndices].getSegments();
-            for (var currentSegmentId = 0; currentSegmentId < currentSegments.length; currentSegmentId++){
-                for (var segmentId = 0; segmentId < segments.length; segmentId++){
-                    if (currentSegments[currentSegmentId].closeSegment(segments[segmentId], 0.01)){
-                        console.log("Close to segment")
-                    }
-                }
-            }
+        if (gameOutline[tanIndices].tanType === tanType){
+            gameTans.push(tanIndices);
         }
     }
-    /* Check if any of the outline edges are close to this an */
-    var outline = generated[chosen].outline;
-
+    if (tanType === 0 || tanType === 2){
+        if (solvedBy.indexOf(gameTans[0]) != -1) {
+            console.log ("Already used");
+            gameTans[0] = gameTans[1];
+        }
+    }
+    console.log(gameTans[0]);
+    /* Get the game tans with the correct id */
+    gameOutline[gameTans[0]] = generatedTans.dup();
+    gameOutline[gameTans[0]].anchor = gameOutline[gameTans[0]].anchor.dup().add(
+        new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
+    checkSolved(tanIndex);
+    return gameTans[0];
 };
 
 var updateTanPiece = function (tanIndex){
@@ -134,7 +173,6 @@ var deselectTan = function (event){
     console.log("deselected: " + tanIndex);
     currentTan = -1;
     mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
-    snapToEdge(tanIndex);
     checkSolved();
     console.log("Solved: " + checkSolved(0) + " " + checkSolved(1) + " "  + checkSolved(2) + " " +
     checkSolved(3) + " " + checkSolved(4) + " " + checkSolved(5) + " " + checkSolved(6) + " "  );
@@ -222,10 +260,12 @@ window.onload = function () {
         }
         changeTangramVisibility(false);
         resetPieces();
+        solvedBy = [-1,-1,-1,-1,-1,-1,-1];
     });
 
     document.getElementById("set").addEventListener('click', function (){
         resetPieces();
+        solvedBy = [-1,-1,-1,-1,-1,-1,-1];
         for (var tanIndex = 0; tanIndex < gameOutline.length; tanIndex++) {
             updateTanPiece(tanIndex);
         }
@@ -233,13 +273,12 @@ window.onload = function () {
 
     document.getElementById("hint").addEventListener('click', function (){
         updateTanPiece(setToSol());
-        console.log("Solved: " + checkSolved(0) + " " + checkSolved(1) + " "  + checkSolved(2) + " " +
-        checkSolved(3) + " " + checkSolved(4) + " " + checkSolved(5) + " " + checkSolved(6) + " "  );
+        console.log("Solved: " +  solvedBy);
     });
 
     document.getElementById("sol").addEventListener('click', function (){
-        for (var tan = setToSol(); tan != -1;){
-            updateTanPiece(tan);
+        for (var tanIndex = 0; tanIndex < 7; tanIndex++){
+            updateTanPiece(setToSol());
         }
     });
 };
