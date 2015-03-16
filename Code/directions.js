@@ -54,3 +54,20 @@ var Directions = [];
             }
         }
     }
+
+var FlipDirections = [[new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-1, 0)), /* 0 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1)), /* 1 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(3, 0)), /* 2 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2)), /* 3 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)), /* 4 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -1)), /* 5 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-3, 0)), /* 6 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -2))], /* 7 */
+    [new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)), /* 0 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2)), /* 1 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(3, 0)), /* 2 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1)), /* 3 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-1, 0)), /* 4 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -2)), /* 5 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-3, 0)), /* 6 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -1))]]; /* 7 */
