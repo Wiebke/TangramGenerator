@@ -2,7 +2,9 @@
 /* Constructor: array of the 7 tan pieces, in order: BigTriangle, 2. Big Triangle
  * MediumTriangle, SmallTriangle, 2. SmallTriangle, */
 function Tangram(tans) {
-    this.tans = tans;
+    this.tans = tans.sort(function (a,b){
+        return a.tanType - b.tanType;
+    });
     /* outline is an array of points describing the outline of the tangram */
     this.outline = computeOutline(this.tans);
 }
@@ -31,7 +33,13 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
     shape.setAttributeNS(null, "fill", '#3299BB');
     tangramSVG.appendChild(shape);
-    document.getElementById(elementName).appendChild(tangramSVG);
+    /* Clear old content */
+    var element = document.getElementById(elementName);
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+    /* Add new tangram */
+    element.appendChild(tangramSVG);
 };
 
 Tangram.prototype.toSVGTans = function (elementName, shifted) {
@@ -52,6 +60,7 @@ Tangram.prototype.toSVGTans = function (elementName, shifted) {
 };
 
 var getTansByID = function (tanArray, tanID){
+    /* TODO: Not really needed then Tangrams have sorted tan arrays are sorted */
     var tansWithID = tanArray.filter(function (element) {
         return element.tanType === tanID
             || (tanID === 4 && element.tanType === 5)

@@ -1,8 +1,8 @@
 var range = 9.5;
 
 var compareTangrams = function (tangramA, tangramB){
-    return tangramA.outline.length - tangramB.outline.length;
-}
+    return numUniqueElements(tangramA.outline, comparePoints) - numUniqueElements(tangramB.outline, comparePoints);
+};
 
 var checkNewTan = function (currentTans, currentOutline, newTan){
     /* For each point of the new piece, check if it lies within the outline of
@@ -68,6 +68,7 @@ var generateTangram = function (){
     for (tanId = 1 ; tanId < 7; tanId++){
         var currentOutline = computeOutline(tans);
         var tanPlaced = false;
+        var counter = 0;
         while (!tanPlaced){
             anchor = currentOutline[Math.floor(Math.random()*currentOutline.length)];
             var pointId = 0;
@@ -88,6 +89,12 @@ var generateTangram = function (){
                 }
                 pointId++;
             } while (!tanPlaced && pointId < ((tanOrder[tanId] < 3) ? 3 : 4));
+            counter++;
+            if (counter > 10000){
+                console.log("Infinity loop!");
+                /* Try again */
+                return generateTangram();
+            }
         }
     }
     return new Tangram(tans);
@@ -96,7 +103,8 @@ var generateTangram = function (){
 var generateTangrams = function(number){
     var generated = [];
     for (var i = 0; i < number; i++){
-    generated[i] = generateTangram();
+        generated[i] = generateTangram();
+        console.log("Generated!");
     }
     generated = generated.sort(compareTangrams);
     return generated;

@@ -10,6 +10,7 @@ var changeTangramVisibility = function (hide){
     document.getElementById("sol").style.display = hide ? 'inline-block' :'none';
 };
 
+var numTangrams = 10;
 var currentTan = -1;
 var mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
 var lastMouse = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
@@ -35,12 +36,16 @@ var checkSolved = function (tanIndex){
             checkSolved(tanIndices);
             solved = solved && (solvedBy[tanIndices]!= -1);
         }
+        console.log(solvedBy);
         if (!solved){
-            return false;
+            var tangramFromPieces = new Tangram(gameOutline);
+            /* Probably only works when snapping */
+            return arrayEq(generated[chosen].outline, tangramFromPieces.outline, comparePointsFloat, closePoint);
         }
         return true;
     } else {
         solved = false;
+        /* WTF */
         var tan = generated[chosen].tans[tanIndex];
         var tangramPoints = tan.getPoints();
         var center = generated[chosen].center();
@@ -72,8 +77,8 @@ var checkSolved = function (tanIndex){
                         solvedBy[tanIndex] = 6;
                         break;
                     default:
-                        return -1;
-                };
+                        return false;
+                }
                 return true;
             }
         }
@@ -86,6 +91,7 @@ var checkSolved = function (tanIndex){
  * if no tan can be placed -1 is returned */
 var setToSol = function (){
     /* Get the index of the first tan of the tangrams that has no solution yet */
+    checkSolved();
     var tanIndex = solvedBy.indexOf(-1);
     if (tanIndex === -1) {
         return tanIndex;
@@ -129,7 +135,6 @@ var setToSol = function (){
     var center = generated[chosen].center();
     gameOutline[gameTans[0]].anchor = gameOutline[gameTans[0]].anchor.dup().add(
         new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
-    checkSolved(tanIndex);
     return gameTans[0];
 };
 
@@ -170,35 +175,34 @@ var selectTan = function (event) {
 };
 
 var deselectTan = function (event){
-    var target = ((window.event)?(event.srcElement):(event.currentTarget));
-    var tanIndex = parseInt(target.id[target.id.length - 1]);
-    /* console.log("deselected: " + tanIndex); */
     currentTan = -1;
     mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
     if (checkSolved()){
-        console.log("SOLVED");
+        var tangramPieces = document.getElementsByClassName("tan");
+        for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
+            tangramPieces[tanIndex].setAttributeNS(null, "fill", "#17A768");
+            tangramPieces[tanIndex].setAttributeNS(null, "opacity", "1.0");
+        }
     }
 };
 
 var moveTan = function (event){
-    var target = ((window.event)?(event.srcElement):(event.currentTarget));
-    var tanIndex = parseInt(target.id[target.id.length - 1]);
+    /*var target = ((window.event)?(event.srcElement):(event.currentTarget));
+    var tanIndex = parseInt(target.id[target.id.length - 1]);*/
     /* console.log("moved: " + tanIndex + ", " + currentTan); */
     var mouse = getMouseCoordinates(event);
-    if (currentTan === tanIndex){
-        gameOutline[tanIndex].anchor = mouse.subtract(mouseOffset);
-        updateTanPiece(tanIndex);
+    if (currentTan != -1){
+        gameOutline[currentTan].anchor = mouse.subtract(mouseOffset);
+        updateTanPiece(currentTan);
     }
 };
 
 var flipParallelogram = function () {
-    console.log("Before " + (5-gameOutline[6].tanType) + " " + gameOutline[6].orientation);
-    console.log(FlipDirections[5-gameOutline[6].tanType][gameOutline[6].orientation].toFloatY());
     gameOutline[6].anchor = gameOutline[6].anchor.add(FlipDirections[5-gameOutline[6].tanType][gameOutline[6].orientation]);
     gameOutline[6].tanType = gameOutline[6].tanType === 4 ? 5:4;
     gameOutline[6].orientation = gameOutline[6].orientation === 0 ? 0 : 8-gameOutline[6].orientation;
-    console.log("After " + (5-gameOutline[6].tanType) + " " + gameOutline[6].orientation);
     updateTanPiece(6);
+    checkSolved();
 };
 
 var addTangramPieces = function () {
@@ -221,8 +225,9 @@ var addTangramPieces = function () {
         tangramPieces[tanIndex].addEventListener('click', rotateTan);
         tangramPieces[tanIndex].addEventListener('mousedown', selectTan);
         tangramPieces[tanIndex].addEventListener('mouseup', deselectTan);
-        tangramPieces[tanIndex].addEventListener('mousemove', moveTan);
+        //tangramPieces[tanIndex].addEventListener('mousemove', moveTan);
     }
+    document.getElementById("game").addEventListener('mousemove', moveTan);
 };
 
 var addFlipButton = function () {
@@ -268,6 +273,14 @@ var addFlipButton = function () {
     var flipElements = document.getElementsByClassName("flip")[0].childNodes;
     for (var flipIndex = 0; flipIndex < flipElements.length; flipIndex++) {
         flipElements[flipIndex].addEventListener("click", flipParallelogram);
+        flipElements[flipIndex].addEventListener("mouseover", function (){
+            console.log("mousein");
+            document.getElementsByClassName("flip")[0].firstChild.setAttributeNS(null, "fill", '#3299BB');
+        });
+        flipElements[flipIndex].addEventListener("mouseout", function (){
+            console.log("mouseOut");
+            document.getElementsByClassName("flip")[0].firstChild.setAttributeNS(null, "fill", '#E9E9E9');
+        });
     }
 };
 
@@ -284,12 +297,13 @@ var addTangrams = function () {
 
 
 window.onload = function () {
-    generated = generateTangrams(10);
+    generated = generateTangrams(numTangrams);
     chosen = 0;
     resetPieces();
     addTangrams(generated);
     changeTangramVisibility(false);
     /* Show larger version of the chosen tangram */
+
     var tangramClass = document.getElementsByClassName("tangram");
     for (var i = 0; i < tangramClass.length; i++) {
         tangramClass[i].addEventListener('click', function (event) {
@@ -303,6 +317,7 @@ window.onload = function () {
                 sourceId = target.id;
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
+            console.log(JSON.stringify(generated[chosen]));
             if (typeof generated[chosen] === 'undefined'){
                 console.log(target);
                 console.log(event.currentTarget.firstElementChild);
@@ -314,6 +329,14 @@ window.onload = function () {
             addFlipButton();
         });
     }
+
+    document.getElementById("generate").addEventListener('click', function (){
+        changeTangramVisibility(true);
+        generated = generateTangrams(numTangrams*1000);
+        resetPieces();
+        addTangrams(generated);
+        changeTangramVisibility(false);
+    });
 
     document.getElementById("select").addEventListener('click', function (){
         document.getElementById("game").style.display = 'none';
@@ -332,6 +355,11 @@ window.onload = function () {
         for (var tanIndex = 0; tanIndex < gameOutline.length; tanIndex++) {
             updateTanPiece(tanIndex);
         }
+        var tangramPieces = document.getElementsByClassName("tan");
+        for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
+            tangramPieces[tanIndex].setAttributeNS(null, "fill", "#FF9900");
+            tangramPieces[tanIndex].setAttributeNS(null, "opacity", "0.8");
+        }
     });
 
     document.getElementById("hint").addEventListener('click', function (){
@@ -342,6 +370,8 @@ window.onload = function () {
         for (var tanIndex = 0; tanIndex < 7; tanIndex++){
             updateTanPiece(setToSol());
         }
+        var tangramPieces = document.getElementsByClassName("tan");
+        deselectTan();
     });
 };
 

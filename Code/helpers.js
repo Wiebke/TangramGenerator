@@ -101,5 +101,10 @@ var arrayEq = function (arrayA, arrayB, compareFunction, closeFunction){
     return true;
 };
 
+var numUniqueElements = function (array, compareFunction){
+    var unique = eliminateDuplicates(array.slice(0), compareFunction);
+    return array.length;
+}
+
 
 
