@@ -10,12 +10,21 @@ var checkNewTan = function (currentTans, currentOutline, newTan){
     /* TODO: Maybe summarize this to avoid redundant calls */
     var points = newTan.getPoints();
     /* Use midpoint to exact alignment of one piece in another on */
-    points[points.length] = newTan.insidePoint();
-    for (var pointId = 0; pointId < points.length; pointId++){
-        for (var tansId = 0; tansId < currentTans.length; tansId++){
-            if (containsPoint(currentTans[tansId].getPoints(), points[pointId]) === 1){
+    //points[points.length] = newTan.insidePoint();
+    for (var tansId = 0; tansId < currentTans.length; tansId++){
+        var onSegmentCounter = 0;
+        for (var pointId = 0; pointId < points.length; pointId++){
+            var contains = containsPoint(currentTans[tansId].getPoints(), points[pointId]);
+            if (contains === 1){
                 return false;
+            } else if (contains === 0){
+                onSegmentCounter++;
             }
+        }
+        /* If more than 3 points of the new tan lie on one of the already placed
+         * tans, there must be an overlap */
+        if (onSegmentCounter >= 3){
+            return false;
         }
     }
     /* Check if the currentOutline is intersected by any of the line segments of
@@ -33,9 +42,6 @@ var checkNewTan = function (currentTans, currentOutline, newTan){
     }
     var newTans = currentTans.slice(0);
     newTans[currentTans.length] = newTan;
-    //var newOutline = computeOutline(newTans);
-    /* Check if the placement of newTan results in the creation of a hole or an
-     * overlap not detected by the point containment or the segment intersection */
     /* Check if placement of newTan results in a tangram with a to large range
      * assuming that tangrams with a too large range are not interesting */
     var boundingBox = computeBoundingBox(newTans);
@@ -95,9 +101,6 @@ var generateTangram = function (){
                 return generateTangram();
             }
         }
-    }
-    if (tans.length != 7){
-        console.log("?");
     }
     return new Tangram(tans);
 };

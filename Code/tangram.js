@@ -55,8 +55,8 @@ Tangram.prototype.toSVGTans = function (elementName, shifted) {
         var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
         shape.setAttributeNS(null, "points", this.tans[i].toSVG());
         // Fill with random color for now
-        // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
-        shape.setAttributeNS(null, "fill", '#FF9900');
+        shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
+        //shape.setAttributeNS(null, "fill", '#FF9900');
         tangramSVG.appendChild(shape);
     }
     document.getElementById(elementName).appendChild(tangramSVG);

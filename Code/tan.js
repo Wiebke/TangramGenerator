@@ -163,9 +163,6 @@ var computeOutline = function (tans) {
         if (firstSegment){
             firstSegment = false;
         }
-        if (outline.length === 10){
-            console.log("Check");
-        }
     } while (!lastPoint.eq(allPoints[0]) || !outlineContainsAll(outline, allPoints));
     /* When the last point is equal to the first it can be deleted */
     //outline.pop();

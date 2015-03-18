@@ -1,3 +1,13 @@
+var numTangrams = 100;
+var currentTan = -1;
+var mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
+var lastMouse = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
+var generated;
+var chosen;
+var solvedBy = [-1,-1,-1,-1,-1,-1,-1];
+var hints = [0,1,2,3,4,5,6];
+var numHints = 0;
+
 var changeTangramVisibility = function (hide){
     var tangramClass = document.getElementsByClassName("tangram");
     for (var i = 0; i < tangramClass.length; i++){
@@ -9,16 +19,6 @@ var changeTangramVisibility = function (hide){
     document.getElementById("hint").style.display = hide ? 'inline-block' :'none';
     document.getElementById("sol").style.display = hide ? 'inline-block' :'none';
 };
-
-var numTangrams = 6;
-var currentTan = -1;
-var mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
-var lastMouse = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
-var generated;
-var chosen;
-var solvedBy = [-1,-1,-1,-1,-1,-1,-1];
-var hints = [0,1,2,3,4,5,6];
-var numHints = 0;
 
 var getMouseCoordinates = function (event){
     var svg = document.getElementById("game");
@@ -316,7 +316,8 @@ window.onload = function () {
                 console.log(event.currentTarget.firstElementChild);
                 console.log(target.parentNode.parentNode)
             }
-            generated[chosen].toSVGOutline("game");
+            //generated[chosen].toSVGOutline("game");
+            generated[chosen].toSVGTans("game");
             document.getElementById("game").style.display = "block";
             addTangramPieces();
             addFlipButton();
@@ -325,7 +326,7 @@ window.onload = function () {
 
     document.getElementById("generate").addEventListener('click', function (){
         changeTangramVisibility(true);
-        generated = generateTangrams(numTangrams);
+        generated = generateTangrams(numTangrams*100);
         resetPieces();
         addTangrams(generated);
         changeTangramVisibility(false);
