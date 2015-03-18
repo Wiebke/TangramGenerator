@@ -32,6 +32,9 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     // Fill with random color for now
     // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
     shape.setAttributeNS(null, "fill", '#3299BB');
+    //shape.setAttributeNS(null, "fill", 'none');
+    //shape.setAttributeNS(null, "stroke", "#E9E9E9");
+    //shape.setAttributeNS(null, "stroke-width", "0.05");
     tangramSVG.appendChild(shape);
     /* Clear old content */
     var element = document.getElementById(elementName);

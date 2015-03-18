@@ -151,7 +151,7 @@ LineSegment.prototype.projectedParameter = function (point){
 /* Returns true if the given point is on the segment, but is not equal to either
  * of the endpoints */
 LineSegment.prototype.onSegment = function (point){
-    if (point.eq(this.point1) || point.eq(this.point2)){
+    if (point.eq(this.point1) || point.eq(this.point2) || this.point1.eq(this.point2)){
         return false;
     }
     /* Calculate twice the area of the triangle of the two segment points and the

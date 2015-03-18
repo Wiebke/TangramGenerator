@@ -10,9 +10,11 @@
  * b      c----b     c-----b  x-----a
  */
 var Directions = [];
+var InsideDirections = [];
 
     // Create Array for each tan piece
     for (var i = 0; i <= 5; i++) {
+        InsideDirections[i] = [];
         Directions[i] = [];
     }
     // Fill the first entry of each array with the direction vectors for when
@@ -20,24 +22,30 @@ var Directions = [];
     Directions[0][0] =
         [new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0)),
             new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2))];
+    InsideDirections[0][0] = new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1));
     Directions[1][0] =
         [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
             new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(2, 0))];
+    InsideDirections[1][0] = new Point(new IntAdjoinSqrt2(0.5, 0), new IntAdjoinSqrt2(0.5, 0));
     Directions[2][0] =
         [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
             new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1))];
+    InsideDirections[2][0] = new Point(new IntAdjoinSqrt2(0, 0.25), new IntAdjoinSqrt2(0, 0.25));
     Directions[3][0] =
         [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
             new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1)),
             new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1))];
+    InsideDirections[3][0] = new Point(new IntAdjoinSqrt2(0, 0.5), new IntAdjoinSqrt2(0, 0.5));
     Directions[4][0] =
         [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
             new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(1, 0)),
             new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(1, 0))];
+    InsideDirections[4][0] = new Point(new IntAdjoinSqrt2(1.5,0), new IntAdjoinSqrt2(0.5,0));
     Directions[5][0] =
         [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
             new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(-1, 0)),
             new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(-1, 0))];
+    InsideDirections[5][0] = new Point(new IntAdjoinSqrt2(1.5,0), new IntAdjoinSqrt2(-0.5,0));
     // Matrix for rotating by 45 degrees
     var rotationMatrix =
         [[new IntAdjoinSqrt2(0, 0.5), new IntAdjoinSqrt2(0, -0.5), new IntAdjoinSqrt2(0, 0)],
@@ -48,6 +56,7 @@ var Directions = [];
     for (var tanTypeID = 0; tanTypeID <= 5; tanTypeID++) {
         for (var orientID = 0; orientID < 7; orientID++) {
             Directions[tanTypeID][orientID + 1] = [];
+            InsideDirections[tanTypeID][orientID + 1] = InsideDirections[tanTypeID][orientID].dup().transform(rotationMatrix);
             for (var dir = 0; dir < Directions[tanTypeID][0].length; dir++) {
                 Directions[tanTypeID][orientID + 1][dir] =
                     Directions[tanTypeID][orientID][dir].dup().transform(rotationMatrix);

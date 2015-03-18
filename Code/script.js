@@ -10,13 +10,15 @@ var changeTangramVisibility = function (hide){
     document.getElementById("sol").style.display = hide ? 'inline-block' :'none';
 };
 
-var numTangrams = 10;
+var numTangrams = 6;
 var currentTan = -1;
 var mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
 var lastMouse = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
 var generated;
 var chosen;
 var solvedBy = [-1,-1,-1,-1,-1,-1,-1];
+var hints = [0,1,2,3,4,5,6];
+var numHints = 0;
 
 var getMouseCoordinates = function (event){
     var svg = document.getElementById("game");
@@ -87,55 +89,25 @@ var checkSolved = function (tanIndex){
     }
 };
 
-/* Returns index in gameOutline of the tan which has been set to the solution,
- * if no tan can be placed -1 is returned */
+/* Sets every piece to the solution */
 var setToSol = function (){
-    /* Get the index of the first tan of the tangrams that has no solution yet */
-    checkSolved();
-    var tanIndex = solvedBy.indexOf(-1);
-    if (tanIndex === -1) {
-        return tanIndex;
-    }
-    var tanType = generated[chosen].tans[tanIndex].tanType;
-    var gameTans = [];
-    switch (tanType) {
-        case 0:
-            gameTans = [0,1];
-            break;
-        case 1:
-            gameTans = [2];
-            break;
-        case 2:
-            gameTans = [3,4];
-            break;
-        case 3:
-            gameTans = [5];
-            break;
-        case 4:
-            gameTans = [6];
-            break;
-        case 5:
-            gameTans = [6];
-            break;
-        default:
-            return -1;
-    }
-    for (var tanIndices = 0; tanIndices < 7; tanIndices++){
-        if (gameOutline[tanIndices].tanType === tanType){
-            gameTans.push(tanIndices);
-        }
-    }
-    if (tanType === 0 || tanType === 2){
-        if (solvedBy.indexOf(gameTans[0]) != -1) {
-            gameTans[0] = gameTans[1];
-        }
-    }
-    /* Get the game tans with the correct id */
-    gameOutline[gameTans[0]] = generated[chosen].tans[tanIndex].dup();
     var center = generated[chosen].center();
-    gameOutline[gameTans[0]].anchor = gameOutline[gameTans[0]].anchor.dup().add(
-        new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
-    return gameTans[0];
+    console.log(center);
+    for (var tanIndex = 0; tanIndex < 7; tanIndex++){
+        /* TODO: solve center situation better */
+        gameOutline[tanIndex] = generated[chosen].tans[tanIndex].dup();
+        gameOutline[tanIndex].anchor = gameOutline[tanIndex].anchor.dup().add(
+            new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
+        updateTanPiece(tanIndex);
+    }
+};
+
+var hint = function () {
+    /* Give hints in random order */
+    if (numHints === 0){
+        hints = shuffleArray(hints);
+    }
+
 };
 
 var updateTanPiece = function (tanIndex){
@@ -180,7 +152,7 @@ var deselectTan = function (event){
     if (checkSolved()){
         var tangramPieces = document.getElementsByClassName("tan");
         for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
-            tangramPieces[tanIndex].setAttributeNS(null, "fill", "#17A768");
+            tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");
             tangramPieces[tanIndex].setAttributeNS(null, "opacity", "1.0");
         }
     }
@@ -255,7 +227,7 @@ var addFlipButton = function () {
     var parallelogramL = new Tan(5, anchorL, 0);
     var parallelogramElementL = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     parallelogramElementL.setAttributeNS(null, "points",parallelogramL.toSVG());
-    parallelogramElementL.setAttributeNS(null, "fill", '#FF9900');
+    parallelogramElementL.setAttributeNS(null, "fill", '#BCBCBC');
     parallelogramElementL.setAttributeNS(null, "stroke", "#BCBCBC");
     parallelogramElementL.setAttributeNS(null, "stroke-width", "0.05");
     button.appendChild((parallelogramElementL));
@@ -264,7 +236,7 @@ var addFlipButton = function () {
     var parallelogramR = new Tan(4, anchorR, 0);
     var parallelogramElementR = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     parallelogramElementR.setAttributeNS(null, "points",parallelogramR.toSVG());
-    parallelogramElementR.setAttributeNS(null, "fill", '#FF9900');
+    parallelogramElementR.setAttributeNS(null, "fill", '#BCBCBC');
     parallelogramElementR.setAttributeNS(null, "stroke", "#BCBCBC");
     parallelogramElementR.setAttributeNS(null, "stroke-width", "0.05");
     button.appendChild((parallelogramElementR));
@@ -285,6 +257,27 @@ var addFlipButton = function () {
 };
 
 var addTangrams = function () {
+    /*var failTangram = '{"tans":[{"tanType":0,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":1,"anchor":{"x":{"coeffInt":9,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":1}],"outline":[{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}},{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":1}},{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":2}},{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":1}},{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}}]}';
+    failTangram = JSON.parse(failTangram);
+    var failTans = [];
+    for (var i = 0; i < 7; i++){
+        var currentTan = failTangram.tans[i];
+        var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
+            currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
+            currentTan.anchor.x.coeffSqrt));
+        failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
+    }
+    failTangram = new Tangram(failTans);
+    failTangram.toSVGOutline("first0");*/
+    /*generated[0].toSVGTans("first0",false);
+    generated[1].toSVGTans("second1",false);
+
+    generated[2].toSVGTans("third2",false);
+    generated[3].toSVGTans("fourth3",false);
+
+    generated[4].toSVGTans("fifth4",false);
+    generated[5].toSVGTans("sixth5",false);*/
+
     generated[0].toSVGOutline("first0");
     generated[1].toSVGOutline("second1");
 
@@ -332,7 +325,7 @@ window.onload = function () {
 
     document.getElementById("generate").addEventListener('click', function (){
         changeTangramVisibility(true);
-        generated = generateTangrams(numTangrams*1000);
+        generated = generateTangrams(numTangrams);
         resetPieces();
         addTangrams(generated);
         changeTangramVisibility(false);
@@ -363,15 +356,19 @@ window.onload = function () {
     });
 
     document.getElementById("hint").addEventListener('click', function (){
-        updateTanPiece(setToSol());
+        hint();
+        //updateTanPiece(setToSol());
     });
 
     document.getElementById("sol").addEventListener('click', function (){
+        setToSol();
         for (var tanIndex = 0; tanIndex < 7; tanIndex++){
-            updateTanPiece(setToSol());
+            updateTanPiece(tanIndex);
         }
         var tangramPieces = document.getElementsByClassName("tan");
         deselectTan();
     });
+
+
 };
 

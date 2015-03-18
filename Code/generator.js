@@ -7,39 +7,38 @@ var compareTangrams = function (tangramA, tangramB){
 var checkNewTan = function (currentTans, currentOutline, newTan){
     /* For each point of the new piece, check if it lies within the outline of
      * the already placed pieces */
+    /* TODO: Maybe summarize this to avoid redundant calls */
     var points = newTan.getPoints();
+    /* Use midpoint to exact alignment of one piece in another on */
+    points[points.length] = newTan.insidePoint();
     for (var pointId = 0; pointId < points.length; pointId++){
-        if (containsPoint(currentOutline, points[pointId]) === 1){
-            return false;
+        for (var tansId = 0; tansId < currentTans.length; tansId++){
+            if (containsPoint(currentTans[tansId].getPoints(), points[pointId]) === 1){
+                return false;
+            }
         }
     }
     /* Check if the currentOutline is intersected by any of the line segments of
      * the new tan */
     var tanSegments = newTan.getSegments();
-    for (var segmentId = 0; segmentId < tanSegments.length; segmentId++){
-    for (pointId = 0; pointId < currentOutline.length; pointId++) {
-            if (tanSegments[segmentId].intersects(
-                    new LineSegment(currentOutline[pointId],currentOutline[(pointId+1)%currentOutline.length]))){
-                return false;
+    for (var segmentId = 0; segmentId < tanSegments.length; segmentId++) {
+        for (var tansId = 0; tansId < currentTans.length; tansId++) {
+            var otherSegments = currentTans[tansId].getSegments();
+            for (var otherSegmentsId = 0; otherSegmentsId < otherSegments.length; otherSegmentsId++) {
+                if (tanSegments[segmentId].intersects(otherSegments[otherSegmentsId])) {
+                    return false;
+                }
             }
         }
     }
     var newTans = currentTans.slice(0);
     newTans[currentTans.length] = newTan;
-    var newOutline = computeOutline(newTans);
+    //var newOutline = computeOutline(newTans);
     /* Check if the placement of newTan results in the creation of a hole or an
      * overlap not detected by the point containment or the segment intersection */
-    var areaOutline = outlineArea(newOutline);
-    var areaTans = tanSumArea(newTans);
-    /* if areaOutline is larger than the sum of tan areas a hole has been created
-     * if the areaOutline is smaller an overlap that could not be detected by
-     * the other checks exists */
-    if (numberNEq(areaOutline, areaTans)){
-        return false;
-    }
     /* Check if placement of newTan results in a tangram with a to large range
      * assuming that tangrams with a too large range are not interesting */
-    var boundingBox = computeBoundingBox(newTans,newOutline);
+    var boundingBox = computeBoundingBox(newTans);
     if (boundingBox[2] - boundingBox[0] > range
         || boundingBox[3] - boundingBox[1] > range){
         return false;
@@ -66,7 +65,7 @@ var generateTangram = function (){
      * outline of the already placed pieces as the connecting point to the new
      * piece */
     for (tanId = 1 ; tanId < 7; tanId++){
-        var currentOutline = computeOutline(tans);
+        var currentOutline = getAllPoints(tans)//computeOutline(tans);
         var tanPlaced = false;
         var counter = 0;
         while (!tanPlaced){
@@ -96,6 +95,9 @@ var generateTangram = function (){
                 return generateTangram();
             }
         }
+    }
+    if (tans.length != 7){
+        console.log("?");
     }
     return new Tangram(tans);
 };

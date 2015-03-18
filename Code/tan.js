@@ -13,7 +13,7 @@ function Tan(tanType, anchor, orientation) {
 
 Tan.prototype.dup = function (){
     return new Tan(this.tanType, this.anchor.dup(), this.orientation);
-}
+};
 
 Tan.prototype.area = function () {
     var areas = [4,2,1,2,2,2];
@@ -40,7 +40,11 @@ Tan.prototype.getSegments = function () {
             points[(pointId+1)%points.length]);
     }
     return segments;
-}
+};
+
+Tan.prototype.insidePoint = function () {
+    return this.anchor.dup().add(InsideDirections[this.tanType][this.orientation]);
+};
 
 Tan.prototype.toSVG = function () {
     var points = this.getPoints();
@@ -89,7 +93,8 @@ var tanSumArea = function (tans){
 
 var outlineContainsAll = function (outline, allPoints){
     for (var pointId = 0; pointId < allPoints.length; pointId++){
-        if (containsPoint(outline,allPoints[pointId]) === -1){
+        var contains = containsPoint(outline,allPoints[pointId]);
+        if (contains === -1){
             return false;
         }
     }
@@ -132,7 +137,7 @@ var computeOutline = function (tans) {
         currentSegments = allSegments.filter(function (element) {
             return !lastSegment.eq(element) && (element.point1.eq(lastPoint) || element.point2.eq(lastPoint));
         });
-        var maxAngle = 0;
+        var maxAngle = -180;
         var maxIndex = -1;
         for (segmentId = 0; segmentId < currentSegments.length; segmentId++) {
             var currentAngle = currentSegments[segmentId].angleTo(lastSegment);
@@ -158,17 +163,20 @@ var computeOutline = function (tans) {
         if (firstSegment){
             firstSegment = false;
         }
-        var areaOutline = outlineArea(outline);
-        var areaTans = tanSumArea(tans);
+        if (outline.length === 10){
+            console.log("Check");
+        }
     } while (!lastPoint.eq(allPoints[0]) || !outlineContainsAll(outline, allPoints));
-    /* When the last point is equal to the first if can be deleted */
-    outline.pop();
+    /* When the last point is equal to the first it can be deleted */
+    //outline.pop();
     return outline;
 };
 
+
+/* TODO change to exact computation */
 var computeBoundingBox = function (tans, outline) {
-    if (outline === "undefined"){
-        outline = computeOutline(tans);
+    if (typeof outline === "undefined"){
+        outline = getAllPoints(tans);
     }
     var minX = 100;
     var minY = 100;
@@ -187,7 +195,8 @@ var computeBoundingBox = function (tans, outline) {
 
 /* Returns 1 if the given point is inside the polygon given by outline,
  * return -1 if the point lies on the outline and 0 is the point lies on the outline */
-var containsPoint = function (outline, point){
+/* TODO get rid of % */
+ var containsPoint = function (outline, point){
     /* Compute the winding number for the given point and the polygon, which
      * counts how often the polygon "winds" around the point. The point lies
      * outside, only when the winding number is 0 */
