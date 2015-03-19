@@ -4,7 +4,6 @@ var mouseOffset = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
 var lastMouse = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
 var generated;
 var chosen;
-var solvedBy = [-1, -1, -1, -1, -1, -1, -1];
 var hints = [0, 1, 2, 3, 4, 5, 6];
 var numHints = 0;
 var snapRange = 0.2;
@@ -30,67 +29,20 @@ var getMouseCoordinates = function (event) {
     return new Point(new IntAdjoinSqrt2(globalPoint.x, 0), new IntAdjoinSqrt2(globalPoint.y, 0));
 };
 
-var checkSolved = function (tanIndex) {
-    var solved;
-    return false;
-    if (typeof tanIndex === 'undefined') {
-        /* If no tanId is given check if all  */
-        solved = true;
-        for (var tanIndices = 0; tanIndices < 7; tanIndices++) {
-            checkSolved(tanIndices);
-            solved = solved && (solvedBy[tanIndices] != -1);
-        }
-        console.log(solvedBy);
-        if (!solved) {
-            var tangramFromPieces = new Tangram(gameOutline);
-            if (typeof tangramFromPieces === 'undefined') {
-                return false;
-            }
-            /* Probably only works when snapping */
-            return arrayEq(generated[chosen].outline, tangramFromPieces.outline, comparePointsFloat, closePoint);
-        }
-        return true;
-    } else {
-        solved = false;
-        /* WTF */
-        var tan = generated[chosen].tans[tanIndex];
-        var tangramPoints = tan.getPoints();
-        var center = generated[chosen].center();
-        for (var pTangramsId = 0; pTangramsId < tangramPoints.length; pTangramsId++) {
-            tangramPoints[pTangramsId] = tangramPoints[pTangramsId].dup().add(
-                new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
-        }
-        var possibleTans = getTansByID(gameOutline, tan.tanType);
-        var tanPoints;
-        for (var pTansId = 0; pTansId < possibleTans.length; pTansId++) {
-            tanPoints = possibleTans[pTansId].getPoints();
-            solved = solved || arrayEq(tanPoints, tangramPoints, comparePointsFloat, closePoint);
-            if (solved) {
-                switch (tan.tanType) {
-                    case 0:
-                        solvedBy[tanIndex] = pTansId;
-                        break;
-                    case 1:
-                        solvedBy[tanIndex] = 2;
-                        break;
-                    case 2:
-                        solvedBy[tanIndex] = 3 + pTansId;
-                        break;
-                    case 3:
-                        solvedBy[tanIndex] = 5;
-                        break;
-                    case 4:
-                    case 5:
-                        solvedBy[tanIndex] = 6;
-                        break;
-                    default:
-                        return false;
-                }
-                return true;
-            }
-        }
-        solvedBy[tanIndex] = -1;
+var checkSolved = function () {
+    var tangramFromPieces = new Tangram(gameOutline);
+    /* No outline could be computed -> not solved */
+    if (typeof tangramFromPieces === 'undefined') {
         return false;
+    }
+    var solved = arrayEq(generated[chosen].outline, tangramFromPieces.outline, comparePoints);
+    if (!solved){
+        return;
+    }
+    var tangramPieces = document.getElementsByClassName("tan");
+    for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
+        tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");
+        tangramPieces[tanIndex].setAttributeNS(null, "opacity", "1.0");
     }
 };
 
@@ -166,7 +118,6 @@ var snapToClosePoints = function () {
             }
         }
     }
-    /* */
     updateTanPiece(currentTan);
 };
 
@@ -210,13 +161,7 @@ var deselectTan = function (event) {
     snapToClosePoints();
     currentTan = -1;
     mouseOffset = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
-    if (checkSolved()) {
-        var tangramPieces = document.getElementsByClassName("tan");
-        for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
-            tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");
-            tangramPieces[tanIndex].setAttributeNS(null, "opacity", "1.0");
-        }
-    }
+    checkSolved();
 };
 
 var moveTan = function (event) {
@@ -408,14 +353,12 @@ window.onload = function () {
         }
         changeTangramVisibility(false);
         resetPieces();
-        solvedBy = [-1, -1, -1, -1, -1, -1, -1];
         hints = [0, 1, 2, 3, 4, 5, 6];
         numHints = 0;
     });
 
     document.getElementById("set").addEventListener('click', function () {
         resetPieces();
-        solvedBy = [-1, -1, -1, -1, -1, -1, -1];
         for (var tanIndex = 0; tanIndex < gameOutline.length; tanIndex++) {
             updateTanPiece(tanIndex);
         }
