@@ -4,7 +4,7 @@ var compareTangrams = function (tangramA, tangramB){
     return numUniqueElements(tangramA.outline, comparePoints) - numUniqueElements(tangramB.outline, comparePoints);
 };
 
-var checkNewTan = function (currentTans, currentOutline, newTan){
+var checkNewTan = function (currentTans, newTan){
     /* For each point of the new piece, check if it lies within the outline of
      * the already placed pieces */
     /* TODO: Maybe summarize this to avoid redundant calls */
@@ -88,7 +88,7 @@ var generateTangram = function (){
                         [orientations[tanId]][pointOrder[pointId]-1]);
                     newTan = new Tan(tanOrder[tanId], tanAnchor, orientations[tanId]);
                 }
-                if (checkNewTan(tans, currentOutline, newTan)){
+                if (checkNewTan(tans, newTan)){
                     tans[tanId] = newTan;
                     tanPlaced = true;
                 }

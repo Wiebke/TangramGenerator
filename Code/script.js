@@ -1,46 +1,47 @@
 var numTangrams = 100;
 var currentTan = -1;
-var mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
-var lastMouse = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
+var mouseOffset = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
+var lastMouse = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
 var generated;
 var chosen;
-var solvedBy = [-1,-1,-1,-1,-1,-1,-1];
-var hints = [0,1,2,3,4,5,6];
+var solvedBy = [-1, -1, -1, -1, -1, -1, -1];
+var hints = [0, 1, 2, 3, 4, 5, 6];
 var numHints = 0;
+var snapRange = 0.2;
 
-var changeTangramVisibility = function (hide){
+var changeTangramVisibility = function (hide) {
     var tangramClass = document.getElementsByClassName("tangram");
-    for (var i = 0; i < tangramClass.length; i++){
+    for (var i = 0; i < tangramClass.length; i++) {
         tangramClass[i].style.display = hide ? 'none' : 'block';
     }
-    document.getElementById("generate").style.display = hide ? 'none': 'inline-block';
-    document.getElementById("select").style.display = hide ? 'inline-block' :'none';
-    document.getElementById("set").style.display = hide ? 'inline-block' :'none';
-    document.getElementById("hint").style.display = hide ? 'inline-block' :'none';
-    document.getElementById("sol").style.display = hide ? 'inline-block' :'none';
+    document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
+    document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
+    document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
+    document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
+    document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
 };
 
-var getMouseCoordinates = function (event){
+var getMouseCoordinates = function (event) {
     var svg = document.getElementById("game");
     var pt = svg.createSVGPoint();
     pt.x = event.clientX;
     pt.y = event.clientY;
     var globalPoint = pt.matrixTransform(svg.getScreenCTM().inverse());
-    return new Point(new IntAdjoinSqrt2(globalPoint.x,0), new IntAdjoinSqrt2(globalPoint.y,0));
+    return new Point(new IntAdjoinSqrt2(globalPoint.x, 0), new IntAdjoinSqrt2(globalPoint.y, 0));
 };
 
-var checkSolved = function (tanIndex){
+var checkSolved = function (tanIndex) {
     var solved;
     return false;
-    if (typeof tanIndex === 'undefined'){
+    if (typeof tanIndex === 'undefined') {
         /* If no tanId is given check if all  */
         solved = true;
-        for (var tanIndices = 0; tanIndices < 7; tanIndices++){
+        for (var tanIndices = 0; tanIndices < 7; tanIndices++) {
             checkSolved(tanIndices);
-            solved = solved && (solvedBy[tanIndices]!= -1);
+            solved = solved && (solvedBy[tanIndices] != -1);
         }
         console.log(solvedBy);
-        if (!solved){
+        if (!solved) {
             var tangramFromPieces = new Tangram(gameOutline);
             if (typeof tangramFromPieces === 'undefined') {
                 return false;
@@ -55,17 +56,17 @@ var checkSolved = function (tanIndex){
         var tan = generated[chosen].tans[tanIndex];
         var tangramPoints = tan.getPoints();
         var center = generated[chosen].center();
-        for (var pTangramsId = 0; pTangramsId < tangramPoints.length; pTangramsId++){
+        for (var pTangramsId = 0; pTangramsId < tangramPoints.length; pTangramsId++) {
             tangramPoints[pTangramsId] = tangramPoints[pTangramsId].dup().add(
                 new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
         }
         var possibleTans = getTansByID(gameOutline, tan.tanType);
         var tanPoints;
-        for (var pTansId = 0; pTansId < possibleTans.length; pTansId++){
+        for (var pTansId = 0; pTansId < possibleTans.length; pTansId++) {
             tanPoints = possibleTans[pTansId].getPoints();
             solved = solved || arrayEq(tanPoints, tangramPoints, comparePointsFloat, closePoint);
-            if (solved){
-                switch (tan.tanType){
+            if (solved) {
+                switch (tan.tanType) {
                     case 0:
                         solvedBy[tanIndex] = pTansId;
                         break;
@@ -94,8 +95,8 @@ var checkSolved = function (tanIndex){
 };
 
 /* Sets every piece to the solution */
-var setToSol = function (){
-    for (var tanIndex = 0; tanIndex < 7; tanIndex++){
+var setToSol = function () {
+    for (var tanIndex = 0; tanIndex < 7; tanIndex++) {
         gameOutline[tanIndex] = generated[chosen].tans[tanIndex].dup();
         updateTanPiece(tanIndex);
     }
@@ -103,11 +104,11 @@ var setToSol = function (){
 
 var hint = function () {
     /* Give hints in random order */
-    if (numHints === 0){
+    if (numHints === 0) {
         hints = shuffleArray(hints);
     }
     console.log(hints);
-    if (numHints > 6){
+    if (numHints > 6) {
         return;
     }
     console.log(generated[chosen].tans[hints[numHints]]);
@@ -121,8 +122,56 @@ var hint = function () {
 
 };
 
-var updateTanPiece = function (tanIndex){
-    if (tanIndex < 0){
+var snapToClosePoints = function () {
+    if (currentTan === -1) {
+        return;
+    }
+    console.log("Snap started");
+    var tanPoints = gameOutline[currentTan].getPoints();
+    var currentTanPoints;
+    var snap = false;
+    for (var tanId = 0; tanId < 7; tanId++) {
+        if (tanId === currentTan) continue;
+        console.log("Testing tan " + tanId);
+        currentTanPoints = gameOutline[tanId].getPoints();
+        for (var pointsId = 0; pointsId < tanPoints.length; pointsId++) {
+            for (var currentPointsId = 0; currentPointsId < currentTanPoints.length; currentPointsId++) {
+                if (closePoint(tanPoints[pointsId], currentTanPoints[currentPointsId], snapRange)) {
+                    var direction = currentTanPoints[currentPointsId].dup().subtract(tanPoints[pointsId]);
+                    gameOutline[currentTan].anchor.add(direction);
+                    snap = true;
+                    break;
+                }
+            }
+            if (snap){
+                break;
+            }
+        }
+        if (snap){
+            break;
+        }
+    }
+    if (!snap){
+        for (var pointsId = 0; pointsId < tanPoints.length; pointsId++) {
+            for (var currentPointsId = 0; currentPointsId < generated[chosen].outline.length; currentPointsId++) {
+                if (closePoint(tanPoints[pointsId], generated[chosen].outline[currentPointsId], snapRange)) {
+                    var direction = generated[chosen].outline[currentPointsId].dup().subtract(tanPoints[pointsId]);
+                    gameOutline[currentTan].anchor.add(direction);
+                    snap = true;
+                    break;
+                }
+            }
+            if (snap){
+                break;
+            }
+        }
+    }
+    /* */
+    updateTanPiece(currentTan);
+};
+
+var updateTanPiece = function (tanIndex) {
+    if (tanIndex < 0) {
         return;
     }
     var tanId = "piece" + tanIndex;
@@ -130,8 +179,8 @@ var updateTanPiece = function (tanIndex){
     tan.setAttributeNS(null, "points", gameOutline[tanIndex].toSVG());
 };
 
-var rotateTan = function (event){
-    var target = ((window.event)?(event.srcElement):(event.currentTarget));
+var rotateTan = function (event) {
+    var target = ((window.event) ? (event.srcElement) : (event.currentTarget));
     var tanIndex = parseInt(target.id[target.id.length - 1]);
     /* console.log("clicked: " + tanIndex); */
     var mouse = getMouseCoordinates(event);
@@ -139,13 +188,13 @@ var rotateTan = function (event){
     if (Math.abs(mouseMove.toFloatX()) < 0.05 && Math.abs(mouseMove.toFloatY()) < 0.05) {
         /* console.log("rotated: " + tanIndex); */
         gameOutline[tanIndex].orientation = (gameOutline[tanIndex].orientation + 1) % 8;
-        gameOutline[tanIndex].anchor.subtract(mouse).rotate(45).add(mouse) ;
+        gameOutline[tanIndex].anchor.subtract(mouse).rotate(45).add(mouse);
         updateTanPiece(tanIndex);
     }
 };
 
 var selectTan = function (event) {
-    var target = ((window.event)?(event.srcElement):(event.currentTarget));
+    var target = ((window.event) ? (event.srcElement) : (event.currentTarget));
     var tanIndex = parseInt(target.id[target.id.length - 1]);
     /* console.log("selected: " + tanIndex); */
     currentTan = tanIndex;
@@ -153,14 +202,15 @@ var selectTan = function (event) {
     lastMouse = mouse.dup();
     mouseOffset = mouse.subtract(gameOutline[tanIndex].anchor);
     /* Bring this piece to the front */
-    var piece = document.getElementById("piece"+ tanIndex);
+    var piece = document.getElementById("piece" + tanIndex);
     document.getElementById("game").appendChild(piece);
 };
 
-var deselectTan = function (event){
+var deselectTan = function (event) {
+    snapToClosePoints();
     currentTan = -1;
-    mouseOffset = new Point(new IntAdjoinSqrt2(0,0), new IntAdjoinSqrt2(0,0));
-    if (checkSolved()){
+    mouseOffset = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
+    if (checkSolved()) {
         var tangramPieces = document.getElementsByClassName("tan");
         for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
             tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");
@@ -169,21 +219,21 @@ var deselectTan = function (event){
     }
 };
 
-var moveTan = function (event){
+var moveTan = function (event) {
     /*var target = ((window.event)?(event.srcElement):(event.currentTarget));
-    var tanIndex = parseInt(target.id[target.id.length - 1]);*/
+     var tanIndex = parseInt(target.id[target.id.length - 1]);*/
     /* console.log("moved: " + tanIndex + ", " + currentTan); */
     var mouse = getMouseCoordinates(event);
-    if (currentTan != -1){
+    if (currentTan != -1) {
         gameOutline[currentTan].anchor = mouse.subtract(mouseOffset);
         updateTanPiece(currentTan);
     }
 };
 
 var flipParallelogram = function () {
-    gameOutline[6].anchor = gameOutline[6].anchor.add(FlipDirections[5-gameOutline[6].tanType][gameOutline[6].orientation]);
-    gameOutline[6].tanType = gameOutline[6].tanType === 4 ? 5:4;
-    gameOutline[6].orientation = gameOutline[6].orientation === 0 ? 0 : 8-gameOutline[6].orientation;
+    gameOutline[6].anchor = gameOutline[6].anchor.add(FlipDirections[5 - gameOutline[6].tanType][gameOutline[6].orientation]);
+    gameOutline[6].tanType = gameOutline[6].tanType === 4 ? 5 : 4;
+    gameOutline[6].orientation = gameOutline[6].orientation === 0 ? 0 : 8 - gameOutline[6].orientation;
     updateTanPiece(6);
     checkSolved();
 };
@@ -217,7 +267,7 @@ var addTangramPieces = function () {
 var addFlipButton = function () {
     var button = document.createElementNS("http://www.w3.org/2000/svg", "g");
     button.setAttributeNS(null, "class", "flip");
-    button.setAttributeNS(null, "transform", "translate (" + 11.75 +  ", " + 8.75 + ")" + "scale(" + 0.3 + "," + 0.3 + ")");
+    button.setAttributeNS(null, "transform", "translate (" + 11.75 + ", " + 8.75 + ")" + "scale(" + 0.3 + "," + 0.3 + ")");
 
     var background = document.createElementNS("http://www.w3.org/2000/svg", "rect");
     background.setAttributeNS(null, "x", "1.75");
@@ -231,23 +281,23 @@ var addFlipButton = function () {
 
     var arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     arrow.setAttributeNS(null, "points", "5,2.5 5.25,2.25, 5.25,2.4, 5.75,2.4, " +
-        "5.75,2.25, 6,2.5, 5.75,2.75, 5.75,2.6 5.25,2.6 5.25,2.75");
+    "5.75,2.25, 6,2.5, 5.75,2.75, 5.75,2.6 5.25,2.6 5.25,2.75");
     arrow.setAttributeNS(null, "fill", '#BCBCBC');
     button.appendChild(arrow);
 
-    var anchorL = new Point(new IntAdjoinSqrt2(2,0), new IntAdjoinSqrt2(3, 0));
+    var anchorL = new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(3, 0));
     var parallelogramL = new Tan(5, anchorL, 0);
     var parallelogramElementL = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    parallelogramElementL.setAttributeNS(null, "points",parallelogramL.toSVG());
+    parallelogramElementL.setAttributeNS(null, "points", parallelogramL.toSVG());
     parallelogramElementL.setAttributeNS(null, "fill", '#BCBCBC');
     parallelogramElementL.setAttributeNS(null, "stroke", "#BCBCBC");
     parallelogramElementL.setAttributeNS(null, "stroke-width", "0.05");
     button.appendChild((parallelogramElementL));
 
-    var anchorR = new Point(new IntAdjoinSqrt2(6,0), new IntAdjoinSqrt2(2, 0));
+    var anchorR = new Point(new IntAdjoinSqrt2(6, 0), new IntAdjoinSqrt2(2, 0));
     var parallelogramR = new Tan(4, anchorR, 0);
     var parallelogramElementR = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    parallelogramElementR.setAttributeNS(null, "points",parallelogramR.toSVG());
+    parallelogramElementR.setAttributeNS(null, "points", parallelogramR.toSVG());
     parallelogramElementR.setAttributeNS(null, "fill", '#BCBCBC');
     parallelogramElementR.setAttributeNS(null, "stroke", "#BCBCBC");
     parallelogramElementR.setAttributeNS(null, "stroke-width", "0.05");
@@ -257,12 +307,12 @@ var addFlipButton = function () {
     var flipElements = document.getElementsByClassName("flip")[0].childNodes;
     for (var flipIndex = 0; flipIndex < flipElements.length; flipIndex++) {
         flipElements[flipIndex].addEventListener("click", flipParallelogram);
-        flipElements[flipIndex].addEventListener("mouseover", function (){
-            console.log("mousein");
+        flipElements[flipIndex].addEventListener("mouseover", function () {
+            // console.log("mousein");
             document.getElementsByClassName("flip")[0].firstChild.setAttributeNS(null, "fill", '#3299BB');
         });
-        flipElements[flipIndex].addEventListener("mouseout", function (){
-            console.log("mouseOut");
+        flipElements[flipIndex].addEventListener("mouseout", function () {
+            // console.log("mouseOut");
             document.getElementsByClassName("flip")[0].firstChild.setAttributeNS(null, "fill", '#E9E9E9');
         });
     }
@@ -270,19 +320,19 @@ var addFlipButton = function () {
 
 var addTangrams = function () {
     /*var failTangram = '{"tans":[{"tanType":0,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":1,"anchor":{"x":{"coeffInt":9,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":1}],"outline":[{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}},{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":1}},{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":2}},{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":1}},{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}}]}';
-    failTangram = JSON.parse(failTangram);
-    var failTans = [];
-    for (var i = 0; i < 7; i++){
-        var currentTan = failTangram.tans[i];
-        var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
-            currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
-            currentTan.anchor.x.coeffSqrt));
-        failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
-    }
-    failTangram = new Tangram(failTans);
-    failTangram.toSVGOutline("first0");*/
+     failTangram = JSON.parse(failTangram);
+     var failTans = [];
+     for (var i = 0; i < 7; i++){
+     var currentTan = failTangram.tans[i];
+     var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
+     currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
+     currentTan.anchor.x.coeffSqrt));
+     failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
+     }
+     failTangram = new Tangram(failTans);
+     failTangram.toSVGOutline("first0");*/
 
-    for (var i = 0; i < 6; i++){
+    for (var i = 0; i < 6; i++) {
         generated[i].positionCentered();
     }
 
@@ -296,13 +346,13 @@ var addTangrams = function () {
     generated[5].toSVGOutline("sixth5");
 
     /*generated[0].toSVGTans("first0",false);
-    generated[1].toSVGTans("second1",false);
+     generated[1].toSVGTans("second1",false);
 
-    generated[2].toSVGTans("third2",false);
-    generated[3].toSVGTans("fourth3",false);
+     generated[2].toSVGTans("third2",false);
+     generated[3].toSVGTans("fourth3",false);
 
-    generated[4].toSVGTans("fifth4",false);
-    generated[5].toSVGTans("sixth5",false);*/
+     generated[4].toSVGTans("fifth4",false);
+     generated[5].toSVGTans("sixth5",false);*/
 
 };
 
@@ -321,7 +371,7 @@ window.onload = function () {
             changeTangramVisibility(true);
             // TODO: add timer
             var sourceId;
-            var target = ((window.event)?(event.srcElement):(event.currentTarget.firstElementChild));
+            var target = ((window.event) ? (event.srcElement) : (event.currentTarget.firstElementChild));
             if (target.id.length === 0) {
                 sourceId = target.parentNode.parentNode.id;
             } else {
@@ -329,7 +379,7 @@ window.onload = function () {
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
             console.log(JSON.stringify(generated[chosen]));
-            if (typeof generated[chosen] === 'undefined'){
+            if (typeof generated[chosen] === 'undefined') {
                 console.log(target);
                 console.log(event.currentTarget.firstElementChild);
                 console.log(target.parentNode.parentNode)
@@ -342,15 +392,15 @@ window.onload = function () {
         });
     }
 
-    document.getElementById("generate").addEventListener('click', function (){
+    document.getElementById("generate").addEventListener('click', function () {
         changeTangramVisibility(true);
-        generated = generateTangrams(numTangrams*100);
+        generated = generateTangrams(numTangrams * 100);
         resetPieces();
         addTangrams(generated);
         changeTangramVisibility(false);
     });
 
-    document.getElementById("select").addEventListener('click', function (){
+    document.getElementById("select").addEventListener('click', function () {
         document.getElementById("game").style.display = 'none';
         var gameNode = document.getElementById('game');
         while (gameNode.firstChild) {
@@ -358,14 +408,14 @@ window.onload = function () {
         }
         changeTangramVisibility(false);
         resetPieces();
-        solvedBy = [-1,-1,-1,-1,-1,-1,-1];
-        hints = [0,1,2,3,4,5,6];
+        solvedBy = [-1, -1, -1, -1, -1, -1, -1];
+        hints = [0, 1, 2, 3, 4, 5, 6];
         numHints = 0;
     });
 
-    document.getElementById("set").addEventListener('click', function (){
+    document.getElementById("set").addEventListener('click', function () {
         resetPieces();
-        solvedBy = [-1,-1,-1,-1,-1,-1,-1];
+        solvedBy = [-1, -1, -1, -1, -1, -1, -1];
         for (var tanIndex = 0; tanIndex < gameOutline.length; tanIndex++) {
             updateTanPiece(tanIndex);
         }
@@ -376,11 +426,11 @@ window.onload = function () {
         }
     });
 
-    document.getElementById("hint").addEventListener('click', function (){
+    document.getElementById("hint").addEventListener('click', function () {
         hint();
     });
 
-    document.getElementById("sol").addEventListener('click', function (){
+    document.getElementById("sol").addEventListener('click', function () {
         setToSol();
         deselectTan();
     });
