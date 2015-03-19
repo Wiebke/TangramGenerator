@@ -11,20 +11,27 @@ function Tangram(tans) {
 
 /* Calculates the center of the bounding box of a tangram */
 Tangram.prototype.center = function () {
-    var center = [0, 0];
+    var center = new Point();
     var boundingBox = computeBoundingBox(this.tans, this.outline);
-    center[0] = 5 - (boundingBox[0] + boundingBox[2]) / 2;
-    center[1] = 5 - (boundingBox[1] + boundingBox[3]) / 2;
+    center.x = boundingBox[0].dup().add(boundingBox[2]).scale(0.5);
+    center.y = boundingBox[1].dup().add(boundingBox[3]).scale(0.5);
     return center;
+};
+
+Tangram.prototype.positionCentered = function () {
+    var center = new Point(new IntAdjoinSqrt2(5,0), new IntAdjoinSqrt2(5,0));
+    center.subtract(this.center());
+    for (var tansId = 0; tansId < this.tans.length; tansId++){
+        this.tans[tansId].anchor.translate(center.x, center.y);
+    }
+    this.outline = computeOutline(this.tans);
 };
 
 Tangram.prototype.toSVGOutline = function (elementName) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    var center = this.center();
-    var translate = "translate(" + center[0] + "," + center[1] + ")";
-    tangramSVG.setAttributeNS(null, "transform", translate);
     var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     var pointsString = "";
+    this.outline = computeOutline(this.tans);
     for (var i = 0; i < this.outline.length; i++) {
         pointsString += this.outline[i].toFloatX() + ", " + this.outline[i].toFloatY() + " ";
     }
@@ -32,7 +39,8 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     // Fill with random color for now
     // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
     shape.setAttributeNS(null, "fill", '#3299BB');
-    //shape.setAttributeNS(null, "fill", 'none');
+    // shape.setAttributeNS(null, "fill", 'none');
+    // shape.setAttributeNS(null, "fill-opacity", "0.5");
     //shape.setAttributeNS(null, "stroke", "#E9E9E9");
     //shape.setAttributeNS(null, "stroke-width", "0.05");
     tangramSVG.appendChild(shape);
@@ -47,16 +55,15 @@ Tangram.prototype.toSVGOutline = function (elementName) {
 
 Tangram.prototype.toSVGTans = function (elementName, shifted) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    var center = this.center();
-    center[0] += shifted ? 7.5 : 0;
-    var translate = "translate(" + center[0] + "," + center[1] + ")";
-    tangramSVG.setAttributeNS(null, "transform", translate);
     for (var i = 0; i < this.tans.length; i++) {
         var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
         shape.setAttributeNS(null, "points", this.tans[i].toSVG());
         // Fill with random color for now
-        shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
-        //shape.setAttributeNS(null, "fill", '#FF9900');
+        // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
+        shape.setAttributeNS(null, "fill", '#FF9900');
+        //shape.setAttributeNS(null, "fill", 'none');
+        shape.setAttributeNS(null, "stroke", "#3299BB");
+        shape.setAttributeNS(null, "stroke-width", "0.05");
         tangramSVG.appendChild(shape);
     }
     document.getElementById(elementName).appendChild(tangramSVG);

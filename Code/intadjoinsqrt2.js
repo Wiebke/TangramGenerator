@@ -29,6 +29,18 @@ IntAdjoinSqrt2.prototype.toFloat = function () {
 /* Checking if this number is equal to another one, since only whole numbers are
  * used === can be used for comparison */
 IntAdjoinSqrt2.prototype.eq = function (other) {
+    /*if (this.coeffInt % 1 != 0){
+        console.log(this.coeffInt);
+    }
+    if (this.coeffSqrt % 1 != 0){
+        console.log(this.coeffSqrt);
+    }
+    if (other.coeffInt % 1 != 0){
+        console.log(other.coeffInt);
+    }
+    if (other.coeffInt % 1 != 0){
+        console.log(other.coeffSqrt);
+    }*/
     return (numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt));
 };
 

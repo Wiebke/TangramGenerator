@@ -137,7 +137,7 @@ var computeOutline = function (tans) {
         currentSegments = allSegments.filter(function (element) {
             return !lastSegment.eq(element) && (element.point1.eq(lastPoint) || element.point2.eq(lastPoint));
         });
-        var maxAngle = -180;
+        var maxAngle = 0;
         var maxIndex = -1;
         for (segmentId = 0; segmentId < currentSegments.length; segmentId++) {
             var currentAngle = currentSegments[segmentId].angleTo(lastSegment);
@@ -145,6 +145,9 @@ var computeOutline = function (tans) {
                 maxIndex = segmentId;
                 maxAngle = currentAngle;
             }
+        }
+        if (maxIndex === -1){
+            console.log("Check");
         }
         if (maxAngle === 180 && !firstSegment) {
             outline.pop();
@@ -175,7 +178,7 @@ var computeBoundingBox = function (tans, outline) {
     if (typeof outline === "undefined"){
         outline = getAllPoints(tans);
     }
-    var minX = 100;
+    /*var minX = 100;
     var minY = 100;
     var maxX = -100;
     var maxY = -100;
@@ -186,6 +189,18 @@ var computeBoundingBox = function (tans, outline) {
         if (currentY < minY) minY = currentY;
         if (currentX > maxX) maxX = currentX;
         if (currentY > maxY) maxY = currentY;
+    }*/
+    var minX = new IntAdjoinSqrt2(100,0);
+    var minY = new IntAdjoinSqrt2(100,0);
+    var maxX = new IntAdjoinSqrt2(-100,0);
+    var maxY = new IntAdjoinSqrt2(-100,0);
+    for (var pointId = 0; pointId < outline.length; pointId++){
+        var currentX = outline[pointId].x;
+        var currentY = outline[pointId].y;
+        if (currentX.compare(minX) < 0) minX = currentX;
+        if (currentY.compare(minY) < 0) minY = currentY;
+        if (currentX.compare(maxX) > 0) maxX = currentX;
+        if (currentY.compare(maxY) > 0) maxY = currentY;
     }
     return [minX,minY,maxX,maxY];
 };

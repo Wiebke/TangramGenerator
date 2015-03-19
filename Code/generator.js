@@ -1,4 +1,4 @@
-var range = 9.5;
+var range = new IntAdjoinSqrt2(9,0);
 
 var compareTangrams = function (tangramA, tangramB){
     return numUniqueElements(tangramA.outline, comparePoints) - numUniqueElements(tangramB.outline, comparePoints);
@@ -45,8 +45,8 @@ var checkNewTan = function (currentTans, currentOutline, newTan){
     /* Check if placement of newTan results in a tangram with a to large range
      * assuming that tangrams with a too large range are not interesting */
     var boundingBox = computeBoundingBox(newTans);
-    if (boundingBox[2] - boundingBox[0] > range
-        || boundingBox[3] - boundingBox[1] > range){
+    if (boundingBox[2].dup().subtract(boundingBox[0]).compare(range) > 0
+        || boundingBox[3].dup().subtract(boundingBox[1]).compare(range) > 0){
         return false;
     }
     return true;
@@ -75,7 +75,7 @@ var generateTangram = function (){
         var tanPlaced = false;
         var counter = 0;
         while (!tanPlaced){
-            anchor = currentOutline[Math.floor(Math.random()*currentOutline.length)];
+            anchor = currentOutline[Math.floor(Math.random()*currentOutline.length)].dup();
             var pointId = 0;
             var pointOrder = (tanOrder[tanId] < 3) ? [0,1,2] : [0,1,2,3];
             pointOrder = shuffleArray(pointOrder);
@@ -111,6 +111,7 @@ var generateTangrams = function(number){
         generated[i] = generateTangram();
         console.log("Generated!");
     }
+    console.log("Generating done");
     generated = generated.sort(compareTangrams);
     return generated;
 };

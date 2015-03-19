@@ -89,6 +89,12 @@ Point.prototype.length = function () {
     return Math.sqrt(this.dotProduct(this).toFloat());
 };
 
+Point.prototype.neg = function () {
+    this.x.neg();
+    this.y.neg();
+    return this;
+};
+
 Point.prototype.angle = function () {
     if (this.isZero()){
         return 0;
@@ -124,6 +130,7 @@ Point.prototype.add = function (other) {
     this.y.add(other.y);
     return this;
 };
+
 
 Point.prototype.middle = function (other) {
     var result = new Point();
@@ -190,7 +197,7 @@ Point.prototype.translate = function (transX, transY) {
         [[new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(0, 0), transX],
             [new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0), transY],
             [new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)]];
-    this.transform(translationMatrix);
+    return this.transform(translationMatrix);
 };
 
 Point.prototype.rotate = function (angle) {

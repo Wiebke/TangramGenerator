@@ -91,13 +91,8 @@ var checkSolved = function (tanIndex){
 
 /* Sets every piece to the solution */
 var setToSol = function (){
-    var center = generated[chosen].center();
-    console.log(center);
     for (var tanIndex = 0; tanIndex < 7; tanIndex++){
-        /* TODO: solve center situation better */
         gameOutline[tanIndex] = generated[chosen].tans[tanIndex].dup();
-        gameOutline[tanIndex].anchor = gameOutline[tanIndex].anchor.dup().add(
-            new Point(new IntAdjoinSqrt2(center[0], 0), new IntAdjoinSqrt2(center[1], 0)));
         updateTanPiece(tanIndex);
     }
 };
@@ -269,14 +264,11 @@ var addTangrams = function () {
     }
     failTangram = new Tangram(failTans);
     failTangram.toSVGOutline("first0");*/
-    /*generated[0].toSVGTans("first0",false);
-    generated[1].toSVGTans("second1",false);
+    console.log(JSON.stringify(generated[0]));
 
-    generated[2].toSVGTans("third2",false);
-    generated[3].toSVGTans("fourth3",false);
-
-    generated[4].toSVGTans("fifth4",false);
-    generated[5].toSVGTans("sixth5",false);*/
+    for (var i = 0; i < 6; i++){
+        generated[i].positionCentered();
+    }
 
     generated[0].toSVGOutline("first0");
     generated[1].toSVGOutline("second1");
@@ -286,6 +278,16 @@ var addTangrams = function () {
 
     generated[4].toSVGOutline("fifth4");
     generated[5].toSVGOutline("sixth5");
+
+    /*generated[0].toSVGTans("first0",false);
+    generated[1].toSVGTans("second1",false);
+
+    generated[2].toSVGTans("third2",false);
+    generated[3].toSVGTans("fourth3",false);
+
+    generated[4].toSVGTans("fifth4",false);
+    generated[5].toSVGTans("sixth5",false);*/
+
 };
 
 
@@ -316,8 +318,8 @@ window.onload = function () {
                 console.log(event.currentTarget.firstElementChild);
                 console.log(target.parentNode.parentNode)
             }
-            //generated[chosen].toSVGOutline("game");
-            generated[chosen].toSVGTans("game");
+            generated[chosen].toSVGOutline("game");
+            //generated[chosen].toSVGTans("game");
             document.getElementById("game").style.display = "block";
             addTangramPieces();
             addFlipButton();
@@ -358,15 +360,10 @@ window.onload = function () {
 
     document.getElementById("hint").addEventListener('click', function (){
         hint();
-        //updateTanPiece(setToSol());
     });
 
     document.getElementById("sol").addEventListener('click', function (){
         setToSol();
-        for (var tanIndex = 0; tanIndex < 7; tanIndex++){
-            updateTanPiece(tanIndex);
-        }
-        var tangramPieces = document.getElementsByClassName("tan");
         deselectTan();
     });
 
