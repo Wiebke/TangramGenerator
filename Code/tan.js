@@ -147,7 +147,7 @@ var computeOutline = function (tans) {
             }
         }
         if (maxIndex === -1){
-            console.log("Check");
+            return;
         }
         if (maxAngle === 180 && !firstSegment) {
             outline.pop();

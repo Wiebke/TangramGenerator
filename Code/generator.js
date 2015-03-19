@@ -1,4 +1,4 @@
-var range = new IntAdjoinSqrt2(9,0);
+var range = new IntAdjoinSqrt2(9.5,0);
 
 var compareTangrams = function (tangramA, tangramB){
     return numUniqueElements(tangramA.outline, comparePoints) - numUniqueElements(tangramB.outline, comparePoints);

@@ -31,6 +31,7 @@ var getMouseCoordinates = function (event){
 
 var checkSolved = function (tanIndex){
     var solved;
+    return false;
     if (typeof tanIndex === 'undefined'){
         /* If no tanId is given check if all  */
         solved = true;
@@ -41,6 +42,9 @@ var checkSolved = function (tanIndex){
         console.log(solvedBy);
         if (!solved){
             var tangramFromPieces = new Tangram(gameOutline);
+            if (typeof tangramFromPieces === 'undefined') {
+                return false;
+            }
             /* Probably only works when snapping */
             return arrayEq(generated[chosen].outline, tangramFromPieces.outline, comparePointsFloat, closePoint);
         }
@@ -102,6 +106,18 @@ var hint = function () {
     if (numHints === 0){
         hints = shuffleArray(hints);
     }
+    console.log(hints);
+    if (numHints > 6){
+        return;
+    }
+    console.log(generated[chosen].tans[hints[numHints]]);
+    var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+    shape.setAttributeNS(null, "points", generated[chosen].tans[hints[numHints]].toSVG());
+    shape.setAttributeNS(null, "fill", 'none');
+    shape.setAttributeNS(null, "stroke", "#E9E9E9");
+    shape.setAttributeNS(null, "stroke-width", "0.02");
+    document.getElementById("game").appendChild(shape);
+    numHints++;
 
 };
 
@@ -195,6 +211,7 @@ var addTangramPieces = function () {
         //tangramPieces[tanIndex].addEventListener('mousemove', moveTan);
     }
     document.getElementById("game").addEventListener('mousemove', moveTan);
+    // document.getElementById("game").addEventListener('mouseout', deselectTan);
 };
 
 var addFlipButton = function () {
@@ -264,7 +281,6 @@ var addTangrams = function () {
     }
     failTangram = new Tangram(failTans);
     failTangram.toSVGOutline("first0");*/
-    console.log(JSON.stringify(generated[0]));
 
     for (var i = 0; i < 6; i++){
         generated[i].positionCentered();
@@ -343,6 +359,8 @@ window.onload = function () {
         changeTangramVisibility(false);
         resetPieces();
         solvedBy = [-1,-1,-1,-1,-1,-1,-1];
+        hints = [0,1,2,3,4,5,6];
+        numHints = 0;
     });
 
     document.getElementById("set").addEventListener('click', function (){
