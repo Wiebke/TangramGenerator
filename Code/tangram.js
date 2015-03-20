@@ -31,9 +31,8 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
     var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     var pointsString = "";
-    this.outline = computeOutline(this.tans);
-    for (var i = 0; i < this.outline.length; i++) {
-        pointsString += this.outline[i].toFloatX() + ", " + this.outline[i].toFloatY() + " ";
+    for (var i = 0; i < this.outline[0].length; i++) {
+        pointsString += this.outline[0][i].toFloatX() + ", " + this.outline[0][i].toFloatY() + " ";
     }
     shape.setAttributeNS(null, "points", pointsString);
     // Fill with random color for now

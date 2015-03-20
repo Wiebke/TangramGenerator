@@ -35,7 +35,7 @@ var checkSolved = function () {
     if (typeof tangramFromPieces === 'undefined') {
         return false;
     }
-    var solved = arrayEq(generated[chosen].outline, tangramFromPieces.outline, comparePoints);
+    var solved = arrayEq(generated[chosen].outline[0], tangramFromPieces.outline[0], comparePoints);
     if (!solved){
         return;
     }
@@ -105,9 +105,9 @@ var snapToClosePoints = function () {
     }
     if (!snap){
         for (var pointsId = 0; pointsId < tanPoints.length; pointsId++) {
-            for (var currentPointsId = 0; currentPointsId < generated[chosen].outline.length; currentPointsId++) {
-                if (closePoint(tanPoints[pointsId], generated[chosen].outline[currentPointsId], snapRange)) {
-                    var direction = generated[chosen].outline[currentPointsId].dup().subtract(tanPoints[pointsId]);
+            for (var currentPointsId = 0; currentPointsId < generated[chosen].outline[0].length; currentPointsId++) {
+                if (closePoint(tanPoints[pointsId], generated[chosen].outline[0][currentPointsId], snapRange)) {
+                    var direction = generated[chosen].outline[0][currentPointsId].dup().subtract(tanPoints[pointsId]);
                     gameOutline[currentTan].anchor.add(direction);
                     snap = true;
                     break;

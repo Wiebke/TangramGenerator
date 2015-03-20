@@ -70,16 +70,17 @@ var getAllPoints = function (tans) {
 
 var outlineArea = function (outline){
     var area = 0;
-    for (var pointId = 0; pointId < outline.length; pointId++){
+    for (var pointId = 0; pointId < outline.length-1; pointId++){
         /* Calculate the cross product of consecutive points. This corresponds
          * to twice the area of the triangle (0,0) - vertices[p] -
          * vertices[(p+1)%num_vertices]. This area is positive if the vertices
          * of that triangle are arranged in a counterclockwise order and negative
          * if the vertices are arranged in a clockwise order
          */
-        area += outline[pointId].crossProduct(outline[(pointId+1)%outline.length])
+        area += outline[pointId].crossProduct(outline[(pointId+1)])
             .toFloat();
     }
+    area += outline[pointId].crossProduct(outline[0]).toFloat();
     return Math.abs(area)/2.0;
 };
 
@@ -101,11 +102,10 @@ var outlineContainsAll = function (outline, allPoints){
     return true;
 };
 
-var computeOutline = function (tans) {
+var computeSegments = function (allPoints, tans){
     /* First calculate all line segments involved in the tangram. These line
      * segments are the segments of each individual tan however split up at points
      * from other tans */
-    var allPoints = getAllPoints(tans);
     var allSegments = [];
     var currentSegments;
     for (var tanId = 0; tanId < tans.length; tanId++) {
@@ -123,9 +123,11 @@ var computeOutline = function (tans) {
             allSegments = allSegments.concat(currentSegments[segmentId].split(splitPoints));
         }
     }
-    /* Eliminate duplicates */
     allSegments = eliminateDuplicates(allSegments, compareLineSegments);
-    /* Since the points are sorted, the upper left corner is saved at index 0 */
+    return allSegments;
+};
+
+var computeOutlinePart = function (allPoints, allSegments){
     var lastPoint = allPoints[0];
     var helperPoint = lastPoint.dup();
     helperPoint.subtract(new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)));
@@ -134,12 +136,12 @@ var computeOutline = function (tans) {
     var lastSegment = new LineSegment(helperPoint, lastPoint);
     var firstSegment = true;
     do {
-        currentSegments = allSegments.filter(function (element) {
+        var currentSegments = allSegments.filter(function (element) {
             return !lastSegment.eq(element) && (element.point1.eq(lastPoint) || element.point2.eq(lastPoint));
         });
         var maxAngle = 0;
         var maxIndex = -1;
-        for (segmentId = 0; segmentId < currentSegments.length; segmentId++) {
+        for (var segmentId = 0; segmentId < currentSegments.length; segmentId++) {
             var currentAngle = currentSegments[segmentId].angleTo(lastSegment);
             if (currentAngle > maxAngle){
                 maxIndex = segmentId;
@@ -147,7 +149,7 @@ var computeOutline = function (tans) {
             }
         }
         if (maxIndex === -1){
-            return;
+            break;
         }
         if (maxAngle === 180 && !firstSegment) {
             outline.pop();
@@ -168,28 +170,43 @@ var computeOutline = function (tans) {
         }
     } while (!lastPoint.eq(allPoints[0]) || !outlineContainsAll(outline, allPoints));
     /* When the last point is equal to the first it can be deleted */
-    //outline.pop();
-    return outline;
+    outline.pop();
+    return [outline, allSegments];
 };
 
+var computeOutline = function (tans) {
+    /* First calculate all line segments involved in the tangram. These line
+     * segments are the segments of each individual tan however split up at points
+     * from other tans */
+    var outline = [];
+    var allPoints = getAllPoints(tans);
+    var allSegments = computeSegments(allPoints, tans);
+    /* Eliminate duplicates */
+    var outlinePart = computeOutlinePart(allPoints, allSegments);
+    outline[0] = outlinePart[0];
+    allSegments = outlinePart[1];
+    var area = outlineArea(outline[0]);
+    if (numberNEq(area,16) && area > 16) {
+        console.log("Hole!");
+        /* throw out segments where the endpoint occurs just once */
+        allSegments = allSegments.filter(function () {
+
+        });
+        /* Throw out points that do not occur anymore at all */
+        allPoints = allPoints.filter(function () {
+
+        });
+    }
+    return outline;
+};
 
 /* TODO change to exact computation */
 var computeBoundingBox = function (tans, outline) {
     if (typeof outline === "undefined"){
         outline = getAllPoints(tans);
+    } else{
+        outline = outline[0];
     }
-    /*var minX = 100;
-    var minY = 100;
-    var maxX = -100;
-    var maxY = -100;
-    for (var pointId = 0; pointId < outline.length; pointId++){
-        var currentX = outline[pointId].toFloatX();
-        var currentY = outline[pointId].toFloatY();
-        if (currentX < minX) minX = currentX;
-        if (currentY < minY) minY = currentY;
-        if (currentX > maxX) maxX = currentX;
-        if (currentY > maxY) maxY = currentY;
-    }*/
     var minX = new IntAdjoinSqrt2(100,0);
     var minY = new IntAdjoinSqrt2(100,0);
     var maxX = new IntAdjoinSqrt2(-100,0);
