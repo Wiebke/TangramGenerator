@@ -187,20 +187,34 @@ var computeOutline = function (tans) {
     allSegments = outlinePart[1];
     var area = outlineArea(outline[0]);
     if (numberNEq(area,16) && area > 16) {
-        console.log("Hole!");
-        /* throw out segments where the endpoint occurs just once */
-        allSegments = allSegments.filter(function () {
-
-        });
-        /* Throw out points that do not occur anymore at all */
-        allPoints = allPoints.filter(function () {
-
-        });
+        //console.log("Hole!");
+        var numPointsBefore = allSegments.length*2;
+        var numPointsAfter = 0;
+        while (numPointsBefore != numPointsAfter){
+            numPointsBefore = allSegments.length*2;
+            var remainingPoints = [];
+            for (var segmentsId = 0; segmentsId < allSegments.length; segmentsId++){
+                remainingPoints.push(allSegments[segmentsId].point1);
+                remainingPoints.push(allSegments[segmentsId].point2);
+            }
+            /* throw out segments where the endpoint occurs just once */
+            allSegments = allSegments.filter(function (element) {
+                return bothPointsMultipleTimes(remainingPoints, element.point1, element.point2);
+            });
+            /* Number of Points to consider changed if numPointsAfter is smaller
+             * than before */
+            numPointsAfter = allSegments.length*2;
+        }
+        allPoints = eliminateDuplicates(remainingPoints, comparePoints);
+        outline[1] = computeOutlinePart(allPoints, allSegments)[0];
+        area -= outlineArea(outline[1]);
+        if (numberNEq(area,16) && area > 16) {
+            console.log("Second hole");
+        }
     }
     return outline;
 };
 
-/* TODO change to exact computation */
 var computeBoundingBox = function (tans, outline) {
     if (typeof outline === "undefined"){
         outline = getAllPoints(tans);

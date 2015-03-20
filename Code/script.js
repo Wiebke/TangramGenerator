@@ -59,11 +59,9 @@ var hint = function () {
     if (numHints === 0) {
         hints = shuffleArray(hints);
     }
-    console.log(hints);
     if (numHints > 6) {
         return;
     }
-    console.log(generated[chosen].tans[hints[numHints]]);
     var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     shape.setAttributeNS(null, "points", generated[chosen].tans[hints[numHints]].toSVG());
     shape.setAttributeNS(null, "fill", 'none');
@@ -71,20 +69,17 @@ var hint = function () {
     shape.setAttributeNS(null, "stroke-width", "0.02");
     document.getElementById("game").appendChild(shape);
     numHints++;
-
 };
 
 var snapToClosePoints = function () {
     if (currentTan === -1) {
         return;
     }
-    console.log("Snap started");
     var tanPoints = gameOutline[currentTan].getPoints();
     var currentTanPoints;
     var snap = false;
     for (var tanId = 0; tanId < 7; tanId++) {
         if (tanId === currentTan) continue;
-        console.log("Testing tan " + tanId);
         currentTanPoints = gameOutline[tanId].getPoints();
         for (var pointsId = 0; pointsId < tanPoints.length; pointsId++) {
             for (var currentPointsId = 0; currentPointsId < currentTanPoints.length; currentPointsId++) {
@@ -165,9 +160,6 @@ var deselectTan = function (event) {
 };
 
 var moveTan = function (event) {
-    /*var target = ((window.event)?(event.srcElement):(event.currentTarget));
-     var tanIndex = parseInt(target.id[target.id.length - 1]);*/
-    /* console.log("moved: " + tanIndex + ", " + currentTan); */
     var mouse = getMouseCoordinates(event);
     if (currentTan != -1) {
         gameOutline[currentTan].anchor = mouse.subtract(mouseOffset);
@@ -323,12 +315,6 @@ window.onload = function () {
                 sourceId = target.id;
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
-            console.log(JSON.stringify(generated[chosen]));
-            if (typeof generated[chosen] === 'undefined') {
-                console.log(target);
-                console.log(event.currentTarget.firstElementChild);
-                console.log(target.parentNode.parentNode)
-            }
             generated[chosen].toSVGOutline("game");
             //generated[chosen].toSVGTans("game");
             document.getElementById("game").style.display = "block";

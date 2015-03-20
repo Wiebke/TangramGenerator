@@ -43,6 +43,17 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     //shape.setAttributeNS(null, "stroke", "#E9E9E9");
     //shape.setAttributeNS(null, "stroke-width", "0.05");
     tangramSVG.appendChild(shape);
+    if (this.outline.length > 1){
+        var hole = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        pointsString = "";
+        for (var i = 0; i < this.outline[1].length; i++) {
+            pointsString += this.outline[1][i].toFloatX() + ", " + this.outline[1][i].toFloatY() + " ";
+        }
+        hole.setAttributeNS(null, "points", pointsString);
+        hole.setAttributeNS(null, "fill", '#BCBCBC');
+        hole.setAttributeNS(null, "fill-opacity", "0.5");
+        tangramSVG.appendChild(hole);
+    }
     /* Clear old content */
     var element = document.getElementById(elementName);
     while (element.firstChild) {

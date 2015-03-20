@@ -256,3 +256,35 @@ var relativeOrientation = function (pointA, pointB, pointC){
         return crossProduct > 0 ? 1 : -1;
     }
 };
+
+var bothPointsMultipleTimes = function (pointArray ,pointA, pointB){
+    var occurrenceA = [];
+    var occurrenceB = [];
+    for (var pointId = 0; pointId < pointArray.length; pointId++){
+        if (pointArray[pointId].eq(pointA)){
+            occurrenceA.push(pointId);
+        }
+        if (pointArray[pointId].eq(pointB)){
+            occurrenceB.push(pointId);
+        }
+    }
+    return occurrenceA.length >= 2 && occurrenceB.length >= 2;
+};
+
+var firstIndexOfPoints = function (pointArray, point){
+    for (var pointId = 0; pointId < pointArray.length; pointId++){
+        if (pointArray[pointId].eq(point)){
+            return pointId;
+        }
+    }
+    return -1;
+};
+
+var lastIndexOfPoints = function (pointArray, point){
+    for (var pointId = pointArray.length-1; pointId >= 0; pointId--){
+        if (pointArray[pointId].eq(point)){
+            return pointId;
+        }
+    }
+    return -1;
+};
