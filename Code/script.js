@@ -31,9 +31,15 @@ var getMouseCoordinates = function (event) {
 
 var checkSolved = function () {
     var tangramFromPieces = new Tangram(gameOutline);
-    /* No outline could be computed -> not solved */
-    if (typeof tangramFromPieces === 'undefined') {
+    /* Outline of the pieces and the chosen tangram have different length or the
+     * outline is undefined -> not solved
+     */
+    if (typeof tangramFromPieces.outline === 'undefined'
+            || generated[chosen].outline.length != tangramFromPieces.outline.length) {
         return false;
+    }
+    for (var outlineId = 0; outlineId < generated[chosen].outline.length; outlineId++){
+        solved = solved && arrayEq(generated[chosen].outline[outlineId], tangramFromPieces.outline[outlineId], comparePoints);
     }
     var solved = arrayEq(generated[chosen].outline[0], tangramFromPieces.outline[0], comparePoints);
     if (!solved){
@@ -256,18 +262,18 @@ var addFlipButton = function () {
 };
 
 var addTangrams = function () {
-    /*var failTangram = '{"tans":[{"tanType":0,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":1,"anchor":{"x":{"coeffInt":9,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":1}],"outline":[{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}},{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":1}},{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":2}},{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":1}},{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":6,"coeffSqrt":0}}]}';
-     failTangram = JSON.parse(failTangram);
+    var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":0,"coeffSqrt":0}},"orientation":1},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":0},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":1,"coeffSqrt":0}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":-1,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":3},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
+    failTangram = JSON.parse(failTangram);
      var failTans = [];
      for (var i = 0; i < 7; i++){
-     var currentTan = failTangram.tans[i];
+     var currentTan = failTangram[i];
      var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
      currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
      currentTan.anchor.x.coeffSqrt));
      failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
      }
      failTangram = new Tangram(failTans);
-     failTangram.toSVGOutline("first0");*/
+     generated[0] = failTangram;
 
     for (var i = 0; i < 6; i++) {
         generated[i].positionCentered();

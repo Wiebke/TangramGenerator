@@ -127,7 +127,33 @@ var computeSegments = function (allPoints, tans){
     return allSegments;
 };
 
-var computeOutlinePart = function (allPoints, allSegments){
+var findMinSegments = function (lastSegment, segments){
+    var minAngle = 360;
+    var minIndex = -1;
+    for (var segmentId = 0; segmentId < segments.length; segmentId++) {
+        var currentAngle = segments[segmentId].angleTo(lastSegment);
+        if (currentAngle < minAngle){
+            minIndex = segmentId;
+            minAngle = currentAngle;
+        }
+    }
+    return [minIndex, minAngle];
+};
+
+var findMaxSegments = function (lastSegment, segments){
+    var maxAngle = 0;
+    var maxIndex = -1;
+    for (var segmentId = 0; segmentId < segments.length; segmentId++) {
+        var currentAngle = segments[segmentId].angleTo(lastSegment);
+        if (currentAngle > maxAngle){
+            maxIndex = segmentId;
+            maxAngle = currentAngle;
+        }
+    }
+    return [maxIndex,maxAngle];
+};
+
+var computeOutlinePart = function (allPoints, allSegments, angleFinder){
     var lastPoint = allPoints[0];
     var helperPoint = lastPoint.dup();
     helperPoint.subtract(new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)));
@@ -139,29 +165,23 @@ var computeOutlinePart = function (allPoints, allSegments){
         var currentSegments = allSegments.filter(function (element) {
             return !lastSegment.eq(element) && (element.point1.eq(lastPoint) || element.point2.eq(lastPoint));
         });
-        var maxAngle = 0;
-        var maxIndex = -1;
-        for (var segmentId = 0; segmentId < currentSegments.length; segmentId++) {
-            var currentAngle = currentSegments[segmentId].angleTo(lastSegment);
-            if (currentAngle > maxAngle){
-                maxIndex = segmentId;
-                maxAngle = currentAngle;
-            }
-        }
-        if (maxIndex === -1){
+        var foundAngle = angleFinder(lastSegment, currentSegments);
+        var index = foundAngle[0];
+        var angle = foundAngle[1];
+        if (index === -1){
             break;
         }
-        if (maxAngle === 180 && !firstSegment) {
+        if (angle === 180 && !firstSegment) {
             outline.pop();
         }
-        if (currentSegments[maxIndex].point1.eq(lastPoint)){
-            outline.push(currentSegments[maxIndex].point2);
-            lastPoint = currentSegments[maxIndex].point2;
+        if (currentSegments[index].point1.eq(lastPoint)){
+            outline.push(currentSegments[index].point2);
+            lastPoint = currentSegments[index].point2;
         } else {
-            outline.push(currentSegments[maxIndex].point1);
-            lastPoint = currentSegments[maxIndex].point1;
+            outline.push(currentSegments[index].point1);
+            lastPoint = currentSegments[index].point1;
         }
-        lastSegment = currentSegments[maxIndex];
+        lastSegment = currentSegments[index];
         allSegments = allSegments.filter(function(element){
             return !lastSegment.eq(element);
         });
@@ -174,43 +194,48 @@ var computeOutlinePart = function (allPoints, allSegments){
     return [outline, allSegments];
 };
 
+var computeHole = function (allPoints, allSegments){
+    var numPointsBefore = allSegments.length*2;
+    var numPointsAfter = 0;
+    while (numPointsBefore != numPointsAfter){
+        numPointsBefore = allSegments.length*2;
+        var remainingPoints = [];
+        for (var segmentsId = 0; segmentsId < allSegments.length; segmentsId++){
+            remainingPoints.push(allSegments[segmentsId].point1);
+            remainingPoints.push(allSegments[segmentsId].point2);
+        }
+        /* Throw out segments where the endpoint occurs just once */
+        allSegments = allSegments.filter(function (element) {
+            return bothPointsMultipleTimes(remainingPoints, element.point1, element.point2);
+        });
+        /* Number of Points to consider changed if numPointsAfter is smaller
+         * before */
+        numPointsAfter = allSegments.length*2;
+    }
+    allPoints = eliminateDuplicates(remainingPoints, comparePoints);
+    return computeOutlinePart(allPoints, allSegments, findMinSegments);
+};
+
 var computeOutline = function (tans) {
     /* First calculate all line segments involved in the tangram. These line
      * segments are the segments of each individual tan however split up at points
      * from other tans */
     var outline = [];
+    var outlineId = 0;
     var allPoints = getAllPoints(tans);
     var allSegments = computeSegments(allPoints, tans);
     /* Eliminate duplicates */
-    var outlinePart = computeOutlinePart(allPoints, allSegments);
-    outline[0] = outlinePart[0];
+    var outlinePart = computeOutlinePart(allPoints, allSegments, findMaxSegments);
+    outline[outlineId] = outlinePart[0];
     allSegments = outlinePart[1];
     var area = outlineArea(outline[0]);
-    if (numberNEq(area,16) && area > 16) {
-        //console.log("Hole!");
-        var numPointsBefore = allSegments.length*2;
-        var numPointsAfter = 0;
-        while (numPointsBefore != numPointsAfter){
-            numPointsBefore = allSegments.length*2;
-            var remainingPoints = [];
-            for (var segmentsId = 0; segmentsId < allSegments.length; segmentsId++){
-                remainingPoints.push(allSegments[segmentsId].point1);
-                remainingPoints.push(allSegments[segmentsId].point2);
-            }
-            /* throw out segments where the endpoint occurs just once */
-            allSegments = allSegments.filter(function (element) {
-                return bothPointsMultipleTimes(remainingPoints, element.point1, element.point2);
-            });
-            /* Number of Points to consider changed if numPointsAfter is smaller
-             * than before */
-            numPointsAfter = allSegments.length*2;
-        }
-        allPoints = eliminateDuplicates(remainingPoints, comparePoints);
-        outline[1] = computeOutlinePart(allPoints, allSegments)[0];
-        area -= outlineArea(outline[1]);
-        if (numberNEq(area,16) && area > 16) {
-            console.log("Second hole");
-        }
+    /* Compute possible holes */
+    while (numberNEq(area,16) && area > 16) {
+        outlineId++;
+        outlinePart = computeHole(allPoints, allSegments, findMinSegments);
+        outline[outlineId] = outlinePart[0];
+        allSegments = outlinePart[1];
+        area -= outlineArea(outline[outlineId]);
     }
     return outline;
 };
