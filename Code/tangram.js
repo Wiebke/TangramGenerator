@@ -29,30 +29,22 @@ Tangram.prototype.positionCentered = function () {
 
 Tangram.prototype.toSVGOutline = function (elementName) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    var pointsString = "";
-    for (var i = 0; i < this.outline[0].length; i++) {
-        pointsString += this.outline[0][i].toFloatX() + ", " + this.outline[0][i].toFloatY() + " ";
+    var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    var pathdata = "M " + this.outline[0][0].toFloatX() + ", " + this.outline[0][0].toFloatY() + " ";
+    for (var i = 1; i < this.outline[0].length; i++) {
+        pathdata += "L " + this.outline[0][i].toFloatX() + ", " + this.outline[0][i].toFloatY() + " ";
     }
-    shape.setAttributeNS(null, "points", pointsString);
-    // Fill with random color for now
-    // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
+    pathdata += "Z ";
     shape.setAttributeNS(null, "fill", '#3299BB');
-    // shape.setAttributeNS(null, "fill", 'none');
-    // shape.setAttributeNS(null, "fill-opacity", "0.5");
-    //shape.setAttributeNS(null, "stroke", "#E9E9E9");
-    //shape.setAttributeNS(null, "stroke-width", "0.05");
-    tangramSVG.appendChild(shape);
     for (var outlineId = 1; outlineId < this.outline.length;  outlineId++){
-        var hole = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        pointsString = "";
-        for (var i = 0; i < this.outline[outlineId].length; i++) {
-            pointsString += this.outline[outlineId][i].toFloatX() + ", " + this.outline[outlineId][i].toFloatY() + " ";
+        pathdata += "M " + this.outline[outlineId][0].toFloatX() + ", " + this.outline[outlineId][0].toFloatY() + " ";
+        for (var i = 1; i < this.outline[outlineId].length; i++) {
+            pathdata += "L " + this.outline[outlineId][i].toFloatX() + ", " + this.outline[outlineId][i].toFloatY() + " ";
         }
-        hole.setAttributeNS(null, "points", pointsString);
-        hole.setAttributeNS(null, "fill", '#BCBCBC');
-        tangramSVG.appendChild(hole);
+        pathdata += "Z";
     }
+    shape.setAttributeNS(null, "d", pathdata);
+    tangramSVG.appendChild(shape);
     /* Clear old content */
     var element = document.getElementById(elementName);
     while (element.firstChild) {

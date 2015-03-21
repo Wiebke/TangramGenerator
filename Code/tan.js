@@ -154,6 +154,10 @@ var findMaxSegments = function (lastSegment, segments){
 };
 
 var computeOutlinePart = function (allPoints, allSegments, angleFinder){
+    if (allPoints.length === 0 || allSegments.length === 0) {
+        console.log("No points or segments left");
+        return;
+    }
     var lastPoint = allPoints[0];
     var helperPoint = lastPoint.dup();
     helperPoint.subtract(new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)));
@@ -195,6 +199,10 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder){
 };
 
 var computeHole = function (allPoints, allSegments){
+    if (allPoints.length === 0 || allSegments.length === 0) {
+        console.log("No points or segments left");
+        return;
+    }
     var numPointsBefore = allSegments.length*2;
     var numPointsAfter = 0;
     while (numPointsBefore != numPointsAfter){

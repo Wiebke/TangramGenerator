@@ -182,7 +182,6 @@ var flipParallelogram = function () {
 };
 
 var addTangramPieces = function () {
-
     for (var tanIndex = 0; tanIndex < gameOutline.length; tanIndex++) {
         var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
         var id = "piece" + tanIndex;
@@ -195,7 +194,6 @@ var addTangramPieces = function () {
         shape.setAttributeNS(null, "stroke-width", "0.05");
         document.getElementById("game").appendChild(shape);
     }
-
     var tangramPieces = document.getElementsByClassName("tan");
     for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
         tangramPieces[tanIndex].addEventListener('click', rotateTan);
@@ -262,18 +260,18 @@ var addFlipButton = function () {
 };
 
 var addTangrams = function () {
-    var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":0,"coeffSqrt":0}},"orientation":1},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":0},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":1,"coeffSqrt":0}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":-1,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":3},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
+    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":0,"coeffSqrt":0}},"orientation":1},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":0},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":1,"coeffSqrt":0}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":-1,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":3},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
     failTangram = JSON.parse(failTangram);
      var failTans = [];
      for (var i = 0; i < 7; i++){
-     var currentTan = failTangram[i];
+     var currentTan = failTangram.tans[i];
      var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
      currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
      currentTan.anchor.x.coeffSqrt));
      failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
      }
      failTangram = new Tangram(failTans);
-     generated[0] = failTangram;
+     generated[0] = failTangram;*/
 
     for (var i = 0; i < 6; i++) {
         generated[i].positionCentered();
