@@ -1,9 +1,14 @@
 var numTangrams = 100;
+var generated;
+var chosen;
+/* Variables used during solving */
 var currentTan = -1;
 var mouseOffset = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
 var lastMouse = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
-var generated;
-var chosen;
+var watch = false;
+var timer;
+var minutes;
+var seconds;
 var hints = [0, 1, 2, 3, 4, 5, 6];
 var numHints = 0;
 var snapRange = 0.2;
@@ -38,10 +43,10 @@ var checkSolved = function () {
             || generated[chosen].outline.length != tangramFromPieces.outline.length) {
         return false;
     }
+    var solved = true;
     for (var outlineId = 0; outlineId < generated[chosen].outline.length; outlineId++){
         solved = solved && arrayEq(generated[chosen].outline[outlineId], tangramFromPieces.outline[outlineId], comparePoints);
     }
-    var solved = arrayEq(generated[chosen].outline[0], tangramFromPieces.outline[0], comparePoints);
     if (!solved){
         return;
     }
@@ -49,6 +54,7 @@ var checkSolved = function () {
     for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
         tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");
         tangramPieces[tanIndex].setAttributeNS(null, "opacity", "1.0");
+        stopWatch();
     }
 };
 
@@ -134,7 +140,7 @@ var updateTanPiece = function (tanIndex) {
 var rotateTan = function (event) {
     var target = ((window.event) ? (event.srcElement) : (event.currentTarget));
     var tanIndex = parseInt(target.id[target.id.length - 1]);
-    /* console.log("clicked: " + tanIndex); */
+    console.log("clicked: " + tanIndex);
     var mouse = getMouseCoordinates(event);
     var mouseMove = lastMouse.dup().subtract(mouse);
     if (Math.abs(mouseMove.toFloatX()) < 0.05 && Math.abs(mouseMove.toFloatY()) < 0.05) {
@@ -156,6 +162,7 @@ var selectTan = function (event) {
     /* Bring this piece to the front */
     var piece = document.getElementById("piece" + tanIndex);
     document.getElementById("game").appendChild(piece);
+    /* Add moving icon */
 };
 
 var deselectTan = function (event) {
@@ -181,6 +188,32 @@ var flipParallelogram = function () {
     checkSolved();
 };
 
+/* Watch functions */
+
+var stopWatch = function () {
+    clearTimeout(timer);
+};
+
+var updateWatch = function () {
+    console.log("Second");
+    seconds++;
+    if (seconds >= 60){
+        seconds = 0;
+        minutes++;
+    }
+    var watch = document.getElementById("watch");
+    watch.textContent = "\uf017  " + (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+    timer = setTimeout(updateWatch, 1000);
+};
+
+var startWatch = function () {
+    var watch = document.getElementById("watch");
+    watch.textContent = "\uf017  " + "00:00";
+    minutes = 0;
+    seconds = 0;
+    timer = setTimeout(updateWatch, 1000);
+};
+
 var addTangramPieces = function () {
     for (var tanIndex = 0; tanIndex < gameOutline.length; tanIndex++) {
         var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
@@ -203,6 +236,31 @@ var addTangramPieces = function () {
     }
     document.getElementById("game").addEventListener('mousemove', moveTan);
     // document.getElementById("game").addEventListener('mouseout', deselectTan);
+};
+
+var addIcons = function () {
+    var moveIcon = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    moveIcon.setAttributeNS(null, "x", "-10");
+    moveIcon.setAttributeNS(null, "y", "-10");
+    moveIcon.setAttributeNS(null, "id", "move");
+    moveIcon.textContent = "\uf047";
+    document.getElementById("game").appendChild(moveIcon);
+    var rotateIcon = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    rotateIcon.setAttributeNS(null, "x", "-10");
+    rotateIcon.setAttributeNS(null, "y", "-10");
+    rotateIcon.setAttributeNS(null, "id", "rotate");
+    rotateIcon.textContent = "\uf01e";
+    document.getElementById("game").appendChild(rotateIcon);
+    var watch = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    watch.setAttributeNS(null, "x", "0.5");
+    watch.setAttributeNS(null, "y", "9.75");
+    watch.setAttributeNS(null, "fill", "#E9E9E9");
+    watch.setAttributeNS(null, "id", "watch");
+    watch.setAttributeNS(null, "font-size", "0.45");
+    watch.textContent = "\uf017  " + "00:00";
+    document.getElementById("game").appendChild(watch);
+
+
 };
 
 var addFlipButton = function () {
@@ -324,6 +382,8 @@ window.onload = function () {
             document.getElementById("game").style.display = "block";
             addTangramPieces();
             addFlipButton();
+            addIcons();
+            startWatch();
         });
     }
 

@@ -82,6 +82,10 @@ header, #content, footer {
     background-color: #BCBCBC;
 }
 
+svg text {
+    font-family: FontAwesome;
+}
+
 #select, #set, #hint, #sol {
     display: none;
     margin-left: 2%;

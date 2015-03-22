@@ -91,8 +91,8 @@ var arrayEq = function (arrayA, arrayB, compareFunction){
     if (arrayA.length != arrayB.length){
         return false;
     }
-    arrayA = arrayA.sort(compareFunction);
-    arrayB = arrayB.sort(compareFunction);
+    arrayA = arrayA.slice(0).sort(compareFunction);
+    arrayB = arrayB.slice(0).sort(compareFunction);
     for (var index = 0; index < arrayA.length; index++){
         if (compareFunction(arrayA[index], arrayB[index]) != 0){
             return false;

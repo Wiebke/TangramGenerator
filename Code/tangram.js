@@ -69,13 +69,3 @@ Tangram.prototype.toSVGTans = function (elementName, shifted) {
     }
     document.getElementById(elementName).appendChild(tangramSVG);
 };
-
-var getTansByID = function (tanArray, tanID){
-    /* TODO: Not really needed then Tangrams have sorted tan arrays are sorted */
-    var tansWithID = tanArray.filter(function (element) {
-        return element.tanType === tanID
-            || (tanID === 4 && element.tanType === 5)
-            || (tanID === 5 && element.tanType === 4);
-    });
-    return tansWithID;
-};
