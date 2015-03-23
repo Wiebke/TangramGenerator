@@ -22,7 +22,7 @@ Tan.prototype.area = function () {
 
 Tan.prototype.getPoints = function () {
     var points = [];
-    points[0] = this.anchor;
+    points[0] = this.anchor.dup();
     var directions = Directions[this.tanType][this.orientation];
     for (var dirId = 0; dirId < directions.length; dirId++) {
         var current = this.anchor.dup();

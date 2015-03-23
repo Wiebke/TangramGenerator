@@ -203,30 +203,31 @@ Point.prototype.translate = function (transX, transY) {
 Point.prototype.rotate = function (angle) {
     // Transform angle to that it falls in the interval [0;360]
     angle = clipAngle(angle);
-    // If angle is not a multiple of 45 degrees, we will not use it for rotation
-    if (angle % 45 != 0) {
-        console.log("Rotations around " + angle + "degrees are not supported!");
-        return;
-    }
     var cos;
     var sin;
-    // Determine value of sin and cos
-    if (angle % 90 != 0) {
-        cos = new IntAdjoinSqrt2(0, 0.5);
-        sin = new IntAdjoinSqrt2(0, 0.5);
-    } else if (angle % 180 != 0) {
-        cos = new IntAdjoinSqrt2(0, 0);
-        sin = new IntAdjoinSqrt2(1, 0);
+    // If angle is not a multiple of 45 degrees
+    if (angle % 45 != 0) {
+        cos = new IntAdjoinSqrt2(Math.cos(toRadians(angle)), 0);
+        sin = new IntAdjoinSqrt2(Math.sin(toRadians(angle)), 0);
     } else {
-        cos = new IntAdjoinSqrt2(1, 0);
-        sin = new IntAdjoinSqrt2(0, 0);
-    }
-    // Determine the sign of sin and cos
-    if (angle > 180 && angle < 360) {
-        sin.neg();
-    }
-    if (angle > 90 && angle < 270) {
-        cos.neg();
+        // Determine value of sin and cos
+        if (angle % 90 != 0) {
+            cos = new IntAdjoinSqrt2(0, 0.5);
+            sin = new IntAdjoinSqrt2(0, 0.5);
+        } else if (angle % 180 != 0) {
+            cos = new IntAdjoinSqrt2(0, 0);
+            sin = new IntAdjoinSqrt2(1, 0);
+        } else {
+            cos = new IntAdjoinSqrt2(1, 0);
+            sin = new IntAdjoinSqrt2(0, 0);
+        }
+        // Determine the sign of sin and cos
+        if (angle > 180 && angle < 360) {
+            sin.neg();
+        }
+        if (angle > 90 && angle < 270) {
+            cos.neg();
+        }
     }
     var rotationMatrix = [[cos, sin.dup().neg(), new IntAdjoinSqrt2(0, 0)],
         [sin, cos, new IntAdjoinSqrt2(0, 0)],

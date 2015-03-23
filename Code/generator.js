@@ -1,8 +1,8 @@
 var range = new IntAdjoinSqrt2(9.5,0);
 
 var compareTangrams = function (tangramA, tangramB){
-    return tangramB.outline.length - tangramA.outline.length;
-    //return numUniqueElements(tangramA.outline[0], comparePoints) - numUniqueElements(tangramB.outline[0], comparePoints);
+    //return tangramB.outline.length - tangramA.outline.length;
+    return numUniqueElements(tangramA.outline[0], comparePoints) - numUniqueElements(tangramB.outline[0], comparePoints);
 };
 
 var checkNewTan = function (currentTans, newTan){
