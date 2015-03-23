@@ -160,7 +160,7 @@ Point.prototype.dotProduct = function (other) {
     return this.x.dup().multiply(other.x).add(this.y.dup().multiply(other.y));
 };
 
-Point.prototype.crossProduct = function (other) {
+Point.prototype.determinant = function (other) {
     /* In 2D, the cross product corresponds to the determinant of the matrix with the
      * two points as rows or columns */
     return this.x.dup().multiply(other.y).subtract(this.y.dup().multiply(other.x));
@@ -249,12 +249,12 @@ Point.prototype.scale = function (factor) {
 /* Returns the relative orientation of three points, if the points are collinear,
  * the method returns 0, otherwise it return -1 or +1 depending on which side */
 var relativeOrientation = function (pointA, pointB, pointC){
-    var crossProduct = pointA.dup().subtract(pointC).crossProduct(pointB.dup().subtract(pointC));
-    crossProduct = crossProduct.toFloat();
-    if (numberEq(crossProduct,0)) {
+    var determinant = pointA.dup().subtract(pointC).determinant(pointB.dup().subtract(pointC));
+    determinant = determinant.toFloat();
+    if (numberEq(determinant,0)) {
         return 0;
     } else {
-        return crossProduct > 0 ? 1 : -1;
+        return determinant > 0 ? 1 : -1;
     }
 };
 

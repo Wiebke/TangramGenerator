@@ -77,10 +77,10 @@ var outlineArea = function (outline){
          * of that triangle are arranged in a counterclockwise order and negative
          * if the vertices are arranged in a clockwise order
          */
-        area += outline[pointId].crossProduct(outline[(pointId+1)])
+        area += outline[pointId].determinant(outline[(pointId+1)])
             .toFloat();
     }
-    area += outline[pointId].crossProduct(outline[0]).toFloat();
+    area += outline[pointId].determinant(outline[0]).toFloat();
     return Math.abs(area)/2.0;
 };
 

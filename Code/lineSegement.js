@@ -73,7 +73,7 @@ LineSegment.prototype.lineParameters = function (){
         var direction = this.direction();
         parameters[0] = direction.toFloatX() / direction.toFloatY();
         parameters[1] = -1.0;
-        parameters[2] = this.point2.crossProduct(this.point1).toFloat()
+        parameters[2] = this.point2.determinant(this.point1).toFloat()
             / direction.toFloatX();
     }
     return parameters;

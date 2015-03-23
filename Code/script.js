@@ -10,6 +10,7 @@ var lastAngle = 0;
 var hints = [0, 1, 2, 3, 4, 5, 6];
 var numHints = 0;
 var snapRange = 0.2;
+var snapped = [false, false, false, false, false, false, false];
 /* Variables for statistics */
 var timer;
 var minutes;
@@ -29,15 +30,15 @@ var changeTangramVisibility = function (hide) {
     document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
 };
 
-var changeIconVisibility = function (showMove, showRotate){
-    if (showMove){
+var changeIconVisibility = function (showMove, showRotate) {
+    if (showMove) {
         document.getElementById("move").setAttributeNS(null, "display", "block");
         move = true;
     } else {
         document.getElementById("move").setAttributeNS(null, "display", "none");
         move = false;
     }
-    if (showRotate){
+    if (showRotate) {
         document.getElementById("rotate").setAttributeNS(null, "display", "block");
     } else {
         document.getElementById("rotate").setAttributeNS(null, "display", "none");
@@ -59,14 +60,14 @@ var checkSolved = function () {
      * outline is undefined -> not solved
      */
     if (typeof tangramFromPieces.outline === 'undefined'
-            || generated[chosen].outline.length != tangramFromPieces.outline.length) {
+        || generated[chosen].outline.length != tangramFromPieces.outline.length) {
         return false;
     }
     var solved = true;
-    for (var outlineId = 0; outlineId < generated[chosen].outline.length; outlineId++){
+    for (var outlineId = 0; outlineId < generated[chosen].outline.length; outlineId++) {
         solved = solved && arrayEq(generated[chosen].outline[outlineId], tangramFromPieces.outline[outlineId], comparePoints);
     }
-    if (!solved){
+    if (!solved) {
         return;
     }
     var tangramPieces = document.getElementsByClassName("tan");
@@ -77,19 +78,19 @@ var checkSolved = function () {
         var watch = document.getElementById("watch");
         watch.textContent = "";
         var line0 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        line0.setAttributeNS(null, 'x','11');
-        line0.setAttributeNS(null,'dy','1.2em');
+        line0.setAttributeNS(null, 'x', '11');
+        line0.setAttributeNS(null, 'dy', '1.2em');
         line0.textContent = "You solved it";
         watch.appendChild(line0);
         var line1 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        line1.setAttributeNS(null,'x','11');
-        line1.setAttributeNS(null,'dy','1.2em');
+        line1.setAttributeNS(null, 'x', '11');
+        line1.setAttributeNS(null, 'dy', '1.2em');
         line1.textContent = "in \uf017  " + (minutes ? (minutes > 9 ? minutes : "0" +
-            minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + " with";
+        minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + " with";
         watch.appendChild(line1);
         var line2 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        line2.setAttributeNS(null,'x','11');
-        line2.setAttributeNS(null,'dy','1.2em');
+        line2.setAttributeNS(null, 'x', '11');
+        line2.setAttributeNS(null, 'dy', '1.2em');
         line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
         watch.appendChild(line2);
         /* Set new position */
@@ -136,31 +137,54 @@ var snapToClosePoints = function () {
         for (var pointsId = 0; pointsId < tanPoints.length; pointsId++) {
             for (var currentPointsId = 0; currentPointsId < currentTanPoints.length; currentPointsId++) {
                 if (closePoint(tanPoints[pointsId], currentTanPoints[currentPointsId], snapRange)) {
-                    var direction = currentTanPoints[currentPointsId].dup().subtract(tanPoints[pointsId]);
-                    gameOutline[currentTan].anchor.add(direction);
+                    if (!snapped[tanId]) {
+                        var direction = currentTanPoints[currentPointsId].dup().subtract(tanPoints[pointsId]);
+                        gameOutline[currentTan].anchor.add(direction);
+                    } else {
+                        gameOutline[currentTan].anchor = currentPointsId === 0 ?
+                            gameOutline[tanId].anchor.dup() : gameOutline[tanId].anchor.dup().add(
+                            Directions[gameOutline[tanId].tanType][gameOutline[tanId]
+                                .orientation][currentPointsId-1]);
+                        if (pointsId != 0){
+                            gameOutline[currentTan].anchor.subtract(
+                                Directions[gameOutline[currentTan].tanType]
+                                    [gameOutline[currentTan].orientation][pointsId-1]);
+                        }
+                        snapped[currentTan] = true;
+                    }
                     snap = true;
                     break;
                 }
             }
-            if (snap){
+            if (snap) {
                 break;
             }
         }
-        if (snap){
+        if (snap) {
             break;
         }
     }
-    if (!snap){
+    if (!snap) {
         for (var pointsId = 0; pointsId < tanPoints.length; pointsId++) {
-            for (var currentPointsId = 0; currentPointsId < generated[chosen].outline[0].length; currentPointsId++) {
-                if (closePoint(tanPoints[pointsId], generated[chosen].outline[0][currentPointsId], snapRange)) {
-                    var direction = generated[chosen].outline[0][currentPointsId].dup().subtract(tanPoints[pointsId]);
-                    gameOutline[currentTan].anchor.add(direction);
-                    snap = true;
-                    break;
+            for (var outlineId = 0; outlineId < generated[chosen].outline.length; outlineId++) {
+                for (var currentPointsId = 0; currentPointsId < generated[chosen].outline[outlineId].length; currentPointsId++) {
+                    if (closePoint(tanPoints[pointsId], generated[chosen].outline[outlineId][currentPointsId], snapRange)) {
+                        /*var direction = generated[chosen].outline[outlineId][currentPointsId].dup().subtract(tanPoints[pointsId]);
+                        gameOutline[currentTan].anchor.add(direction);*/
+                        gameOutline[currentTan].anchor = generated[chosen].
+                            outline[outlineId][currentPointsId].dup();
+                        if (pointsId != 0){
+                            gameOutline[currentTan].anchor.subtract(
+                                Directions[gameOutline[currentTan].tanType]
+                                    [gameOutline[currentTan].orientation][pointsId-1]);
+                        }
+                        snap = true;
+                        snapped[currentTan] = true;
+                        break;
+                    }
                 }
             }
-            if (snap){
+            if (snap) {
                 break;
             }
         }
@@ -169,16 +193,16 @@ var snapToClosePoints = function () {
 };
 
 var snapToClosestRotation = function (mouse) {
-    if (currentTan === -1){
+    if (currentTan === -1) {
         return;
     }
     var tanCenter = gameOutline[currentTan].insidePoint();
     var currentAngle = clipAngle(lastAngle - new LineSegment(tanCenter,
         gameOutline[currentTan].anchor).angleTo(new LineSegment(tanCenter, mouse)));
-    currentAngle = Math.round(currentAngle/45);
-    console.log(currentAngle);
+    currentAngle = Math.round(currentAngle / 45);
     gameOutline[currentTan].orientation = (gameOutline[currentTan].orientation + currentAngle) % 8;
-    gameOutline[currentTan].anchor.subtract(tanCenter).rotate(45*currentAngle).add(tanCenter);
+    gameOutline[currentTan].anchor.subtract(tanCenter).rotate(45 * currentAngle).add(tanCenter);
+    rotations++;
     updateTanPiece(currentTan);
 };
 
@@ -191,7 +215,7 @@ var updateTanPiece = function (tanIndex) {
     tan.setAttributeNS(null, "points", gameOutline[tanIndex].toSVG());
 };
 
-var updateTanPieceRotation = function (tanIndex, angle){
+var updateTanPieceRotation = function (tanIndex, angle) {
     if (tanIndex < 0) {
         return;
     }
@@ -200,7 +224,7 @@ var updateTanPieceRotation = function (tanIndex, angle){
     var tan = document.getElementById(tanId);
     var points = gameOutline[tanIndex].getPoints();
     var pointsString = "";
-    for (var pointId = 0; pointId < points.length; pointId++){
+    for (var pointId = 0; pointId < points.length; pointId++) {
         points[pointId].subtract(tanCenter).rotate(angle).add(tanCenter);
         pointsString += points[pointId].toFloatX() + ", " + points[pointId].toFloatY() + " ";
     }
@@ -210,7 +234,7 @@ var updateTanPieceRotation = function (tanIndex, angle){
 var rotateTan = function (event) {
     var target = ((window.event) ? (event.srcElement) : (event.currentTarget));
     var tanIndex = parseInt(target.id[target.id.length - 1]);
-    console.log("clicked: " + tanIndex);
+    // console.log("clicked: " + tanIndex);
     var mouse = getMouseCoordinates(event);
     var mouseMove = lastMouse.dup().subtract(mouse);
     if (Math.abs(mouseMove.toFloatX()) < 0.05 && Math.abs(mouseMove.toFloatY()) < 0.05) {
@@ -225,27 +249,32 @@ var rotateTan = function (event) {
 var selectTan = function (event) {
     var target = ((window.event) ? (event.srcElement) : (event.currentTarget));
     var tanIndex = parseInt(target.id[target.id.length - 1]);
-    console.log("selected: " + tanIndex);
+    //console.log("selected: " + tanIndex);
     currentTan = tanIndex;
     var mouse = getMouseCoordinates(event);
     lastMouse = mouse.dup();
     var tanCenter = gameOutline[currentTan].insidePoint();
     lastAngle = new LineSegment(tanCenter, gameOutline[currentTan].anchor).angleTo(
         new LineSegment(tanCenter, lastMouse));
-    console.log("Last Angle: "+ lastAngle);
     mouseOffset = mouse.subtract(gameOutline[tanIndex].anchor);
     /* Bring this piece to the front -> Disables click, thus call click handler */
     /*if (document.getElementById("game").lastChild.id != "piece" + tanIndex){
-        var piece = document.getElementById("piece" + tanIndex);
-        document.getElementById("game").appendChild(piece);
-        rotateTan(event);
-    }*/
+     var piece = document.getElementById("piece" + tanIndex);
+     document.getElementById("game").appendChild(piece);
+     rotateTan(event);
+     }*/
 };
 
 var deselectTan = function (event) {
-    console.log("deselected: ");
-    if (!move){
+    // console.log("deselected: ");
+    if (!move) {
         snapToClosestRotation(getMouseCoordinates(event));
+    } else {
+        /* Fires twice on release */
+        translations += 0.5;
+    }
+    if (currentTan != -1){
+        snapped[currentTan] = false;
     }
     snapToClosePoints();
     currentTan = -1;
@@ -263,12 +292,6 @@ var moveTan = function (event) {
             var tanCenter = gameOutline[currentTan].insidePoint();
             var currentAngle = clipAngle(lastAngle - new LineSegment(tanCenter, gameOutline[currentTan].anchor).angleTo(
                 new LineSegment(tanCenter, mouse)));
-            /*var segment = document.getElementById("segment");
-            segment.setAttributeNS(null, "x1" , tanCenter.toFloatX());
-            segment.setAttributeNS(null, "y1" , tanCenter.toFloatY());
-            segment.setAttributeNS(null, "x2" , mouse.toFloatX());
-            segment.setAttributeNS(null, "y2" , mouse.toFloatY());*/
-            /* */
             updateTanPieceRotation(currentTan, currentAngle);
         }
     }
@@ -281,17 +304,17 @@ var showAction = function (event) {
     var mouse = getMouseCoordinates(event);
     var points = gameOutline[tanIndex].getPoints();
     var rotate = false;
-    for (var pointId = 0; pointId < points.length; pointId++){
+    for (var pointId = 0; pointId < points.length; pointId++) {
         if (Math.abs(points[pointId].toFloatX() - mouse.toFloatX()) < 0.45
-            && Math.abs(points[pointId].toFloatY() - mouse.toFloatY()) < 0.45){
+            && Math.abs(points[pointId].toFloatY() - mouse.toFloatY()) < 0.45) {
             rotate = true;
             break;
         }
     }
-    if (rotate){
-        changeIconVisibility(false,true);
+    if (rotate) {
+        changeIconVisibility(false, true);
     } else {
-        changeIconVisibility(true,false);
+        changeIconVisibility(true, false);
     }
 };
 
@@ -311,7 +334,7 @@ var stopWatch = function () {
 
 var updateWatch = function () {
     seconds++;
-    if (seconds >= 60){
+    if (seconds >= 60) {
         seconds = 0;
         minutes++;
     }
@@ -348,19 +371,12 @@ var addTangramPieces = function () {
         tangramPieces[tanIndex].addEventListener('mouseup', deselectTan);
         tangramPieces[tanIndex].addEventListener('mouseover', showAction);
         tangramPieces[tanIndex].addEventListener('mousemove', showAction);
-        tangramPieces[tanIndex].addEventListener('mouseout', function (){
-            if (currentTan === -1) changeIconVisibility(false,false);
+        tangramPieces[tanIndex].addEventListener('mouseout', function () {
+            if (currentTan === -1) changeIconVisibility(false, false);
         });
     }
     document.getElementById("game").addEventListener('mousemove', moveTan);
     document.getElementById("game").addEventListener('mouseup', deselectTan);
-    // document.getElementById("game").addEventListener('mouseout', deselectTan);
-    // TODO: Remove again
-    var segment = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    segment.setAttributeNS(null, "stroke", "#E9E9E9");
-    segment.setAttributeNS(null, "stroke-width", "0.05");
-    segment.setAttributeNS(null, "id", "segment");
-    document.getElementById("game").appendChild(segment);
 };
 
 var addIcons = function () {
@@ -450,7 +466,7 @@ var addFlipButton = function () {
 
 var addTangrams = function () {
     /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":0,"coeffSqrt":0}},"orientation":1},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":0},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":1,"coeffSqrt":0}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":-1,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":3},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
-    failTangram = JSON.parse(failTangram);
+     failTangram = JSON.parse(failTangram);
      var failTans = [];
      for (var i = 0; i < 7; i++){
      var currentTan = failTangram.tans[i];
@@ -499,7 +515,6 @@ window.onload = function () {
     for (var i = 0; i < tangramClass.length; i++) {
         tangramClass[i].addEventListener('click', function (event) {
             changeTangramVisibility(true);
-            // TODO: add timer
             var sourceId;
             var target = ((window.event) ? (event.srcElement) : (event.currentTarget.firstElementChild));
             if (target.id.length === 0) {
@@ -509,6 +524,7 @@ window.onload = function () {
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
             generated[chosen].toSVGOutline("game");
+            console.log(JSON.stringify(generated[chosen].tans));
             //generated[chosen].toSVGTans("game");
             document.getElementById("game").style.display = "block";
             addTangramPieces();
@@ -536,8 +552,10 @@ window.onload = function () {
         }
         changeTangramVisibility(false);
         resetPieces();
+        stopWatch();
         hints = [0, 1, 2, 3, 4, 5, 6];
         numHints = 0;
+        snapped = [false, false, false, false, false, false, false];
     });
 
     document.getElementById("set").addEventListener('click', function () {
@@ -547,6 +565,7 @@ window.onload = function () {
         }
         rotations = 0;
         translations = 0;
+        snapped = [false, false, false, false, false, false, false];
         var watch = document.getElementById("watch");
         while (watch.firstChild) {
             watch.removeChild(watch.firstChild);
@@ -567,7 +586,12 @@ window.onload = function () {
 
     document.getElementById("sol").addEventListener('click', function () {
         setToSol();
-        deselectTan();
+        checkSolved();
+        /* Hide watch */
+        var watch = document.getElementById("watch");
+        while (watch.firstChild) {
+            watch.removeChild(watch.firstChild);
+        }
     });
 
 
