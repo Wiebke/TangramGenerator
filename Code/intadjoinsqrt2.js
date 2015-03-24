@@ -30,30 +30,30 @@ IntAdjoinSqrt2.prototype.toFloat = function () {
  * used === can be used for comparison */
 IntAdjoinSqrt2.prototype.eq = function (other) {
     /*if (this.coeffInt % 1 != 0){
-        console.log(this.coeffInt);
-    }
-    if (this.coeffSqrt % 1 != 0){
-        console.log(this.coeffSqrt);
-    }
-    if (other.coeffInt % 1 != 0){
-        console.log(other.coeffInt);
-    }
-    if (other.coeffInt % 1 != 0){
-        console.log(other.coeffSqrt);
-    }*/
+     console.log(this.coeffInt);
+     }
+     if (this.coeffSqrt % 1 != 0){
+     console.log(this.coeffSqrt);
+     }
+     if (other.coeffInt % 1 != 0){
+     console.log(other.coeffInt);
+     }
+     if (other.coeffInt % 1 != 0){
+     console.log(other.coeffSqrt);
+     }*/
     return (numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt));
 };
 
 /* Compare this number to another one, returns 0 is the numbers are equal, -1 is
  * this number is smaller than the other one and 1, if this one is bigger than the
  * other one */
-IntAdjoinSqrt2.prototype.compare = function(other) {
-    if (this.eq(other)){
+IntAdjoinSqrt2.prototype.compare = function (other) {
+    if (this.eq(other)) {
         return 0;
     } else {
         var floatThis = this.toFloat();
         var floatOther = other.toFloat();
-        if (floatThis < floatOther){
+        if (floatThis < floatOther) {
             return -1;
         } else {
             return 1;
@@ -61,16 +61,16 @@ IntAdjoinSqrt2.prototype.compare = function(other) {
     }
 };
 
-var compareIntAdjoinSqrt2s = function (numberA, numberB){
+var compareIntAdjoinSqrt2s = function (numberA, numberB) {
     return numberA.compare(numberB);
 };
 
-IntAdjoinSqrt2.prototype.closeNumbers = function (other, range){
+IntAdjoinSqrt2.prototype.closeNumbers = function (other, range) {
     return numberRange(this.toFloat(), other.toFloat(), range);
 };
 
 IntAdjoinSqrt2.prototype.isZero = function () {
-    return (numberEq(this.coeffInt,0) && numberEq(this.coeffSqrt,0));
+    return (numberEq(this.coeffInt, 0) && numberEq(this.coeffSqrt, 0));
 };
 
 /* Basic arithmetic - Adding another number to this one */
@@ -99,8 +99,8 @@ IntAdjoinSqrt2.prototype.multiply = function (other) {
 /* Basic arithmetic - Dividing this number another one --> will possibly result
  * in floating point coefficients */
 IntAdjoinSqrt2.prototype.div = function (other) {
-    var denominator = other.coeffInt*other.coeffInt - 2*other.coeffSqrt*other.coeffSqrt;
-    if (numberEq(denominator,0)){
+    var denominator = other.coeffInt * other.coeffInt - 2 * other.coeffSqrt * other.coeffSqrt;
+    if (numberEq(denominator, 0)) {
         console.log("Division by 0 is not possible!");
         return;
     }
@@ -120,8 +120,8 @@ IntAdjoinSqrt2.prototype.neg = function () {
 };
 
 /* Basic arithmetic - Scaling of the coefficients */
-IntAdjoinSqrt2.prototype.scale = function (factor){
-    if (numberEq(factor,0)){
+IntAdjoinSqrt2.prototype.scale = function (factor) {
+    if (numberEq(factor, 0)) {
         console.log("Scaling by 0 is not possible!");
         console.log(JSON.stringify(this));
         return;
@@ -132,18 +132,18 @@ IntAdjoinSqrt2.prototype.scale = function (factor){
 };
 
 /* Min and max operations for this special number type */
-var IntAdjoinSqrt2Min = function (a, b){
+var IntAdjoinSqrt2Min = function (a, b) {
     var compare = a.compare(b);
-    if (compare <= 0){
+    if (compare <= 0) {
         return a;
     } else {
         return b;
     }
 };
 
-var IntAdjoinSqrt2Max = function (a, b){
+var IntAdjoinSqrt2Max = function (a, b) {
     var compare = a.compare(b);
-    if (compare >= 0){
+    if (compare >= 0) {
         return a;
     } else {
         return b;

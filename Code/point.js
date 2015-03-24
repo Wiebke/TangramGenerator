@@ -42,41 +42,41 @@ Point.prototype.toFloatY = function () {
 /* Comparison of Points by first x- and then y-coordinate, returns -1 if
  * this point is "smaller" than the other one and 1, if this one is "bigger" than
  * the other one*/
-Point.prototype.compare = function(other){
+Point.prototype.compare = function (other) {
     var xCompare = this.x.compare(other.x);
     var yCompare = this.y.compare(other.y);
-    if (xCompare != 0){
+    if (xCompare != 0) {
         return xCompare;
     } else {
         return yCompare;
     }
 };
 
-var comparePoints = function (pointA, pointB){
+var comparePoints = function (pointA, pointB) {
     return pointA.compare(pointB);
 };
 
-var comparePointsFloat = function (pointA, pointB){
+var comparePointsFloat = function (pointA, pointB) {
     var pointAX = pointA.toFloatX();
     var pointAY = pointA.toFloatY();
     var pointBX = pointB.toFloatX();
     var pointBY = pointB.toFloatY();
-    if (numberEq(pointAX, pointBX)){
-        if(numberEq(pointAY, pointBY)){
+    if (numberEq(pointAX, pointBX)) {
+        if (numberEq(pointAY, pointBY)) {
             return 0;
         } else {
-            return pointAY < pointBY ? -1: 1;
+            return pointAY < pointBY ? -1 : 1;
         }
     } else {
-        return pointAX < pointBX ? -1: 1;
+        return pointAX < pointBX ? -1 : 1;
     }
 };
 
-Point.prototype.eq = function(other){
+Point.prototype.eq = function (other) {
     return this.compare(other) === 0;
 };
 
-var closePoint = function (pointA, pointB, range){
+var closePoint = function (pointA, pointB, range) {
     return pointA.x.closeNumbers(pointB.x, range) && pointA.y.closeNumbers(pointB.y, range);
 };
 
@@ -96,7 +96,7 @@ Point.prototype.neg = function () {
 };
 
 Point.prototype.angle = function () {
-    if (this.isZero()){
+    if (this.isZero()) {
         return 0;
     }
     var angle = Math.atan2(this.toFloatY(), this.toFloatX());
@@ -113,10 +113,10 @@ Point.prototype.distance = function (other) {
 Point.prototype.angleTo = function (other) {
     /* The angle is calculated with atan2, which is not defined for (0,0).
      * Therefore, handle cases where one point is (0,0) first */
-    if (this.isZero()){
+    if (this.isZero()) {
         return other.angle();
     }
-    if (other.isZero()){
+    if (other.isZero()) {
         return this.angle();
     }
     var angle = 360 - (other.angle() - this.angle());
@@ -148,9 +148,9 @@ Point.prototype.subtract = function (other) {
 
 Point.prototype.normalize = function () {
     var length = this.length();
-    if (numberNEq(length,0)){
-        this.x.scale(1/length);
-        this.y.scale(1/length);
+    if (numberNEq(length, 0)) {
+        this.x.scale(1 / length);
+        this.y.scale(1 / length);
     }
     return this;
 };
@@ -173,7 +173,7 @@ Point.prototype.transform = function (transMatrix) {
         console.log("Matrix seems to have the wrong dimension!");
         return;
     }
-    var z = new IntAdjoinSqrt2(1,0);
+    var z = new IntAdjoinSqrt2(1, 0);
     var copy = this.dup();
     this.x = copy.x.dup().multiply(transMatrix[0][0]);
     this.x.add(copy.y.dup().multiply(transMatrix[0][1]));
@@ -185,7 +185,7 @@ Point.prototype.transform = function (transMatrix) {
     var z = copy.x.dup().multiply(transMatrix[2][0]);
     z.add(copy.y.dup().multiply(transMatrix[2][1]));
     z.add(zCopy.dup().multiply(transMatrix[2][2]));
-    if (numberNEq(z, 1) && numberNEq(z,0)){
+    if (numberNEq(z, 1) && numberNEq(z, 0)) {
         this.x.div(z);
         this.y.div(z);
     }
@@ -237,7 +237,7 @@ Point.prototype.rotate = function (angle) {
 };
 
 Point.prototype.scale = function (factor) {
-    if (numberEq(0, factor)){
+    if (numberEq(0, factor)) {
         console.log("Attempt to scale by 0!");
         return;
     }
@@ -248,44 +248,26 @@ Point.prototype.scale = function (factor) {
 
 /* Returns the relative orientation of three points, if the points are collinear,
  * the method returns 0, otherwise it return -1 or +1 depending on which side */
-var relativeOrientation = function (pointA, pointB, pointC){
+var relativeOrientation = function (pointA, pointB, pointC) {
     var determinant = pointA.dup().subtract(pointC).determinant(pointB.dup().subtract(pointC));
     determinant = determinant.toFloat();
-    if (numberEq(determinant,0)) {
+    if (numberEq(determinant, 0)) {
         return 0;
     } else {
         return determinant > 0 ? 1 : -1;
     }
 };
 
-var bothPointsMultipleTimes = function (pointArray ,pointA, pointB){
+var bothPointsMultipleTimes = function (pointArray, pointA, pointB) {
     var occurrenceA = [];
     var occurrenceB = [];
-    for (var pointId = 0; pointId < pointArray.length; pointId++){
-        if (pointArray[pointId].eq(pointA)){
+    for (var pointId = 0; pointId < pointArray.length; pointId++) {
+        if (pointArray[pointId].eq(pointA)) {
             occurrenceA.push(pointId);
         }
-        if (pointArray[pointId].eq(pointB)){
+        if (pointArray[pointId].eq(pointB)) {
             occurrenceB.push(pointId);
         }
     }
     return occurrenceA.length >= 2 && occurrenceB.length >= 2;
-};
-
-var firstIndexOfPoints = function (pointArray, point){
-    for (var pointId = 0; pointId < pointArray.length; pointId++){
-        if (pointArray[pointId].eq(point)){
-            return pointId;
-        }
-    }
-    return -1;
-};
-
-var lastIndexOfPoints = function (pointArray, point){
-    for (var pointId = pointArray.length-1; pointId >= 0; pointId--){
-        if (pointArray[pointId].eq(point)){
-            return pointId;
-        }
-    }
-    return -1;
 };

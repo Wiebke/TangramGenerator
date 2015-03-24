@@ -110,7 +110,7 @@ var arrowTangram = new Tangram([bigTriangle1_6, bigTriangle2_6, mediumTriangle_6
 /* Original outline for the game */
 var gameOutline;
 
-var resetPieces = function (){
+var resetPieces = function () {
     var anchorBT1_G = new Point(new IntAdjoinSqrt2(12, -1), new IntAdjoinSqrt2(3.15, -1.25));
     var bigTriangle1_G = new Tan(0, anchorBT1_G, 0);
     var anchorBT2_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(3.15, 0.75));
@@ -123,13 +123,13 @@ var resetPieces = function (){
     var smallTriangle2_G = new Tan(2, anchorST2_G, 4);
     var anchorS_G = new Point(new IntAdjoinSqrt2(13, 1), new IntAdjoinSqrt2(4.35, 1.25));
     var square_G = new Tan(3, anchorS_G, 4);
-    var anchorP_G = new Point(new IntAdjoinSqrt2(10,1), new IntAdjoinSqrt2(6.85, 1.25));
+    var anchorP_G = new Point(new IntAdjoinSqrt2(10, 1), new IntAdjoinSqrt2(6.85, 1.25));
     var parallelogram_G = new Tan(5, anchorP_G, 0);
     gameOutline = [bigTriangle1_G, bigTriangle2_G, mediumTriangle_G, smallTriangle1_G, smallTriangle2_G, square_G, parallelogram_G];
 };
 
 
-var ExampleTangrams = [squareTangram,swanTangram,catTangram,birdTangram,mountainTangram,arrowTangram];
+var ExampleTangrams = [squareTangram, swanTangram, catTangram, birdTangram, mountainTangram, arrowTangram];
 
 /*ExampleTangrams[0].toSVGOutline("first");
  ExampleTangrams[1].toSVGOutline("second");

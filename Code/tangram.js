@@ -1,8 +1,7 @@
-
 /* Constructor: array of the 7 tan pieces, in order: BigTriangle, 2. Big Triangle
  * MediumTriangle, SmallTriangle, 2. SmallTriangle, */
 function Tangram(tans) {
-    this.tans = tans.sort(function (a,b){
+    this.tans = tans.sort(function (a, b) {
         return a.tanType - b.tanType;
     });
     /* outline is an array of points describing the outline of the tangram */
@@ -19,9 +18,9 @@ Tangram.prototype.center = function () {
 };
 
 Tangram.prototype.positionCentered = function () {
-    var center = new Point(new IntAdjoinSqrt2(5,0), new IntAdjoinSqrt2(5,0));
+    var center = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 0));
     center.subtract(this.center());
-    for (var tansId = 0; tansId < this.tans.length; tansId++){
+    for (var tansId = 0; tansId < this.tans.length; tansId++) {
         this.tans[tansId].anchor.translate(center.x, center.y);
     }
     this.outline = computeOutline(this.tans);
@@ -36,7 +35,7 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     }
     pathdata += "Z ";
     shape.setAttributeNS(null, "fill", '#3299BB');
-    for (var outlineId = 1; outlineId < this.outline.length;  outlineId++){
+    for (var outlineId = 1; outlineId < this.outline.length; outlineId++) {
         pathdata += "M " + this.outline[outlineId][0].toFloatX() + ", " + this.outline[outlineId][0].toFloatY() + " ";
         for (var i = 1; i < this.outline[outlineId].length; i++) {
             pathdata += "L " + this.outline[outlineId][i].toFloatX() + ", " + this.outline[outlineId][i].toFloatY() + " ";
@@ -44,6 +43,7 @@ Tangram.prototype.toSVGOutline = function (elementName) {
         pathdata += "Z";
     }
     shape.setAttributeNS(null, "d", pathdata);
+    shape.setAttributeNS(null, "fill-rule", "evenodd");
     tangramSVG.appendChild(shape);
     /* Clear old content */
     var element = document.getElementById(elementName);

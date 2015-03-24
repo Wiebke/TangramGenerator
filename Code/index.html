@@ -5,8 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Random Tangram Generator</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" type="text/css">
-    <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+          type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet'
+          type='text/css'>
     <script src="helpers.js"></script>
     <script src="intadjoinsqrt2.js"></script>
     <script src="point.js"></script>
@@ -26,40 +29,59 @@
 <!--Actual content, shapes and game goes here-->
 <section id="content">
     <div id="gameArea">
-            <svg id="game" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 15 10" preserveAspectRatio="xMinYMin meet">
+        <svg id="game" xmlns="http://www.w3.org/2000/svg" width="100%"
+             height="100%" viewBox="0 0 15 10"
+             preserveAspectRatio="xMinYMin meet">
+        </svg>
+        <div class="tangram">
+            <svg id="first0" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 10 10"
+                 preserveAspectRatio="xMinYMin meet">
             </svg>
-            <div class="tangram">
-                <svg id="first0" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
-            <div class="tangram">
-                <svg id="second1" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
-            <div class="tangram">
-                <svg id="third2" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
-            <div class="tangram">
-                <svg id="fourth3" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
-            <div class="tangram">
-                <svg id="fifth4" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
-            <div class="tangram">
-                <svg id="sixth5" xmlns="http://www.w3.org/2000/svg" width ="100%" height = "100%" viewBox="0 0 10 10" preserveAspectRatio="xMinYMin meet">
-                </svg>
-            </div>
+        </div>
+        <div class="tangram">
+            <svg id="second1" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 10 10"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="third2" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 10 10"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="fourth3" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 10 10"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="fifth4" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 10 10"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="sixth5" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 10 10"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
     </div>
-    <div class = "clear"></div>
+    <div class="clear"></div>
     <div id="buttons">
-        <button id = generate> <i class="fa fa-repeat"></i><span class = buttonText>  Regenerate</span></button>
-        <button id = select> <i class="fa fa-arrow-left"></i><span class = buttonText>  Reselect</span></button>
-        <button id = set> <i class="fa fa-repeat"></i><span class = buttonText>  Reset</span></button>
-        <button id = hint> <i class="fa fa-lightbulb-o"></i><span class = buttonText>  Hint</span></button>
-        <button id = sol><i class="fa fa-check"></i> <span class = buttonText>  Solution</span></button>
+        <button id=generate><i class="fa fa-repeat"></i><span class=buttonText>  Regenerate</span>
+        </button>
+        <button id=select><i class="fa fa-arrow-left"></i><span
+                class=buttonText>  Reselect</span></button>
+        <button id=set><i class="fa fa-repeat"></i><span class=buttonText>  Reset</span>
+        </button>
+        <button id=hint><i class="fa fa-lightbulb-o"></i><span class=buttonText>  Hint</span>
+        </button>
+        <button id=sol><i class="fa fa-check"></i> <span class=buttonText>  Solution</span>
+        </button>
     </div>
     <aside id="explain">
         Some kind of explanation for what is to be done here (either choose a

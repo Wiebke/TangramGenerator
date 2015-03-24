@@ -144,11 +144,11 @@ var snapToClosePoints = function () {
                         gameOutline[currentTan].anchor = currentPointsId === 0 ?
                             gameOutline[tanId].anchor.dup() : gameOutline[tanId].anchor.dup().add(
                             Directions[gameOutline[tanId].tanType][gameOutline[tanId]
-                                .orientation][currentPointsId-1]);
-                        if (pointsId != 0){
+                                .orientation][currentPointsId - 1]);
+                        if (pointsId != 0) {
                             gameOutline[currentTan].anchor.subtract(
                                 Directions[gameOutline[currentTan].tanType]
-                                    [gameOutline[currentTan].orientation][pointsId-1]);
+                                    [gameOutline[currentTan].orientation][pointsId - 1]);
                         }
                         snapped[currentTan] = true;
                     }
@@ -170,13 +170,13 @@ var snapToClosePoints = function () {
                 for (var currentPointsId = 0; currentPointsId < generated[chosen].outline[outlineId].length; currentPointsId++) {
                     if (closePoint(tanPoints[pointsId], generated[chosen].outline[outlineId][currentPointsId], snapRange)) {
                         /*var direction = generated[chosen].outline[outlineId][currentPointsId].dup().subtract(tanPoints[pointsId]);
-                        gameOutline[currentTan].anchor.add(direction);*/
+                         gameOutline[currentTan].anchor.add(direction);*/
                         gameOutline[currentTan].anchor = generated[chosen].
                             outline[outlineId][currentPointsId].dup();
-                        if (pointsId != 0){
+                        if (pointsId != 0) {
                             gameOutline[currentTan].anchor.subtract(
                                 Directions[gameOutline[currentTan].tanType]
-                                    [gameOutline[currentTan].orientation][pointsId-1]);
+                                    [gameOutline[currentTan].orientation][pointsId - 1]);
                         }
                         snap = true;
                         snapped[currentTan] = true;
@@ -273,7 +273,7 @@ var deselectTan = function (event) {
         /* Fires twice on release */
         translations += 0.5;
     }
-    if (currentTan != -1){
+    if (currentTan != -1) {
         snapped[currentTan] = false;
     }
     snapToClosePoints();
@@ -406,8 +406,6 @@ var addIcons = function () {
     watch.setAttributeNS(null, "font-size", "0.45");
     watch.textContent = "\uf017  " + "00:00";
     document.getElementById("game").appendChild(watch);
-
-
 };
 
 var addFlipButton = function () {
@@ -465,23 +463,30 @@ var addFlipButton = function () {
 };
 
 var addTangrams = function () {
-    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":0,"coeffSqrt":0}},"orientation":1},{"tanType":0,"anchor":{"x":{"coeffInt":9,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":0},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":1,"coeffSqrt":0}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":-1,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":3},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
-     failTangram = JSON.parse(failTangram);
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":2,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":7},{"tanType":0,"anchor":{"x":{"coeffInt":7,"coeffSqrt":2},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":2},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":3},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":2}]';
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":1},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":2},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":2},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":7,"coeffSqrt":2}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":3}]';
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":11,"coeffSqrt":0}},"orientation":7},{"tanType":0,"anchor":{"x":{"coeffInt":1,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":7},{"tanType":1,"anchor":{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":8,"coeffSqrt":0}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":7},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":3},{"tanType":5,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":2}]';
+    //var failTangram ='[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":1},"y":{"coeffInt":7.5,"coeffSqrt":-1}},"orientation":2},{"tanType":0,"anchor":{"x":{"coeffInt":7,"coeffSqrt":1},"y":{"coeffInt":5.5,"coeffSqrt":-1}},"orientation":3},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":3.5,"coeffSqrt":0}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":3.5,"coeffSqrt":-1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":3.5,"coeffSqrt":0}},"orientation":2},{"tanType":3,"anchor":{"x":{"coeffInt":4,"coeffSqrt":-1},"y":{"coeffInt":4.5,"coeffSqrt":-1}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":7.5,"coeffSqrt":-1}},"orientation":6}]';
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":4},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":7}]';
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":8,"coeffSqrt":0}},"orientation":3},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":1},"y":{"coeffInt":3,"coeffSqrt":-1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":3,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5}]';
+     /*failTangram = JSON.parse(failTangram);
      var failTans = [];
      for (var i = 0; i < 7; i++){
-     var currentTan = failTangram.tans[i];
+     var currentTan = failTangram[i];
      var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
      currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
-     currentTan.anchor.x.coeffSqrt));
+     currentTan.anchor.y.coeffSqrt));
      failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
      }
      failTangram = new Tangram(failTans);
      generated[0] = failTangram;*/
 
-    for (var i = 0; i < 6; i++) {
-        generated[i].positionCentered();
+    for (var tanId = 0; tanId < 6; tanId++) {
+        generated[tanId].positionCentered();
     }
 
+    //generated[0].toSVGTans("first0", false);
     generated[0].toSVGOutline("first0");
     generated[1].toSVGOutline("second1");
 
