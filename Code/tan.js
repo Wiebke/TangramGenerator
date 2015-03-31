@@ -115,9 +115,9 @@ var computeSegments = function (allPoints, tans) {
         currentSegments = tans[tanId].getSegments();
         for (var segmentId = 0; segmentId < currentSegments.length; segmentId++) {
             var splitPoints = [];
-            for (var pointID = 0; pointID < allPoints.length; pointID++) {
-                if (currentSegments[segmentId].onSegment(allPoints[pointID])) {
-                    splitPoints.push(allPoints[pointID]);
+            for (var pointId = 0; pointId < allPoints.length; pointId++) {
+                if (currentSegments[segmentId].onSegment(allPoints[pointId])) {
+                    splitPoints.push(allPoints[pointId]);
                 }
             }
             allSegments = allSegments.concat(currentSegments[segmentId].split(splitPoints));

@@ -6,6 +6,7 @@ function Tangram(tans) {
     });
     /* outline is an array of points describing the outline of the tangram */
     this.outline = computeOutline(this.tans);
+    this.evaluation = new Evaluation(this.tans, this.outline);
 }
 
 /* Calculates the center of the bounding box of a tangram */
@@ -68,4 +69,9 @@ Tangram.prototype.toSVGTans = function (elementName, shifted) {
         tangramSVG.appendChild(shape);
     }
     document.getElementById(elementName).appendChild(tangramSVG);
+};
+
+var compareTangrams = function (tangramA, tangramB) {
+    return tangramB.outline.length - tangramA.outline.length;
+    //return numUniqueElements(tangramA.outline[0], comparePoints) - numUniqueElements(tangramB.outline[0], comparePoints);
 };

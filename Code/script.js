@@ -74,29 +74,29 @@ var checkSolved = function () {
     for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
         tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");
         tangramPieces[tanIndex].setAttributeNS(null, "opacity", "1.0");
-        stopWatch();
-        var watch = document.getElementById("watch");
-        watch.textContent = "";
-        var line0 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        line0.setAttributeNS(null, 'x', '11');
-        line0.setAttributeNS(null, 'dy', '1.2em');
-        line0.textContent = "You solved it";
-        watch.appendChild(line0);
-        var line1 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        line1.setAttributeNS(null, 'x', '11');
-        line1.setAttributeNS(null, 'dy', '1.2em');
-        line1.textContent = "in \uf017  " + (minutes ? (minutes > 9 ? minutes : "0" +
-        minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + " with";
-        watch.appendChild(line1);
-        var line2 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-        line2.setAttributeNS(null, 'x', '11');
-        line2.setAttributeNS(null, 'dy', '1.2em');
-        line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
-        watch.appendChild(line2);
-        /* Set new position */
-        watch.setAttributeNS(null, "x", "11");
-        watch.setAttributeNS(null, "y", "4");
     }
+    stopWatch();
+    var watch = document.getElementById("watch");
+    watch.textContent = "";
+    var line0 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+    line0.setAttributeNS(null, 'x', '11');
+    line0.setAttributeNS(null, 'y', '4');
+    line0.textContent = "You solved it";
+    watch.appendChild(line0);
+    var line1 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+    line1.setAttributeNS(null, 'x', '11');
+    line1.setAttributeNS(null, 'y', '4.5');
+    line1.textContent = "in \uf017  " + (minutes ? (minutes > 9 ? minutes : "0" +
+    minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + " with";
+    watch.appendChild(line1);
+    var line2 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+    line2.setAttributeNS(null, 'x', '11');
+    line2.setAttributeNS(null, 'y', '5');
+    line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
+    watch.appendChild(line2);
+    /* Set new position */
+    /*watch.setAttributeNS(null, "x", "11");
+     watch.setAttributeNS(null, "y", "4");*/
 };
 
 /* Sets every piece to the solution */
@@ -472,12 +472,12 @@ var addTangrams = function () {
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5}]';
      /*failTangram = JSON.parse(failTangram);
      var failTans = [];
-     for (var i = 0; i < 7; i++){
-     var currentTan = failTangram[i];
+     for (var index = 0; index < 7; index++){
+     var currentTan = failTangram[index];
      var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
      currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
      currentTan.anchor.y.coeffSqrt));
-     failTans[i] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
+     failTans[index] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
      }
      failTangram = new Tangram(failTans);
      generated[0] = failTangram;*/
