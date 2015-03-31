@@ -107,6 +107,17 @@ var compareLineSegments = function (segmentA, segmentB) {
     return segmentA.compare(segmentB);
 };
 
+/* Returns true if the given direction vector is the same or a multiple of the one
+ * of this line segment */
+LineSegment.prototype.sameDirection = function (direction){
+    var thisDirection = this.direction().dup().normalize();
+    direction = direction.dup().normalize();
+    /* If direction vectors are not exactly equal, check if one if the one with
+     * bigger x/y-coordinates is a multiple of the other one */
+    return thisDirection.compare(direction) === 0;
+
+};
+
 /* Returns an array of LineSegments, created from this lineSegment when it is split
  * at the given splitPoints (given as an array)
  */

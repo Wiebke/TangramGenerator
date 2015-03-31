@@ -182,7 +182,7 @@ Point.prototype.transform = function (transMatrix) {
     this.y.add(copy.y.dup().multiply(transMatrix[1][1]));
     this.y.add(z.dup().multiply(transMatrix[1][2]));
     var zCopy = z.dup();
-    var z = copy.x.dup().multiply(transMatrix[2][0]);
+    z = copy.x.dup().multiply(transMatrix[2][0]);
     z.add(copy.y.dup().multiply(transMatrix[2][1]));
     z.add(zCopy.dup().multiply(transMatrix[2][2]));
     if (numberNEq(z, 1) && numberNEq(z, 0)) {

@@ -113,9 +113,24 @@ var normalizeProbability = function (distribution){
     return distribution;
 };
 
-var computeOrientationProbability = function (tans, anchor) {
-    // TODO compute actual distribution
-    var distribution = [1,1,1,1,1,1,1,1];
+var computeOrientationProbability = function (tans, point, tanType, pointId) {
+    var distribution = [];
+    /* Get all the segments of already placed tans in that point */
+    var allSegments = computeSegments(getAllPoints(tans), tans);
+    allSegments = allSegments.filter(function (element) {
+        return element.point1.eq(point) || element.point2.eq(point);
+    });
+    for (var orientId = 0; orientId < numOrientations; orientId++){
+        distribution.push(1);
+        for (var segmentId = 0; segmentId < allSegments.length; segmentId++){
+            if (allSegments[segmentId].sameDirection(SegmentDirections[tanType][orientId][pointId][0])){
+                distribution[orientId]+=50;
+            }
+            if (allSegments[segmentId].sameDirection(SegmentDirections[tanType][orientId][pointId][1])){
+                distribution[orientId]+=50;
+            }
+        }
+    }
     return normalizeProbability(distribution);
 };
 
@@ -162,7 +177,7 @@ var generateTangramEdges = function (){
             do {
                 var newTan;
                 /* Compute probability distribution for orientations */
-                var orientationDistribution = computeOrientationProbability(tans, pointId, tanOrder[tanId]);
+                var orientationDistribution = computeOrientationProbability(tans, anchor, tanOrder[tanId], pointId);
                 /* Sample a new orientation */
                 while (typeof orientationDistribution != 'undefined' && !tanPlaced){
                     orientation = sampleOrientation(orientationDistribution);
