@@ -4,13 +4,30 @@ var checkNewTan = function (currentTans, newTan) {
     /* For each point of the new piece, check if it lies within the outline of
      * the already placed pieces */
     /* TODO: Maybe summarize this to avoid redundant calls */
+    /* TODO: Check other way around also? */
     var points = newTan.getPoints();
     /* Use midpoint to exact alignment of one piece in another on */
-    //points[points.length] = newTan.insidePoint();
+    var allPoints = points.concat(newTan.insidePoints());
     for (var tansId = 0; tansId < currentTans.length; tansId++) {
+        var currentPoints = currentTans[tansId].getPoints();
         var onSegmentCounter = 0;
-        for (var pointId = 0; pointId < points.length; pointId++) {
-            var contains = containsPoint(currentTans[tansId].getPoints(), points[pointId]);
+        for (var pointId = 0; pointId < allPoints.length; pointId++) {
+            var contains = containsPoint(currentPoints, allPoints[pointId]);
+            if (contains === 1) {
+                return false;
+            } else if (contains === 0) {
+                onSegmentCounter++;
+            }
+        }
+        /* If more than 3 points of the new tan lie on one of the already placed
+         * tans, there must be an overlap */
+        if (onSegmentCounter >= 3) {
+            return false;
+        }
+        onSegmentCounter = 0;
+        currentPoints = currentPoints.concat(currentTans[tansId].insidePoints());
+        for (pointId = 0; pointId < currentPoints.length; pointId++) {
+            contains = containsPoint(points, currentPoints[pointId]);
             if (contains === 1) {
                 return false;
             } else if (contains === 0) {
@@ -117,16 +134,24 @@ var computeOrientationProbability = function (tans, point, tanType, pointId) {
     var distribution = [];
     /* Get all the segments of already placed tans in that point */
     var allSegments = computeSegments(getAllPoints(tans), tans);
-    allSegments = allSegments.filter(function (element) {
-        return element.point1.eq(point) || element.point2.eq(point);
-    });
+    var segmentDirections = [];
+    for (var segmentId = 0; segmentId < allSegments.length; segmentId++){
+        if (allSegments[segmentId].point1.eq(point)){
+            segmentDirections.push(allSegments[segmentId].direction());
+        } else if (allSegments[segmentId].point2.eq(point)){
+            segmentDirections.push(allSegments[segmentId].direction().neg());
+        }
+    }
     for (var orientId = 0; orientId < numOrientations; orientId++){
         distribution.push(1);
-        for (var segmentId = 0; segmentId < allSegments.length; segmentId++){
-            if (allSegments[segmentId].sameDirection(SegmentDirections[tanType][orientId][pointId][0])){
+        //console.log("First:" + JSON.stringify(SegmentDirections[tanType][orientId][pointId][0]));
+        //console.log("Second:" + JSON.stringify(SegmentDirections[tanType][orientId][pointId][1]));
+        for (segmentId = 0; segmentId < segmentDirections.length; segmentId++){
+            //console.log("Compare to:" + JSON.stringify(segmentDirections[segmentId]) + "(" + orientId + ")");
+            if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][0])){
                 distribution[orientId]+=50;
             }
-            if (allSegments[segmentId].sameDirection(SegmentDirections[tanType][orientId][pointId][1])){
+            if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][1])){
                 distribution[orientId]+=50;
             }
         }
@@ -139,12 +164,10 @@ var sampleOrientation = function (distribution) {
     var sample = Math.random();
     var accumulatedProbability = 0;
     distribution = distribution.slice(0);
+    if (sample < distribution[0]) return 0;
     for (var index = 1; index < numOrientations; index++){
         distribution[index] += distribution[index-1];
-    }
-    for (index = 0; index < numOrientations; index++){
-        accumulatedProbability += distribution[index];
-        if (sample <= accumulatedProbability){
+        if (sample <= distribution[index]){
             return index;
         }
     }
@@ -177,7 +200,7 @@ var generateTangramEdges = function (){
             do {
                 var newTan;
                 /* Compute probability distribution for orientations */
-                var orientationDistribution = computeOrientationProbability(tans, anchor, tanOrder[tanId], pointId);
+                var orientationDistribution = computeOrientationProbability(tans, anchor, tanOrder[tanId], pointOrder[pointId]);
                 /* Sample a new orientation */
                 while (typeof orientationDistribution != 'undefined' && !tanPlaced){
                     orientation = sampleOrientation(orientationDistribution);
@@ -192,7 +215,7 @@ var generateTangramEdges = function (){
                         tans[tanId] = newTan;
                         tanPlaced = true;
                     }
-                    orientationDistribution[orientation]=0;
+                    orientationDistribution[orientation] = 0;
                     orientationDistribution = normalizeProbability(orientationDistribution);
                 }
                 pointId++;

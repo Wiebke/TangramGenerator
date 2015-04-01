@@ -52,6 +52,31 @@ Point.prototype.compare = function (other) {
     }
 };
 
+
+/* Returns true if the given direction vector is the same or a multiple this one */
+Point.prototype.multipleOf = function (other){
+    var sameSignX = this.x.sameSign(other.x);
+    var sameSignY = this.y.sameSign(other.y);
+    if (!(sameSignX && sameSignY)) return false;
+    if (this.x.isZero() && other.x.isZero()){
+        if (this.y.isZero() && other.y.isZero()){
+            return true;
+        } else {
+            return sameSignY;
+        }
+    } else if (this.y.isZero() && other.y.isZero()){
+            return sameSignX;
+    } else {
+        var xFactor = this.toFloatX()/other.toFloatX();
+        var yFactor = this.toFloatY()/other.toFloatY();
+        if (typeof xFactor === 'undefined' || typeof yFactor === 'undefined'){
+            return false;
+        } else {
+            return numberEq(xFactor,yFactor);
+        }
+    }
+};
+
 var comparePoints = function (pointA, pointB) {
     return pointA.compare(pointB);
 };

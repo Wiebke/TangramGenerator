@@ -55,7 +55,37 @@ for (var tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
         centerPoint.add(Directions[tanTypeId][0][pointId]);
     }
     centerPoint.scale(1 / (Directions[tanTypeId][0].length + 1));
-    InsideDirections[tanTypeId][0] = centerPoint;
+    InsideDirections[tanTypeId][0] = [];
+    InsideDirections[tanTypeId][0][0] = centerPoint;
+}
+for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
+    var middle1 = Directions[tanTypeId][0][0].dup().add(Directions[tanTypeId][0][1]).scale(0.5);
+    var middle2 = Directions[tanTypeId][0][0].dup().scale(0.5);
+    var middle3 = Directions[tanTypeId][0][1].dup().scale(0.5);
+    var insidePoint1 = Directions[tanTypeId][0][0].dup().add(middle1);
+    var insidePoint2 = Directions[tanTypeId][0][1].dup().add(middle2);
+    var insidePoint3 = middle3.add(middle3);
+    insidePoint1.scale(1 / (Directions[tanTypeId][0].length));
+    InsideDirections[tanTypeId][0][1] = insidePoint1;
+    insidePoint2.scale(1 / (Directions[tanTypeId][0].length));
+    InsideDirections[tanTypeId][0][2] = insidePoint2;
+    insidePoint3.scale(1 / (Directions[tanTypeId][0].length));
+    InsideDirections[tanTypeId][0][3] = insidePoint3;
+}
+
+for (tanTypeId = 3; tanTypeId <= 5; tanTypeId++){
+     insidePoint1 = new Point();
+     insidePoint2 = new Point();
+    for ( pointId = 0; pointId < Directions[tanTypeId][0].length; pointId++) {
+        if (pointId != Directions[tanTypeId][0].length-1){
+            insidePoint1.add(Directions[tanTypeId][0][pointId]);
+        }
+        insidePoint2.add(Directions[tanTypeId][0][pointId])
+    }
+    insidePoint1.scale(1 / (Directions[tanTypeId][0].length));
+    InsideDirections[tanTypeId][0][1] = insidePoint1;
+    insidePoint2.scale(1 / (Directions[tanTypeId][0].length));
+    InsideDirections[tanTypeId][0][2] = insidePoint2;
 }
 /* Matrix for rotating by 45 degrees */
 var rotationMatrix =
@@ -67,7 +97,10 @@ var rotationMatrix =
 for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     for (var orientId = 0; orientId < 7; orientId++) {
         Directions[tanTypeId][orientId + 1] = [];
-        InsideDirections[tanTypeId][orientId + 1] = InsideDirections[tanTypeId][orientId].dup().transform(rotationMatrix);
+        InsideDirections[tanTypeId][orientId + 1] = [];
+        for (var pointId = 0; pointId < InsideDirections[tanTypeId][orientId].length; pointId++) {
+            InsideDirections[tanTypeId][orientId + 1][pointId] = InsideDirections[tanTypeId][orientId][pointId].dup().transform(rotationMatrix);
+        }
         for (var dir = 0; dir < Directions[tanTypeId][0].length; dir++) {
             Directions[tanTypeId][orientId + 1][dir] =
                 Directions[tanTypeId][orientId][dir].dup().transform(rotationMatrix);

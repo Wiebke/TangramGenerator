@@ -107,17 +107,6 @@ var compareLineSegments = function (segmentA, segmentB) {
     return segmentA.compare(segmentB);
 };
 
-/* Returns true if the given direction vector is the same or a multiple of the one
- * of this line segment */
-LineSegment.prototype.sameDirection = function (direction){
-    var thisDirection = this.direction().dup().normalize();
-    direction = direction.dup().normalize();
-    /* If direction vectors are not exactly equal, check if one if the one with
-     * bigger x/y-coordinates is a multiple of the other one */
-    return thisDirection.compare(direction) === 0;
-
-};
-
 /* Returns an array of LineSegments, created from this lineSegment when it is split
  * at the given splitPoints (given as an array)
  */
@@ -179,14 +168,27 @@ LineSegment.prototype.onSegment = function (point) {
     return false;
 };
 
-/* Returns true if the this segment and the other segment intersect in exactly one
- * point which is not equal to either of the endpoints of either segment */
-LineSegment.prototype.intersects = function (other) {
-    /* First check if any of the endpoints are equal*/
-    if (this.point1.eq(other.point1) || this.point2.eq(other.point2) ||
-        this.point2.eq(other.point1) || this.point1.eq(other.point2)) {
-        return false;
+/* Returns true if the given point is on the segment, but is not equal to either
+ * of the endpoints */
+LineSegment.prototype.onSegmentIncludingEndpoints = function (point) {
+    if (point.eq(this.point1) || point.eq(this.point2) || this.point1.eq(this.point2)) {
+        return true;
     }
+    /* Calculate twice the area of the triangle of the two segment points and the
+     * given point, if the area is 0, the three points are collinear */
+    if (relativeOrientation(this.point1, this.point2, point) === 0) {
+        var parameter = this.projectedParameter(point);
+        /* Check if parameter is so that the point lies within the two segment points */
+        if (parameter >= 0 && parameter <= 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    return false;
+};
+
+LineSegment.prototype.intersectsOrientations = function (other){
     /* Find the four relative orientations for all combinations of one line segments
      * and one point from the respective other line segment */
     var orient1 = relativeOrientation(this.point1, this.point2, other.point1);
@@ -200,6 +202,29 @@ LineSegment.prototype.intersects = function (other) {
     } else {
         return false;
     }
+};
+
+/* Returns true if the this segment and the other segment intersect in exactly one
+ * point but none of the endpoints are equal */
+LineSegment.prototype.intersectsIncludingSegment = function (other){
+    if (this.point1.eq(other.point1) || this.point2.eq(other.point1)
+     || this.point1.eq(other.point2) || this.point2.eq(other.point2)){
+        return false;
+    }
+    return this.intersectsOrientations(other);
+};
+
+
+
+/* Returns true if the this segment and the other segment intersect in exactly one
+ * point which is not equal to either of the endpoints of either segment */
+LineSegment.prototype.intersects = function (other) {
+    /* First check if any of the endpoints are equal*/
+    if (this.onSegmentIncludingEndpoints(other.point1) || this.onSegmentIncludingEndpoints(other.point2) ||
+        other.onSegmentIncludingEndpoints(this.point1) || other.onSegmentIncludingEndpoints(this.point2)) {
+        return false;
+    }
+    return this.intersectsOrientations(other);
 };
 
 /* Returns the angle between two lineSegments if they have an endpoint in common */

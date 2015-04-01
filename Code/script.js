@@ -196,7 +196,7 @@ var snapToClosestRotation = function (mouse) {
     if (currentTan === -1) {
         return;
     }
-    var tanCenter = gameOutline[currentTan].insidePoint();
+    var tanCenter = gameOutline[currentTan].center();
     var currentAngle = clipAngle(lastAngle - new LineSegment(tanCenter,
         gameOutline[currentTan].anchor).angleTo(new LineSegment(tanCenter, mouse)));
     currentAngle = Math.round(currentAngle / 45);
@@ -220,7 +220,7 @@ var updateTanPieceRotation = function (tanIndex, angle) {
         return;
     }
     var tanId = "piece" + tanIndex;
-    var tanCenter = gameOutline[tanIndex].insidePoint();
+    var tanCenter = gameOutline[tanIndex].center();
     var tan = document.getElementById(tanId);
     var points = gameOutline[tanIndex].getPoints();
     var pointsString = "";
@@ -253,7 +253,7 @@ var selectTan = function (event) {
     currentTan = tanIndex;
     var mouse = getMouseCoordinates(event);
     lastMouse = mouse.dup();
-    var tanCenter = gameOutline[currentTan].insidePoint();
+    var tanCenter = gameOutline[currentTan].center();
     lastAngle = new LineSegment(tanCenter, gameOutline[currentTan].anchor).angleTo(
         new LineSegment(tanCenter, lastMouse));
     mouseOffset = mouse.subtract(gameOutline[tanIndex].anchor);
@@ -289,7 +289,7 @@ var moveTan = function (event) {
             gameOutline[currentTan].anchor = mouse.subtract(mouseOffset);
             updateTanPiece(currentTan);
         } else {
-            var tanCenter = gameOutline[currentTan].insidePoint();
+            var tanCenter = gameOutline[currentTan].center();
             var currentAngle = clipAngle(lastAngle - new LineSegment(tanCenter, gameOutline[currentTan].anchor).angleTo(
                 new LineSegment(tanCenter, mouse)));
             updateTanPieceRotation(currentTan, currentAngle);
@@ -470,17 +470,25 @@ var addTangrams = function () {
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":4},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":7}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":8,"coeffSqrt":0}},"orientation":3},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":1},"y":{"coeffInt":3,"coeffSqrt":-1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":3,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5}]';
-     /*failTangram = JSON.parse(failTangram);
-     var failTans = [];
-     for (var index = 0; index < 7; index++){
-     var currentTan = failTangram[index];
-     var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
-     currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
-     currentTan.anchor.y.coeffSqrt));
-     failTans[index] = new Tan(currentTan.tanType, anchor, currentTan.orientation);
-     }
-     failTangram = new Tangram(failTans);
-     generated[0] = failTangram;*/
+    var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":6,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":1}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":6,"coeffSqrt":1},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":1},{"tanType":1,"anchor":{"x":{"coeffInt":4,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":-1}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":-2}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":0},{"tanType":3,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":4,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":7}]';
+    failTangram = JSON.parse(failTangram);
+    var failTans = [];
+    var newTan;
+    for (var index = 0; index < 7; index++) {
+        var currentTan = failTangram[index];
+        var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
+            currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
+            currentTan.anchor.y.coeffSqrt));
+        if (index != 0) {
+            failTans.push(new Tan(currentTan.tanType, anchor, currentTan.orientation));
+        } else {
+            newTan = new Tan(currentTan.tanType, anchor, currentTan.orientation);
+        }
+
+    }
+    checkNewTan(failTans, newTan);
+    //failTangram = new Tangram(failTans);
+    //generated[0] = failTangram;
 
     for (var tanId = 0; tanId < 6; tanId++) {
         generated[tanId].positionCentered();
@@ -598,7 +606,5 @@ window.onload = function () {
             watch.removeChild(watch.firstChild);
         }
     });
-
-
 };
 

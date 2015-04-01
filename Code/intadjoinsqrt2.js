@@ -44,6 +44,13 @@ IntAdjoinSqrt2.prototype.eq = function (other) {
     return (numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt));
 };
 
+IntAdjoinSqrt2.prototype.sameSign = function (other) {
+    if (this.isZero() && other.isZero()) return true;
+    var floatThis = this.toFloat();
+    var floatOther = other.toFloat();
+    return (floatThis < 0 && floatOther < 0) || (floatThis > 0 && floatOther > 0);
+};
+
 /* Compare this number to another one, returns 0 is the numbers are equal, -1 is
  * this number is smaller than the other one and 1, if this one is bigger than the
  * other one */
@@ -101,7 +108,7 @@ IntAdjoinSqrt2.prototype.multiply = function (other) {
 IntAdjoinSqrt2.prototype.div = function (other) {
     var denominator = other.coeffInt * other.coeffInt - 2 * other.coeffSqrt * other.coeffSqrt;
     if (numberEq(denominator, 0)) {
-        console.log("Division by 0 is not possible!");
+        //console.log("Division by 0 is not possible!");
         return;
     }
     /* (a + bx)/(c + dx) = ((a + bx)*(c - dx))/((c + dx)*(c - dx)) with x = sqrt(2)

@@ -72,6 +72,11 @@ Tangram.prototype.toSVGTans = function (elementName, shifted) {
 };
 
 var compareTangrams = function (tangramA, tangramB) {
-    //return tangramB.outline.length - tangramA.outline.length;
-    return numUniqueElements(tangramA.outline[0], comparePoints) - numUniqueElements(tangramB.outline[0], comparePoints);
+    var holediff = tangramA.outline.length - tangramA.outline.length;
+    if (holediff === 0){
+        return tangramA.outline[0].length - tangramB.outline[0].length;
+    } else {
+        return holediff;
+    }
+    //return numUniqueElements(tangramA.outline[0], comparePoints) - numUniqueElements(tangramB.outline[0], comparePoints);
 };

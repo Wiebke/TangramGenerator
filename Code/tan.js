@@ -42,8 +42,17 @@ Tan.prototype.getSegments = function () {
     return segments;
 };
 
-Tan.prototype.insidePoint = function () {
-    return this.anchor.dup().add(InsideDirections[this.tanType][this.orientation]);
+Tan.prototype.center = function () {
+    return this.anchor.dup().add(InsideDirections[this.tanType][this.orientation][0]);
+};
+
+Tan.prototype.insidePoints = function () {
+    var insidePoints = [];
+    var numInsidePoints = InsideDirections[this.tanType][this.orientation].length;
+    for (var pointId = 0; pointId < numInsidePoints; pointId++){
+        insidePoints.push(this.anchor.dup().add(InsideDirections[this.tanType][this.orientation][pointId]));
+    }
+    return insidePoints;
 };
 
 Tan.prototype.toSVG = function () {
