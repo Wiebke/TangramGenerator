@@ -1,4 +1,4 @@
-var range = new IntAdjoinSqrt2(9.5, 0);
+var range = new IntAdjoinSqrt2(7, 0);
 
 var checkNewTan = function (currentTans, newTan) {
     /* For each point of the new piece, check if it lies within the outline of

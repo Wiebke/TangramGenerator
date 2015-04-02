@@ -89,7 +89,7 @@ var parallelogram_5 = new Tan(4, anchorP_5, 1);
 
 var mountainTangram = new Tangram([bigTriangle1_5, bigTriangle2_5, mediumTriangle_5, smallTriangle1_5, smallTriangle2_5, square_5, parallelogram_5]);
 
-/* Test tangram - Mountain */
+/* Test tangram - Arrow */
 var anchorBT1_6 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0));
 var bigTriangle1_6 = new Tan(0, anchorBT1_6, 0);
 var anchorBT2_6 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 4));
@@ -106,6 +106,62 @@ var anchorP_6 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0));
 var parallelogram_6 = new Tan(5, anchorP_6, 3);
 
 var arrowTangram = new Tangram([bigTriangle1_6, bigTriangle2_6, mediumTriangle_6, smallTriangle1_6, smallTriangle2_6, square_6, parallelogram_6]);
+
+/* Test tangram - Big T */
+var anchorBT1_7 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0));
+var bigTriangle1_7 = new Tan(0, anchorBT1_7, 2);//
+var anchorBT2_7 = new Point(new IntAdjoinSqrt2(0, 3), new IntAdjoinSqrt2(0, 3));
+var bigTriangle2_7 = new Tan(0, anchorBT2_7, 3);
+var anchorM_7 = new Point(new IntAdjoinSqrt2(0, 3), new IntAdjoinSqrt2(0, 0));
+var mediumTriangle_7 = new Tan(1, anchorM_7, 0);//
+var anchorST1_7 = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1));
+var smallTriangle1_7 = new Tan(2, anchorST1_7, 6);//
+var anchorST2_7 = new Point(new IntAdjoinSqrt2(0, 3), new IntAdjoinSqrt2(0, 1));
+var smallTriangle2_7 = new Tan(2, anchorST2_7, 2);//
+var anchorS_7 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0));
+var square_7 = new Tan(3, anchorS_7, 0);//
+var anchorP_7 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 1));
+var parallelogram_7 = new Tan(4, anchorP_7, 1);
+
+var bigT = new Tangram([bigTriangle1_7, bigTriangle2_7, mediumTriangle_7, smallTriangle1_7, smallTriangle2_7, square_7, parallelogram_7]);
+
+/* Test tangram - Big G */
+var anchorBT1_8 = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(2, 0));
+var bigTriangle1_8 = new Tan(0, anchorBT1_8, 7);//
+var anchorBT2_8 = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(2, 2));
+var bigTriangle2_8 = new Tan(0, anchorBT2_8, 6);
+var anchorM_8 = new Point(new IntAdjoinSqrt2(2 ,0), new IntAdjoinSqrt2(0, 0));
+var mediumTriangle_8 = new Tan(1, anchorM_8, 0);//
+var anchorST1_8 = new Point(new IntAdjoinSqrt2(-1, 2), new IntAdjoinSqrt2(3, 2));
+var smallTriangle1_8 = new Tan(2, anchorST1_8, 5);//
+var anchorST2_8 = new Point(new IntAdjoinSqrt2(-2, 4), new IntAdjoinSqrt2(2, 0));
+var smallTriangle2_8 = new Tan(2, anchorST2_8, 1);//
+var anchorS_8 = new Point(new IntAdjoinSqrt2(-1, 3), new IntAdjoinSqrt2(3, 1));
+var square_8 = new Tan(3, anchorS_8, 6);//
+var anchorP_8 = new Point(new IntAdjoinSqrt2(-1, 2), new IntAdjoinSqrt2(3, 2));
+var parallelogram_8 = new Tan(4, anchorP_8, 7);
+
+var bigG = new Tangram([bigTriangle1_8, bigTriangle2_8, mediumTriangle_8, smallTriangle1_8, smallTriangle2_8, square_8, parallelogram_8]);
+
+/* Test tangram - Arrow */
+var anchorBT1_9 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0));
+var bigTriangle1_9 = new Tan(0, anchorBT1_9, 2);
+var anchorBT2_9 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 4));
+var bigTriangle2_9 = new Tan(0, anchorBT2_9, 4);
+var anchorM_9 = new Point(new IntAdjoinSqrt2(0, 4), new IntAdjoinSqrt2(0, 2));
+var mediumTriangle_9 = new Tan(1, anchorM_9, 3);
+var anchorST1_9 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 3));
+var smallTriangle1_9 = new Tan(2, anchorST1_9, 0);
+var anchorST2_9 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 2));
+var smallTriangle2_9 = new Tan(2, anchorST2_9, 6);
+var anchorS_9 = new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 2));
+var square_9 = new Tan(3, anchorS_9, 0);
+var anchorP_9 = new Point(new IntAdjoinSqrt2(0, 3), new IntAdjoinSqrt2(0, 2));
+var parallelogram_9 = new Tan(4, anchorP_9, 5);
+
+var playTangram = new Tangram([bigTriangle1_9, bigTriangle2_9, mediumTriangle_9, smallTriangle1_9, smallTriangle2_9, square_9, parallelogram_9]);
+
+
 
 /* Original outline for the game */
 var gameOutline;

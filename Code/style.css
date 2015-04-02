@@ -15,9 +15,9 @@ header, footer, section, aside {
 }
 
 header, #content, footer {
-    padding-left: 10%;
-    padding-right: 10%;
-    width: 80%;
+    padding-left: 5%;
+    padding-right: 5%;
+    width: 90%;
 }
 
 #gameArea {
@@ -33,7 +33,7 @@ header, #content, footer {
     margin-top: 2%;
     float: left;
     background-color: #BCBCBC;
-    border-radius: 5%;
+    border-radius: 10px;
 }
 
 #game {
@@ -42,7 +42,7 @@ header, #content, footer {
     margin-right: 10%;
     margin-left: 10%;
     background-color: #BCBCBC;
-    border-radius: 5%;
+    border-radius: 10px;
     margin-top: 2%;
     -webkit-user-select: none;
     -khtml-user-select: none;

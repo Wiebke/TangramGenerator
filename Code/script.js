@@ -489,7 +489,6 @@ var addTangrams = function () {
     checkNewTan(failTans, newTan);
     //failTangram = new Tangram(failTans);
     //generated[0] = failTangram;
-
     for (var tanId = 0; tanId < 6; tanId++) {
         generated[tanId].positionCentered();
     }
@@ -534,6 +533,10 @@ window.onload = function () {
                 sourceId = target.parentNode.parentNode.id;
             } else {
                 sourceId = target.id;
+            }
+            /* Prevent error when click event fires on content (?) */
+            if (sourceId === 'content'){
+                return;
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
             generated[chosen].toSVGOutline("game");
