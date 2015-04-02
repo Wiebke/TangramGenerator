@@ -72,7 +72,7 @@ Tangram.prototype.toSVGTans = function (elementName, shifted) {
 };
 
 var compareTangrams = function (tangramA, tangramB) {
-    var holediff = tangramA.outline.length - tangramA.outline.length;
+    var holediff = tangramA.outline.length - tangramB.outline.length;
     if (holediff === 0){
         return tangramA.outline[0].length - tangramB.outline[0].length;
     } else {
