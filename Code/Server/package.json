@@ -1,0 +1,11 @@
+{
+  "name": "tangen-statistics",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js",
+  "dependencies": {
+    "mongodb": "~2.0"
+  }
+}

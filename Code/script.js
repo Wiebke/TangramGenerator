@@ -94,9 +94,7 @@ var checkSolved = function () {
     line2.setAttributeNS(null, 'y', '5');
     line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
     watch.appendChild(line2);
-    /* Set new position */
-    /*watch.setAttributeNS(null, "x", "11");
-     watch.setAttributeNS(null, "y", "4");*/
+    sendGame(minutes,seconds,numHints,translations,rotations,generated[chosen]);
 };
 
 /* Sets every piece to the solution */
@@ -266,12 +264,11 @@ var selectTan = function (event) {
 };
 
 var deselectTan = function (event) {
-    // console.log("deselected: ");
+    console.log("deselected: ");
     if (!move) {
         snapToClosestRotation(getMouseCoordinates(event));
     } else {
-        /* Fires twice on release */
-        translations += 0.5;
+        translations += 1;
     }
     if (currentTan != -1) {
         snapped[currentTan] = false;
@@ -280,6 +277,8 @@ var deselectTan = function (event) {
     currentTan = -1;
     mouseOffset = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
     checkSolved();
+    /* Do not fire deselect on parent element as well */
+    event.stopPropagation();
 };
 
 var moveTan = function (event) {
@@ -470,8 +469,8 @@ var addTangrams = function () {
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":4},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":7}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":8,"coeffSqrt":0}},"orientation":3},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":1},"y":{"coeffInt":3,"coeffSqrt":-1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":3,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5}]';
-    var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":6,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":1}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":6,"coeffSqrt":1},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":1},{"tanType":1,"anchor":{"x":{"coeffInt":4,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":-1}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":-2}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":0},{"tanType":3,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":4,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":7}]';
-    failTangram = JSON.parse(failTangram);
+    //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":6,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":1}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":6,"coeffSqrt":1},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":1},{"tanType":1,"anchor":{"x":{"coeffInt":4,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":-1}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":2},"y":{"coeffInt":6,"coeffSqrt":-2}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":0},{"tanType":3,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":4,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":7}]';
+    /*failTangram = JSON.parse(failTangram);
     var failTans = [];
     var newTan;
     for (var index = 0; index < 7; index++) {
@@ -479,16 +478,12 @@ var addTangrams = function () {
         var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
             currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
             currentTan.anchor.y.coeffSqrt));
-        if (index != 0) {
             failTans.push(new Tan(currentTan.tanType, anchor, currentTan.orientation));
-        } else {
-            newTan = new Tan(currentTan.tanType, anchor, currentTan.orientation);
-        }
+
 
     }
-    checkNewTan(failTans, newTan);
-    //failTangram = new Tangram(failTans);
-    //generated[0] = failTangram;
+    failTangram = new Tangram(failTans);
+    generated[0] = failTangram;*/
     for (var tanId = 0; tanId < 6; tanId++) {
         generated[tanId].positionCentered();
     }
@@ -549,6 +544,7 @@ window.onload = function () {
             rotations = 0;
             translations = 0;
             startWatch();
+            sendChoice(chosen, generated.slice(0,6));
         });
     }
 

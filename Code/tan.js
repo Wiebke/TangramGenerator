@@ -162,7 +162,7 @@ var findMaxSegments = function (lastSegment, segments) {
     return [maxIndex, maxAngle];
 };
 
-var computeOutlinePart = function (allPoints, allSegments, angleFinder) {
+var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
     if (allPoints.length === 0 || allSegments.length === 0) {
         console.log("No points or segments left");
         return;
@@ -207,7 +207,7 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder) {
         if (firstSegment) {
             firstSegment = false;
         }
-    } while (!lastPoint.eq(allPoints[0]) || !outlineContainsAll(outline, allPoints));
+    } while (!lastPoint.eq(allPoints[0]) || (!outlineContainsAll(outline, allPoints) && !hole));
     /* When the last point is equal to the first it can be deleted */
     outline.pop();
     return [outline, allSegments];
@@ -247,7 +247,7 @@ var computeOutline = function (tans) {
     var outlineId = 0;
     var allPoints = getAllPoints(tans);
     var allSegments = computeSegments(allPoints, tans);
-    var outlinePart = computeOutlinePart(allPoints, allSegments, findMaxSegments);
+    var outlinePart = computeOutlinePart(allPoints, allSegments, findMaxSegments, false);
     outline[outlineId] = outlinePart[0];
     allSegments = outlinePart[1];
     var area = outlineArea(outline[0]);
