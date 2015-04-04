@@ -31,17 +31,23 @@ var changeTangramVisibility = function (hide) {
 };
 
 var changeIconVisibility = function (showMove, showRotate) {
+    var element = document.getElementById("game");
     if (showMove) {
         document.getElementById("move").setAttributeNS(null, "display", "block");
         move = true;
+        element.style.cursor = "url('move.ico'), auto";
     } else {
         document.getElementById("move").setAttributeNS(null, "display", "none");
         move = false;
     }
     if (showRotate) {
         document.getElementById("rotate").setAttributeNS(null, "display", "block");
+        element.style.cursor = "url('rotate.ico'), auto";
     } else {
         document.getElementById("rotate").setAttributeNS(null, "display", "none");
+    }
+    if (!showMove && !showRotate){
+        element.style.cursor = "auto";
     }
 };
 
@@ -303,9 +309,11 @@ var showAction = function (event) {
     var mouse = getMouseCoordinates(event);
     var points = gameOutline[tanIndex].getPoints();
     var rotate = false;
+    /* Smaller rotate range for "small" tans */
+    var rotateRange = (tanIndex === 2 || tanIndex === 3) ? 0.3 : 0.45
     for (var pointId = 0; pointId < points.length; pointId++) {
-        if (Math.abs(points[pointId].toFloatX() - mouse.toFloatX()) < 0.45
-            && Math.abs(points[pointId].toFloatY() - mouse.toFloatY()) < 0.45) {
+        if (Math.abs(points[pointId].toFloatX() - mouse.toFloatX()) < rotateRange
+            && Math.abs(points[pointId].toFloatY() - mouse.toFloatY()) < rotateRange) {
             rotate = true;
             break;
         }
