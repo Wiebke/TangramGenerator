@@ -129,10 +129,8 @@ var normalizeProbability = function (distribution){
     return distribution;
 };
 
-var computeOrientationProbability = function (tans, point, tanType, pointId) {
+var computeOrientationProbability = function (tans, point, tanType, pointId, allSegments) {
     var distribution = [];
-    /* Get all the segments of already placed tans in that point */
-    var allSegments = computeSegments(getAllPoints(tans), tans);
     var segmentDirections = [];
     for (var segmentId = 0; segmentId < allSegments.length; segmentId++){
         if (allSegments[segmentId].point1.eq(point)){
@@ -173,6 +171,31 @@ var sampleOrientation = function (distribution) {
     return numOrientations-1;
 };
 
+var updatePoints = function (currentPoints, newTan){
+    var newPoints = newTan.getPoints();
+    currentPoints = currentPoints.concat(newPoints);
+    return eliminateDuplicates(currentPoints,comparePoints,true);
+};
+
+var updateSegments = function (currentSegments, newTan){
+    /* Only the points of the new Tan can split any of the already present segments */
+    var newPoints = newTan.getPoints();
+    var allSegments = [];
+    for (var segmentId = 0; segmentId < currentSegments.length; segmentId++) {
+        var splitPoints = [];
+        for (var pointId = 0; pointId < newPoints.length; pointId++) {
+            if (currentSegments[segmentId].onSegment(newPoints[pointId])) {
+                splitPoints.push(newPoints[pointId]);
+            }
+        }
+        allSegments = allSegments.concat(currentSegments[segmentId].split(splitPoints));
+    }
+    /* Add the segments of the new tan and than */
+    allSegments = allSegments.concat(newTan.getSegments());
+    allSegments = eliminateDuplicates(allSegments, compareLineSegments, true);
+    return allSegments;
+};
+
 /* Function to randomly generate a tangram with more overlapping edges */
 var generateTangramEdges = function (){
     /* Generate an order in which the tan pieces are to be placed and decide on
@@ -185,13 +208,14 @@ var generateTangramEdges = function (){
     var tans = [];
     var anchor = new Point(new IntAdjoinSqrt2(30, 0), new IntAdjoinSqrt2(30, 0));
     tans[0] = new Tan(tanOrder[0], anchor, orientation);
+    var allPoints = tans[0].getPoints();
+    var allSegments = tans[0].getSegments();
     for (var tanId = 1; tanId < 7; tanId++) {
-        var currentOutline = getAllPoints(tans);
         var tanPlaced = false;
         var counter = 0;
         while (!tanPlaced) {
             /* Choose point at which new tan is to be attached */
-            anchor = currentOutline[Math.floor(Math.random() * currentOutline.length)].dup();
+            anchor = allPoints[Math.floor(Math.random() * allPoints.length)].dup();
             /* Choose point of the new tan that will be attached to that point */
             var pointId = 0;
             var pointOrder = (tanOrder[tanId] < 3) ? [0, 1, 2] : [0, 1, 2, 3];
@@ -199,7 +223,8 @@ var generateTangramEdges = function (){
             do {
                 var newTan;
                 /* Compute probability distribution for orientations */
-                var orientationDistribution = computeOrientationProbability(tans, anchor, tanOrder[tanId], pointOrder[pointId]);
+                var orientationDistribution = computeOrientationProbability(tans, anchor,
+                    tanOrder[tanId], pointOrder[pointId], allSegments);
                 /* Sample a new orientation */
                 while (typeof orientationDistribution != 'undefined' && !tanPlaced){
                     orientation = sampleOrientation(orientationDistribution);
@@ -213,6 +238,8 @@ var generateTangramEdges = function (){
                     if (checkNewTan(tans, newTan)) {
                         tans[tanId] = newTan;
                         tanPlaced = true;
+                        allPoints = updatePoints(allPoints,newTan);
+                        allSegments = updateSegments(allSegments, newTan);
                     }
                     orientationDistribution[orientation] = 0;
                     orientationDistribution = normalizeProbability(orientationDistribution);
@@ -233,9 +260,15 @@ var generateTangramEdges = function (){
 var generateTangrams = function (number) {
     generating = true;
     var generated = [];
-    for (var i = 0; i < number; i++) {
-        generated[i] = generateTangramEdges();
+    for (var index = 0; index < number; index++) {
+        generated[index] = generateTangramEdges();
         console.log("Generated!");
+        /* Clean up objects */
+        for (var tanId = 0; tanId < 7; tanId++){
+            delete generated[index].tans[tanId].points;
+            delete generated[index].tans[tanId].segments;
+            delete generated[index].tans[tanId].insidePoints;
+        }
     }
     console.log("Generating done");
     generated = generated.sort(compareTangrams);
