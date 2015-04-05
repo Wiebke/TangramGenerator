@@ -1,4 +1,5 @@
 /** Class for a Tan */
+var areaSum = new IntAdjoinSqrt2(576,0);
 
 /* Constructor: tanType is a number from 0 to 5, depending on which tan the object
  * describes where 0: big triangle, 1: medium triangle, 2: small triangle,
@@ -16,7 +17,7 @@ Tan.prototype.dup = function () {
 };
 
 Tan.prototype.area = function () {
-    var areas = [4, 2, 1, 2, 2, 2];
+    var areas = [96, 48, 24, 48, 48, 48];
     return areas[this.tanType];
 };
 
@@ -78,7 +79,7 @@ var getAllPoints = function (tans) {
 };
 
 var outlineArea = function (outline) {
-    var area = 0;
+    var area = new IntAdjoinSqrt2(0,0);
     for (var pointId = 0; pointId < outline.length - 1; pointId++) {
         /* Calculate the cross product of consecutive points. This corresponds
          * to twice the area of the triangle (0,0) - vertices[p] -
@@ -86,11 +87,11 @@ var outlineArea = function (outline) {
          * of that triangle are arranged in a counterclockwise order and negative
          * if the vertices are arranged in a clockwise order
          */
-        area += outline[pointId].determinant(outline[(pointId + 1)])
-            .toFloat();
+        area.add(outline[pointId].determinant(outline[(pointId + 1)]));
     }
-    area += outline[pointId].determinant(outline[0]).toFloat();
-    return Math.abs(area) / 2.0;
+    area.add(outline[pointId].determinant(outline[0]));
+    area.abs();
+    return area.scale(0.5);
 };
 
 var tanSumArea = function (tans) {
@@ -252,7 +253,7 @@ var computeOutline = function (tans) {
     allSegments = outlinePart[1];
     var area = outlineArea(outline[0]);
     /* Compute possible holes */
-    while ((numberNEq(area, 16) && area > 16) || !outlineContainsAll(outline[0], allPoints)) {
+    while ((!area.eq(areaSum) && area.toFloat() > 576) || !outlineContainsAll(outline[0], allPoints)) {
         outlineId++;
         outlinePart = computeHole(allPoints, allSegments, findMinSegments);
         if (typeof outlinePart === 'undefined') {
@@ -263,7 +264,7 @@ var computeOutline = function (tans) {
         }
         outline[outlineId] = outlinePart[0];
         allSegments = outlinePart[1];
-        area -= outlineArea(outline[outlineId]);
+        area.subtract(outlineArea(outline[outlineId]));
     }
     return outline;
 };

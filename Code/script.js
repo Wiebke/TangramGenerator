@@ -1,4 +1,4 @@
-var numTangrams = 100;
+var numTangrams = 500;
 var generated;
 var chosen;
 /* Variables used during solving */
@@ -9,7 +9,7 @@ var lastMouse = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 0));
 var lastAngle = 0;
 var hints = [0, 1, 2, 3, 4, 5, 6];
 var numHints = 0;
-var snapRange = 0.2;
+var snapRange = 1.2;
 var snapped = [false, false, false, false, false, false, false];
 /* Variables for statistics */
 var timer;
@@ -91,19 +91,19 @@ var checkSolved = function () {
     var watch = document.getElementById("watch");
     watch.textContent = "";
     var line0 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-    line0.setAttributeNS(null, 'x', '11');
-    line0.setAttributeNS(null, 'y', '4');
+    line0.setAttributeNS(null, 'x', '66');
+    line0.setAttributeNS(null, 'y', '24');
     line0.textContent = "You solved it";
     watch.appendChild(line0);
     var line1 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-    line1.setAttributeNS(null, 'x', '11');
-    line1.setAttributeNS(null, 'y', '4.5');
+    line1.setAttributeNS(null, 'x', '66');
+    line1.setAttributeNS(null, 'y', '27');
     line1.textContent = "in \uf017  " + (minutes ? (minutes > 9 ? minutes : "0" +
     minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds) + " with";
     watch.appendChild(line1);
     var line2 = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
-    line2.setAttributeNS(null, 'x', '11');
-    line2.setAttributeNS(null, 'y', '5');
+    line2.setAttributeNS(null, 'x', '66');
+    line2.setAttributeNS(null, 'y', '30');
     line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
     watch.appendChild(line2);
     sendGame(minutes,seconds,numHints,translations,rotations,generated[chosen]);
@@ -129,7 +129,7 @@ var hint = function () {
     shape.setAttributeNS(null, "points", generated[chosen].tans[hints[numHints]].toSVG());
     shape.setAttributeNS(null, "fill", 'none');
     shape.setAttributeNS(null, "stroke", "#E9E9E9");
-    shape.setAttributeNS(null, "stroke-width", "0.02");
+    shape.setAttributeNS(null, "stroke-width", "0.12");
     document.getElementById("game").appendChild(shape);
     numHints++;
 };
@@ -247,7 +247,7 @@ var rotateTan = function (event) {
     // console.log("clicked: " + tanIndex);
     var mouse = getMouseCoordinates(event);
     var mouseMove = lastMouse.dup().subtract(mouse);
-    if (Math.abs(mouseMove.toFloatX()) < 0.05 && Math.abs(mouseMove.toFloatY()) < 0.05) {
+    if (Math.abs(mouseMove.toFloatX()) < 0.25 && Math.abs(mouseMove.toFloatY()) < 0.25) {
         /* console.log("rotated: " + tanIndex); */
         gameOutline[tanIndex].orientation = (gameOutline[tanIndex].orientation + 1) % 8;
         gameOutline[tanIndex].anchor.subtract(mouse).rotate(45).add(mouse);
@@ -313,7 +313,7 @@ var showAction = function (event) {
     var points = gameOutline[tanIndex].getPoints();
     var rotate = false;
     /* Smaller rotate range for "small" tans */
-    var rotateRange = (tanIndex === 2 || tanIndex === 3) ? 0.3 : 0.45;
+    var rotateRange = (tanIndex > 2) ? 1.8 : 2.7;
     for (var pointId = 0; pointId < points.length; pointId++) {
         if (Math.abs(points[pointId].toFloatX() - mouse.toFloatX()) < rotateRange
             && Math.abs(points[pointId].toFloatY() - mouse.toFloatY()) < rotateRange) {
@@ -371,7 +371,7 @@ var addTangramPieces = function () {
         shape.setAttributeNS(null, "fill", '#FF9900');
         shape.setAttributeNS(null, "opacity", "0.8");
         shape.setAttributeNS(null, "stroke", "#E9E9E9");
-        shape.setAttributeNS(null, "stroke-width", "0.05");
+        shape.setAttributeNS(null, "stroke-width", "0.3");
         document.getElementById("game").appendChild(shape);
     }
     var tangramPieces = document.getElementsByClassName("tan");
@@ -414,29 +414,29 @@ var addTangramPieces = function () {
 
 var addIcons = function () {
     var moveIcon = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    moveIcon.setAttributeNS(null, "x", "11.5");
-    moveIcon.setAttributeNS(null, "y", "9.65");
-    moveIcon.setAttributeNS(null, "font-size", "0.45");
+    moveIcon.setAttributeNS(null, "x", "69");
+    moveIcon.setAttributeNS(null, "y", "57.9");
+    moveIcon.setAttributeNS(null, "font-size", "2.7");
     moveIcon.setAttributeNS(null, "fill", "#E9E9E9");
     moveIcon.setAttributeNS(null, "id", "move");
     moveIcon.setAttributeNS(null, "display", "none");
     moveIcon.textContent = "\uf047";
     document.getElementById("game").appendChild(moveIcon);
     var rotateIcon = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    rotateIcon.setAttributeNS(null, "x", "11.5");
-    rotateIcon.setAttributeNS(null, "y", "9.65");
-    rotateIcon.setAttributeNS(null, "font-size", "0.45");
+    rotateIcon.setAttributeNS(null, "x", "69");
+    rotateIcon.setAttributeNS(null, "y", "57.9");
+    rotateIcon.setAttributeNS(null, "font-size", "2.7");
     rotateIcon.setAttributeNS(null, "fill", "#E9E9E9");
     rotateIcon.setAttributeNS(null, "id", "rotate");
     rotateIcon.setAttributeNS(null, "display", "none");
     rotateIcon.textContent = "\uf01e";
     document.getElementById("game").appendChild(rotateIcon);
     var watch = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    watch.setAttributeNS(null, "x", "0.5");
-    watch.setAttributeNS(null, "y", "9.65");
+    watch.setAttributeNS(null, "x", "3");
+    watch.setAttributeNS(null, "y", "57.9");
     watch.setAttributeNS(null, "fill", "#E9E9E9");
     watch.setAttributeNS(null, "id", "watch");
-    watch.setAttributeNS(null, "font-size", "0.45");
+    watch.setAttributeNS(null, "font-size", "2.7");
     watch.textContent = "\uf017  " + "00:00";
     document.getElementById("game").appendChild(watch);
 };
@@ -444,40 +444,40 @@ var addIcons = function () {
 var addFlipButton = function () {
     var button = document.createElementNS("http://www.w3.org/2000/svg", "g");
     button.setAttributeNS(null, "class", "flip");
-    button.setAttributeNS(null, "transform", "translate (" + 11.75 + ", " + 8.75 + ")" + "scale(" + 0.3 + "," + 0.3 + ")");
+    button.setAttributeNS(null, "transform", "translate (" + 70.5 + ", " + 52.5 + ")" + "scale(" + 0.3 + "," + 0.3 + ")");
 
     var background = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    background.setAttributeNS(null, "x", "1.75");
-    background.setAttributeNS(null, "y", "1.75");
-    background.setAttributeNS(null, "width", "7.5");
-    background.setAttributeNS(null, "height", "1.5");
-    background.setAttributeNS(null, "rx", "0.5");
-    background.setAttributeNS(null, "ry", "0.5");
+    background.setAttributeNS(null, "x", "10.5");
+    background.setAttributeNS(null, "y", "10.5");
+    background.setAttributeNS(null, "width", "45");
+    background.setAttributeNS(null, "height", "9");
+    background.setAttributeNS(null, "rx", "3.0");
+    background.setAttributeNS(null, "ry", "3.0");
     background.setAttributeNS(null, "fill", '#E9E9E9');
     button.appendChild(background);
 
     var arrow = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-    arrow.setAttributeNS(null, "points", "5,2.5 5.25,2.25, 5.25,2.4, 5.75,2.4, " +
-    "5.75,2.25, 6,2.5, 5.75,2.75, 5.75,2.6 5.25,2.6 5.25,2.75");
+    arrow.setAttributeNS(null, "points", "30,15 31.5,13.5, 31.5,14.4, 34.5,14.4, " +
+    "34.5,13.5, 36,15, 34.5,16.5, 34.5,15.6 31.5,15.6 31.5,16.5");
     arrow.setAttributeNS(null, "fill", '#BCBCBC');
     button.appendChild(arrow);
 
-    var anchorL = new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(3, 0));
+    var anchorL = new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(18, 0));
     var parallelogramL = new Tan(5, anchorL, 0);
     var parallelogramElementL = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     parallelogramElementL.setAttributeNS(null, "points", parallelogramL.toSVG());
     parallelogramElementL.setAttributeNS(null, "fill", '#BCBCBC');
     parallelogramElementL.setAttributeNS(null, "stroke", "#BCBCBC");
-    parallelogramElementL.setAttributeNS(null, "stroke-width", "0.05");
+    parallelogramElementL.setAttributeNS(null, "stroke-width", "0.3");
     button.appendChild((parallelogramElementL));
 
-    var anchorR = new Point(new IntAdjoinSqrt2(6, 0), new IntAdjoinSqrt2(2, 0));
+    var anchorR = new Point(new IntAdjoinSqrt2(36, 0), new IntAdjoinSqrt2(12, 0));
     var parallelogramR = new Tan(4, anchorR, 0);
     var parallelogramElementR = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
     parallelogramElementR.setAttributeNS(null, "points", parallelogramR.toSVG());
     parallelogramElementR.setAttributeNS(null, "fill", '#BCBCBC');
     parallelogramElementR.setAttributeNS(null, "stroke", "#BCBCBC");
-    parallelogramElementR.setAttributeNS(null, "stroke-width", "0.05");
+    parallelogramElementR.setAttributeNS(null, "stroke-width", "0.3");
     button.appendChild((parallelogramElementR));
 
     document.getElementById("game").appendChild(button);
@@ -503,7 +503,7 @@ var addTangrams = function () {
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":4},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-2}},"orientation":7}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5},{"tanType":0,"anchor":{"x":{"coeffInt":8,"coeffSqrt":0},"y":{"coeffInt":8,"coeffSqrt":0}},"orientation":3},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":1},"y":{"coeffInt":3,"coeffSqrt":-1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":4,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":5},{"tanType":3,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":3,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":-1}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":6},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-2},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":5}]';
-    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":4,"coeffSqrt":-0.5},"y":{"coeffInt":3.5,"coeffSqrt":0}},"orientation":7},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-0.5},"y":{"coeffInt":6.5,"coeffSqrt":0}},"orientation":7},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":-0.5},"y":{"coeffInt":4.5,"coeffSqrt":0}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-0.5},"y":{"coeffInt":4.5,"coeffSqrt":0}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":7,"coeffSqrt":-0.5},"y":{"coeffInt":4.5,"coeffSqrt":0}},"orientation":3},{"tanType":3,"anchor":{"x":{"coeffInt":4,"coeffSqrt":-0.5},"y":{"coeffInt":5.5,"coeffSqrt":0}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":3,"coeffSqrt":-0.5},"y":{"coeffInt":6.5,"coeffSqrt":0}},"orientation":0}]';
+    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":-12}},"orientation":3},{"tanType":0,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":12}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":-12}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":18,"coeffSqrt":3},"y":{"coeffInt":48,"coeffSqrt":-6}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":0}},"orientation":0},{"tanType":3,"anchor":{"x":{"coeffInt":30,"coeffSqrt":9},"y":{"coeffInt":36,"coeffSqrt":0}},"orientation":4},{"tanType":5,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":12}},"orientation":7}]';
     failTangram = JSON.parse(failTangram);
     var failTans = [];
     var newTan;
@@ -540,7 +540,6 @@ var addTangrams = function () {
 
      generated[4].toSVGTans("fifth4",false);
      generated[5].toSVGTans("sixth5",false);*/
-
 };
 
 
@@ -584,7 +583,7 @@ window.onload = function () {
 
     document.getElementById("generate").addEventListener('click', function () {
         changeTangramVisibility(true);
-        generated = generateTangrams(numTangrams * 100);
+        generated = generateTangrams(numTangrams*20);
         resetPieces();
         addTangrams(generated);
         changeTangramVisibility(false);
@@ -616,8 +615,8 @@ window.onload = function () {
         while (watch.firstChild) {
             watch.removeChild(watch.firstChild);
         }
-        watch.setAttributeNS(null, "x", "0.5");
-        watch.setAttributeNS(null, "y", "9.75");
+        watch.setAttributeNS(null, "x", "3");
+        watch.setAttributeNS(null, "y", "58.5");
         startWatch();
         var tangramPieces = document.getElementsByClassName("tan");
         for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {

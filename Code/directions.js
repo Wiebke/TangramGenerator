@@ -23,31 +23,31 @@ for (var index = 0; index <= 5; index++) {
 // Fill the first entry of each array with the direction vectors for when
 // a piece is not rotated
 Directions[0][0] =
-    [new Point(new IntAdjoinSqrt2(0, 2), new IntAdjoinSqrt2(0, 0)),
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2))];
+    [new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 0)),
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 12))];
 //InsideDirections[0][0] = new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1));
 Directions[1][0] =
-    [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(2, 0))];
+    [new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(0, 0)),
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(12, 0))];
 //InsideDirections[1][0] = new Point(new IntAdjoinSqrt2(0.5, 0), new IntAdjoinSqrt2(0.5, 0));
 Directions[2][0] =
-    [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1))];
+    [new Point(new IntAdjoinSqrt2(0, 6), new IntAdjoinSqrt2(0, 0)),
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6))];
 //InsideDirections[2][0] = new Point(new IntAdjoinSqrt2(0, 0.25), new IntAdjoinSqrt2(0, 0.25));
 Directions[3][0] =
-    [new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 0)),
-        new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1)),
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1))];
+    [new Point(new IntAdjoinSqrt2(0, 6), new IntAdjoinSqrt2(0, 0)),
+        new Point(new IntAdjoinSqrt2(0, 6), new IntAdjoinSqrt2(0, 6)),
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6))];
 //InsideDirections[3][0] = new Point(new IntAdjoinSqrt2(0, 0.5), new IntAdjoinSqrt2(0, 0.5));
 Directions[4][0] =
-    [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
-        new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(1, 0)),
-        new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(1, 0))];
+    [new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(0, 0)),
+        new Point(new IntAdjoinSqrt2(18, 0), new IntAdjoinSqrt2(6, 0)),
+        new Point(new IntAdjoinSqrt2(6, 0), new IntAdjoinSqrt2(6, 0))];
 //InsideDirections[4][0] = new Point(new IntAdjoinSqrt2(1.5,0), new IntAdjoinSqrt2(0.5,0));
 Directions[5][0] =
-    [new Point(new IntAdjoinSqrt2(2, 0), new IntAdjoinSqrt2(0, 0)),
-        new Point(new IntAdjoinSqrt2(3, 0), new IntAdjoinSqrt2(-1, 0)),
-        new Point(new IntAdjoinSqrt2(1, 0), new IntAdjoinSqrt2(-1, 0))];
+    [new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(0, 0)),
+        new Point(new IntAdjoinSqrt2(18, 0), new IntAdjoinSqrt2(-6, 0)),
+        new Point(new IntAdjoinSqrt2(6, 0), new IntAdjoinSqrt2(-6, 0))];
 //InsideDirections[5][0] = new Point(new IntAdjoinSqrt2(1.5,0), new IntAdjoinSqrt2(-0.5,0));
 for (var tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     var centerPoint = new Point();
@@ -60,17 +60,19 @@ for (var tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
 }
 for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
     var middle1 = Directions[tanTypeId][0][0].dup().add(Directions[tanTypeId][0][1]).scale(0.5);
-    var middle2 = Directions[tanTypeId][0][0].dup().scale(0.5);
-    var middle3 = Directions[tanTypeId][0][1].dup().scale(0.5);
     var insidePoint1 = Directions[tanTypeId][0][0].dup().add(middle1);
-    var insidePoint2 = Directions[tanTypeId][0][1].dup().add(middle2);
-    var insidePoint3 = middle3.add(middle3);
+    var insidePoint2 = Directions[tanTypeId][0][1].dup().add(middle1);
     insidePoint1.scale(1 / (Directions[tanTypeId][0].length));
     InsideDirections[tanTypeId][0][1] = insidePoint1;
     insidePoint2.scale(1 / (Directions[tanTypeId][0].length));
     InsideDirections[tanTypeId][0][2] = insidePoint2;
-    insidePoint3.scale(1 / (Directions[tanTypeId][0].length));
-    InsideDirections[tanTypeId][0][3] = insidePoint3;
+    if (tanTypeId === 0){
+        var middle2 = Directions[tanTypeId][0][0].dup().scale(0.5);
+        var middle3 = Directions[tanTypeId][0][1].dup().scale(0.5);
+        var insidePoint3 = middle2.add(middle3);
+        insidePoint3.scale(1 / (Directions[tanTypeId][0].length));
+        insidePoint3.scale(1 / (Directions[tanTypeId][0].length));
+    }
 }
 
 for (tanTypeId = 3; tanTypeId <= 5; tanTypeId++){
@@ -145,20 +147,20 @@ for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     }
 }
 
-var FlipDirections = [[new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-1, 0)), /* 0 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1)), /* 1 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(3, 0)), /* 2 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2)), /* 3 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)), /* 4 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -1)), /* 5 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-3, 0)), /* 6 */
-    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -2))], /* 7 */
-    [new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)), /* 0 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 2)), /* 1 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(3, 0)), /* 2 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 1)), /* 3 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-1, 0)), /* 4 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -2)), /* 5 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-3, 0)), /* 6 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -1))]];
+var FlipDirections = [[new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6, 0)), /* 0 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6)), /* 1 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(18, 0)), /* 2 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 12)), /* 3 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(6, 0)), /* 4 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -6)), /* 5 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-18, 0)), /* 6 */
+    new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -12))], /* 7 */
+    [new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(6, 0)), /* 0 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 12)), /* 1 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(18, 0)), /* 2 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6)), /* 3 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6, 0)), /* 4 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -12)), /* 5 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-18, 0)), /* 6 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -6))]];
 /* 7 */

@@ -8,14 +8,6 @@ function IntAdjoinSqrt2(coeffInt, coeffSqrt) {
     this.coeffSqrt = coeffSqrt;
 }
 
-/* Getter methods */
-IntAdjoinSqrt2.prototype.coeffInt = function () {
-    return this.coeffInt
-};
-IntAdjoinSqrt2.prototype.coeffSqrt = function () {
-    return this.coeffSqrt
-};
-
 /* Duplication */
 IntAdjoinSqrt2.prototype.dup = function () {
     return new IntAdjoinSqrt2(this.coeffInt, this.coeffSqrt);
@@ -29,19 +21,11 @@ IntAdjoinSqrt2.prototype.toFloat = function () {
 /* Checking if this number is equal to another one, since only whole numbers are
  * used === can be used for comparison */
 IntAdjoinSqrt2.prototype.eq = function (other) {
-    /*if (this.coeffInt % 1 != 0){
-     console.log(this.coeffInt);
-     }
-     if (this.coeffSqrt % 1 != 0){
-     console.log(this.coeffSqrt);
-     }
-     if (other.coeffInt % 1 != 0){
-     console.log(other.coeffInt);
-     }
-     if (other.coeffInt % 1 != 0){
-     console.log(other.coeffSqrt);
-     }*/
-    return (numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt));
+    if (generating){
+        return this.coeffInt === other.coeffInt && this.coeffSqrt === other.coeffSqrt;
+    } else {
+        return numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt);
+    }
 };
 
 IntAdjoinSqrt2.prototype.sameSign = function (other) {
@@ -77,7 +61,11 @@ IntAdjoinSqrt2.prototype.closeNumbers = function (other, range) {
 };
 
 IntAdjoinSqrt2.prototype.isZero = function () {
-    return (numberEq(this.coeffInt, 0) && numberEq(this.coeffSqrt, 0));
+    if (generating){
+        return this.coeffInt === 0 && this.coeffSqrt === 0;
+    } else {
+        return (numberEq(this.coeffInt, 0) && numberEq(this.coeffSqrt, 0));
+    }
 };
 
 /* Basic arithmetic - Adding another number to this one */
@@ -123,6 +111,13 @@ IntAdjoinSqrt2.prototype.div = function (other) {
 IntAdjoinSqrt2.prototype.neg = function () {
     this.coeffInt = -this.coeffInt;
     this.coeffSqrt = -this.coeffSqrt;
+    return this;
+};
+
+/* Basic arithmetic - Absolute Value */
+IntAdjoinSqrt2.prototype.abs = function () {
+    this.coeffInt = Math.abs(this.coeffInt);
+    this.coeffSqrt = Math.abs(this.coeffSqrt);
     return this;
 };
 

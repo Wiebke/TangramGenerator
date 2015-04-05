@@ -16,14 +16,6 @@ function Point(x, y) {
     }
 }
 
-/* Getter methods */
-Point.prototype.x = function () {
-    return this.x
-};
-Point.prototype.y = function () {
-    return this.y
-};
-
 /* Duplication */
 Point.prototype.dup = function () {
     return new Point(this.x.dup(), this.y.dup());
@@ -67,12 +59,12 @@ Point.prototype.multipleOf = function (other){
     } else if (this.y.isZero() && other.y.isZero()){
             return sameSignX;
     } else {
-        var xFactor = this.toFloatX()/other.toFloatX();
-        var yFactor = this.toFloatY()/other.toFloatY();
+        var xFactor = this.x.div(other.x);
+        var yFactor = this.y.div(other.y);
         if (typeof xFactor === 'undefined' || typeof yFactor === 'undefined'){
             return false;
         } else {
-            return numberEq(xFactor,yFactor);
+            return xFactor.eq(yFactor);
         }
     }
 };
@@ -81,24 +73,8 @@ var comparePoints = function (pointA, pointB) {
     return pointA.compare(pointB);
 };
 
-var comparePointsFloat = function (pointA, pointB) {
-    var pointAX = pointA.toFloatX();
-    var pointAY = pointA.toFloatY();
-    var pointBX = pointB.toFloatX();
-    var pointBY = pointB.toFloatY();
-    if (numberEq(pointAX, pointBX)) {
-        if (numberEq(pointAY, pointBY)) {
-            return 0;
-        } else {
-            return pointAY < pointBY ? -1 : 1;
-        }
-    } else {
-        return pointAX < pointBX ? -1 : 1;
-    }
-};
-
 Point.prototype.eq = function (other) {
-    return this.compare(other) === 0;
+    return this.x.eq(other.x) && this.y.eq(other.y);
 };
 
 var closePoint = function (pointA, pointB, range) {
@@ -275,11 +251,10 @@ Point.prototype.scale = function (factor) {
  * the method returns 0, otherwise it return -1 or +1 depending on which side */
 var relativeOrientation = function (pointA, pointB, pointC) {
     var determinant = pointA.dup().subtract(pointC).determinant(pointB.dup().subtract(pointC));
-    determinant = determinant.toFloat();
-    if (numberEq(determinant, 0)) {
+    if (determinant.isZero()) {
         return 0;
     } else {
-        return determinant > 0 ? 1 : -1;
+        return determinant.toFloat() > 0 ? 1 : -1;
     }
 };
 

@@ -1,4 +1,4 @@
-var range = new IntAdjoinSqrt2(7, 0);
+var range = new IntAdjoinSqrt2(50, 0);
 
 var checkNewTan = function (currentTans, newTan) {
     /* For each point of the new piece, check if it lies within the outline of
@@ -78,7 +78,7 @@ var generateTangram = function () {
     }
     /* Place the first tan, as defined in tanOrder, at the center the drawing space */
     var tans = [];
-    var anchor = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 0));
+    var anchor = new Point(new IntAdjoinSqrt2(30, 0), new IntAdjoinSqrt2(30, 0));
     tans[0] = new Tan(tanOrder[0], anchor, orientations[0]);
     /* For each remaining piece to be placed, determine one of the points of the
      * outline of the already placed pieces as the connecting point to the new
@@ -184,7 +184,7 @@ var generateTangramEdges = function (){
     var orientation = Math.floor((Math.random() * numOrientations));
     /* Place the first tan, as defined in tanOrder, at the center the drawing space */
     var tans = [];
-    var anchor = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 0));
+    var anchor = new Point(new IntAdjoinSqrt2(30, 0), new IntAdjoinSqrt2(30, 0));
     tans[0] = new Tan(tanOrder[0], anchor, orientation);
     for (var tanId = 1; tanId < 7; tanId++) {
         var currentOutline = getAllPoints(tans);
@@ -232,16 +232,14 @@ var generateTangramEdges = function (){
 };
 
 var generateTangrams = function (number) {
+    generating = true;
     var generated = [];
     for (var i = 0; i < number; i++) {
         generated[i] = generateTangramEdges();
-        while (typeof generated[i].outline === 'undefined') {
-            console.log("Complex holes: Try again!");
-            generated[i] = generateTangramEdges();
-        }
         console.log("Generated!");
     }
     console.log("Generating done");
     generated = generated.sort(compareTangrams);
+    generating = false;
     return generated;
 };

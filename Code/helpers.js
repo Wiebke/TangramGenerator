@@ -1,7 +1,5 @@
-/**
- * Created by Wiebke on 06.03.15.
- */
-
+/* generating variable -> True if still in generating process */
+var generating = true;
 
 /* Conversion between different angle systems */
 

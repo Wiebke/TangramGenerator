@@ -26,15 +26,6 @@ function LineSegment(point1, point2) {
     }
 }
 
-/* Getters */
-LineSegment.prototype.point1 = function () {
-    return this.point1;
-};
-
-LineSegment.prototype.point2 = function () {
-    return this.point2;
-};
-
 /* Duplication */
 LineSegment.prototype.dup = function () {
     return new LineSegment(this.point1.dup(), this.point2.dup());

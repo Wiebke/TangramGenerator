@@ -21,7 +21,7 @@ Tangram.prototype.center = function () {
 };
 
 Tangram.prototype.positionCentered = function () {
-    var center = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 0));
+    var center = new Point(new IntAdjoinSqrt2(30, 0), new IntAdjoinSqrt2(30, 0));
     center.subtract(this.center());
     for (var tansId = 0; tansId < this.tans.length; tansId++) {
         this.tans[tansId].anchor.translate(center.x, center.y);
@@ -57,7 +57,7 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     element.appendChild(tangramSVG);
 };
 
-Tangram.prototype.toSVGTans = function (elementName, shifted) {
+Tangram.prototype.toSVGTans = function (elementName) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
     for (var i = 0; i < this.tans.length; i++) {
         var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
