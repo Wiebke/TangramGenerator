@@ -259,6 +259,7 @@ var rotateTan = function (event) {
 var selectTan = function (event) {
     var target = ((window.event) ? (event.srcElement) : (event.currentTarget));
     var tanIndex = parseInt(target.id[target.id.length - 1]);
+    document.getElementById("piece" + tanIndex).setAttributeNS(null, "stroke", "#FF9900");
     //console.log("selected: " + tanIndex);
     currentTan = tanIndex;
     var mouse = getMouseCoordinates(event);
@@ -267,12 +268,6 @@ var selectTan = function (event) {
     lastAngle = new LineSegment(tanCenter, gameOutline[currentTan].anchor).angleTo(
         new LineSegment(tanCenter, lastMouse));
     mouseOffset = mouse.subtract(gameOutline[tanIndex].anchor);
-    /* Bring this piece to the front -> Disables click, thus call click handler */
-    /*if (document.getElementById("game").lastChild.id != "piece" + tanIndex){
-     var piece = document.getElementById("piece" + tanIndex);
-     document.getElementById("game").appendChild(piece);
-     rotateTan(event);
-     }*/
 };
 
 var deselectTan = function (event) {
@@ -283,6 +278,7 @@ var deselectTan = function (event) {
     }
     if (currentTan != -1) {
         snapped[currentTan] = false;
+        document.getElementById("piece" + currentTan).setAttributeNS(null, "stroke", "#E9E9E9");
     }
     snapToClosePoints();
     currentTan = -1;
@@ -397,6 +393,7 @@ var addTangramPieces = function () {
             deselectTan(event);
         });
         tangramPieces[tanIndex].addEventListener('touchmove', function(event){
+            event.preventDefault();
             moveTan(event);
         });
 
@@ -404,6 +401,15 @@ var addTangramPieces = function () {
     }
     document.getElementById("game").addEventListener('mousemove', moveTan);
     document.getElementById("game").addEventListener('mouseup', deselectTan);
+    document.getElementById("game").addEventListener('touchstart', function(event){
+        event.preventDefault();
+    });
+    document.getElementById("game").addEventListener('touchend', function(event){
+        event.preventDefault();
+    });
+    document.getElementById("game").addEventListener('touchmove', function(event){
+        event.preventDefault();
+    });
 };
 
 var addIcons = function () {

@@ -28,8 +28,8 @@ MongoClient.connect('mongodb://'+connection_string, function(error, db) {
 
 var insertDb = function (collectionName, jsonObject){
   database.collection(collectionName).insert(jsonObject, {w: 1},
-      function(err, records){
-        console.log(records);
+      function(error, records){
+        if (error) throw error;
     });
 };
 
