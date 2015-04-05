@@ -1,5 +1,5 @@
-var numTangrams = 500;
-var generated;
+var numTangrams = 100;
+var generated = [];
 var chosen;
 /* Variables used during solving */
 var currentTan = -1;
@@ -495,6 +495,22 @@ var addFlipButton = function () {
     }
 };
 
+var parseTanArray = function(jsonString){
+    var tangram = JSON.parse(jsonString);
+    var tans = [];
+    var newTan;
+    for (var index = 0; index < 7; index++) {
+        var currentTan = tangram[index];
+        var anchor = new Point(new IntAdjoinSqrt2(currentTan.anchor.x.coeffInt,
+            currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
+            currentTan.anchor.y.coeffSqrt));
+        tans.push(new Tan(currentTan.tanType, anchor, currentTan.orientation));
+
+
+    }
+    return new Tangram(tans);
+};
+
 var addTangrams = function () {
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":2,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":7},{"tanType":0,"anchor":{"x":{"coeffInt":7,"coeffSqrt":2},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":2},{"tanType":1,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":7,"coeffSqrt":0}},"orientation":2},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":6,"coeffSqrt":0}},"orientation":3},{"tanType":2,"anchor":{"x":{"coeffInt":6,"coeffSqrt":0},"y":{"coeffInt":4,"coeffSqrt":0}},"orientation":1},{"tanType":3,"anchor":{"x":{"coeffInt":7,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":1},{"tanType":4,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":2}]';
     //var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":4},{"tanType":0,"anchor":{"x":{"coeffInt":5,"coeffSqrt":1},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":2},{"tanType":1,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-3},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-1},"y":{"coeffInt":5,"coeffSqrt":2}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":5,"coeffSqrt":1},"y":{"coeffInt":5,"coeffSqrt":1}},"orientation":2},{"tanType":3,"anchor":{"x":{"coeffInt":5,"coeffSqrt":-4},"y":{"coeffInt":7,"coeffSqrt":2}},"orientation":5},{"tanType":5,"anchor":{"x":{"coeffInt":5,"coeffSqrt":0},"y":{"coeffInt":5,"coeffSqrt":0}},"orientation":3}]';
@@ -544,11 +560,26 @@ var addTangrams = function () {
 
 
 window.onload = function () {
-    generated = generateTangrams(numTangrams);
+    // TODO provide fallBack if Workers are not supported
+    var worker = new Worker("generator.js");
+    var counter;
+    worker.onmessage = function(event) {
+        var message = event.data;
+        if (message === "Worker started" || message === "Generated!" || message === "Generating done"){
+            console.log('Worker said: ', message);
+        } else {
+            generating = false;
+            console.log(JSON.stringify(generated.length));
+            generated.push(parseTanArray(message));
+            if (generated.length === numTangrams){
+                addTangrams();
+                changeTangramVisibility(false);
+            }
+        }
+    };
+    worker.postMessage(numTangrams);
     chosen = 0;
     resetPieces();
-    addTangrams(generated);
-    changeTangramVisibility(false);
     /* Show larger version of the chosen tangram */
 
     var tangramClass = document.getElementsByClassName("tangram");

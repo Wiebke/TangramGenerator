@@ -1,3 +1,6 @@
+importScripts("helpers.js","intadjoinsqrt2.js","point.js", "lineSegement.js",
+    "directions.js","tan.js","evaluation.js","tangram.js");
+
 var range = new IntAdjoinSqrt2(50, 0);
 var increaseProbability = 50;
 
@@ -263,7 +266,7 @@ var generateTangrams = function (number) {
     var generated = [];
     for (var index = 0; index < number; index++) {
         generated[index] = generateTangramEdges();
-        console.log("Generated!");
+        self.postMessage("Generated!");
         /* Clean up objects */
         for (var tanId = 0; tanId < 7; tanId++){
             delete generated[index].tans[tanId].points;
@@ -271,8 +274,17 @@ var generateTangrams = function (number) {
             delete generated[index].tans[tanId].insidePoints;
         }
     }
-    console.log("Generating done");
     generated = generated.sort(compareTangrams);
     generating = false;
+    for (var index = 0; index < number; index++) {
+        self.postMessage(JSON.stringify(generated[index].tans));
+    }
+    self.postMessage("Generating done");
     return generated;
 };
+
+self.addEventListener('message', function(e) {
+    var numTangrams = e.data;
+    self.postMessage("Worker started");
+    generateTangrams(numTangrams);
+}, false);
