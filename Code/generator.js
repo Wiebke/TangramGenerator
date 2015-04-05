@@ -1,4 +1,5 @@
 var range = new IntAdjoinSqrt2(50, 0);
+var increaseProbability = 50;
 
 var checkNewTan = function (currentTans, newTan) {
     /* For each point of the new piece, check if it lies within the outline of
@@ -146,10 +147,10 @@ var computeOrientationProbability = function (tans, point, tanType, pointId, all
         for (segmentId = 0; segmentId < segmentDirections.length; segmentId++){
             //console.log("Compare to:" + JSON.stringify(segmentDirections[segmentId]) + "(" + orientId + ")");
             if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][0])){
-                distribution[orientId]+=50;
+                distribution[orientId]+=increaseProbability;
             }
             if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][1])){
-                distribution[orientId]+=50;
+                distribution[orientId]+=increaseProbability;
             }
         }
     }
