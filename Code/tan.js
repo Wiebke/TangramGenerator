@@ -10,6 +10,11 @@ function Tan(tanType, anchor, orientation) {
     this.tanType = tanType;
     this.anchor = anchor;
     this.orientation = orientation;
+    if (generating){
+        this.points = this.getPoints();
+        this.segments = this.getSegments();
+        this.insidePoints = this.getInsidePoints();
+    }
 }
 
 Tan.prototype.dup = function () {
@@ -22,6 +27,9 @@ Tan.prototype.area = function () {
 };
 
 Tan.prototype.getPoints = function () {
+    if (generating && typeof this.points != 'undefined'){
+        return this.points;
+    }
     var points = [];
     points[0] = this.anchor.dup();
     var directions = Directions[this.tanType][this.orientation];
@@ -34,12 +42,15 @@ Tan.prototype.getPoints = function () {
 };
 
 Tan.prototype.getSegments = function () {
+    if (generating && typeof this.segments != 'undefined'){
+        return this.segments;
+    }
     var segments = [];
     var points = this.getPoints();
-    for (var pointId = 0; pointId < points.length; pointId++) {
-        segments[pointId] = new LineSegment(points[pointId],
-            points[(pointId + 1) % points.length]);
+    for (var pointId = 0; pointId < points.length-1; pointId++) {
+        segments[pointId] = new LineSegment(points[pointId], points[(pointId + 1)]);
     }
+    segments[pointId] = new LineSegment(points[pointId], points[0]);
     return segments;
 };
 
@@ -47,7 +58,10 @@ Tan.prototype.center = function () {
     return this.anchor.dup().add(InsideDirections[this.tanType][this.orientation][0]);
 };
 
-Tan.prototype.insidePoints = function () {
+Tan.prototype.getInsidePoints = function () {
+    if (generating && typeof this.insidePoints != 'undefined'){
+        return this.insidePoints;
+    }
     var insidePoints = [];
     var numInsidePoints = InsideDirections[this.tanType][this.orientation].length;
     for (var pointId = 0; pointId < numInsidePoints; pointId++){
@@ -292,16 +306,17 @@ var computeBoundingBox = function (tans, outline) {
 
 /* Returns 1 if the given point is inside the polygon given by outline,
  * return -1 if the point lies on the outline and 0 is the point lies on the outline */
-/* TODO get rid of % */
 var containsPoint = function (outline, point) {
     /* Compute the winding number for the given point and the polygon, which
      * counts how often the polygon "winds" around the point. The point lies
      * outside, only when the winding number is 0 */
     var winding = 0;
     for (var pointId = 0; pointId < outline.length; pointId++) {
+        var firstPoint = outline[pointId];
+        var secondPoint = pointId === outline.length-1 ? outline[0] : outline[(pointId + 1)];
         /* Check each segment for containment */
-        if (point.eq(outline[pointId]) || point.eq(outline[(pointId + 1) % outline.length])
-            || new LineSegment(outline[pointId], outline[(pointId + 1) % outline.length]).onSegment(point)) {
+        if (point.eq(firstPoint) || point.eq(secondPoint)
+            || new LineSegment(firstPoint, secondPoint).onSegment(point)) {
             return 0;
         }
         /* Line segments are only considered if they are either pointing upward or
@@ -312,14 +327,14 @@ var containsPoint = function (outline, point) {
          * (when looking into the segment direction) */
         if (outline[pointId].y.compare(point.y) <= 0) {
             /* Upwards edge */
-            if (outline[(pointId + 1) % outline.length].y.compare(point.y) === 1
-                && relativeOrientation(outline[(pointId + 1) % outline.length], point, outline[pointId]) > 0) {
+            if (secondPoint.y.compare(point.y) === 1
+                && relativeOrientation(secondPoint, point, firstPoint) > 0) {
                 winding++;
             }
         } else {
             /* Downwards edge */
-            if (outline[(pointId + 1) % outline.length].y.compare(point.y) <= 0
-                && relativeOrientation(outline[(pointId + 1) % outline.length], point, outline[pointId]) < 0) {
+            if (secondPoint.y.compare(point.y) <= 0
+                && relativeOrientation(secondPoint, point, firstPoint) < 0) {
                 winding--;
             }
         }

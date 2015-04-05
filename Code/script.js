@@ -210,7 +210,7 @@ var snapToClosestRotation = function (mouse) {
     var currentAngle = clipAngle(lastAngle - new LineSegment(tanCenter,
         gameOutline[currentTan].anchor).angleTo(new LineSegment(tanCenter, mouse)));
     currentAngle = Math.round(currentAngle / 45);
-    gameOutline[currentTan].orientation = (gameOutline[currentTan].orientation + currentAngle) % 8;
+    gameOutline[currentTan].orientation = (gameOutline[currentTan].orientation + currentAngle) % numOrientations;
     gameOutline[currentTan].anchor.subtract(tanCenter).rotate(45 * currentAngle).add(tanCenter);
     rotations++;
     updateTanPiece(currentTan);
@@ -249,7 +249,7 @@ var rotateTan = function (event) {
     var mouseMove = lastMouse.dup().subtract(mouse);
     if (Math.abs(mouseMove.toFloatX()) < 0.25 && Math.abs(mouseMove.toFloatY()) < 0.25) {
         /* console.log("rotated: " + tanIndex); */
-        gameOutline[tanIndex].orientation = (gameOutline[tanIndex].orientation + 1) % 8;
+        gameOutline[tanIndex].orientation = (gameOutline[tanIndex].orientation + 1) % numOrientations;
         gameOutline[tanIndex].anchor.subtract(mouse).rotate(45).add(mouse);
         updateTanPiece(tanIndex);
         rotations++;

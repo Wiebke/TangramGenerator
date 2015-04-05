@@ -4,10 +4,9 @@ var checkNewTan = function (currentTans, newTan) {
     /* For each point of the new piece, check if it lies within the outline of
      * the already placed pieces */
     /* TODO: Maybe summarize this to avoid redundant calls */
-    /* TODO: Check other way around also? */
     var points = newTan.getPoints();
     /* Use midpoint to exact alignment of one piece in another on */
-    var allPoints = points.concat(newTan.insidePoints());
+    var allPoints = points.concat(newTan.getInsidePoints());
     for (var tansId = 0; tansId < currentTans.length; tansId++) {
         var currentPoints = currentTans[tansId].getPoints();
         var onSegmentCounter = 0;
@@ -25,7 +24,7 @@ var checkNewTan = function (currentTans, newTan) {
             return false;
         }
         onSegmentCounter = 0;
-        currentPoints = currentPoints.concat(currentTans[tansId].insidePoints());
+        currentPoints = currentPoints.concat(currentTans[tansId].getInsidePoints());
         for (pointId = 0; pointId < currentPoints.length; pointId++) {
             contains = containsPoint(points, currentPoints[pointId]);
             if (contains === 1) {
