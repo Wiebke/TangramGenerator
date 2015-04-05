@@ -6,7 +6,9 @@ function Tangram(tans) {
     });
     /* outline is an array of points describing the outline of the tangram */
     this.outline = computeOutline(this.tans);
-    this.evaluation = new Evaluation(this.tans, this.outline);
+    if (typeof this.outline != 'undefined'){
+        this.evaluation = new Evaluation(this.tans, this.outline);
+    }
 }
 
 /* Calculates the center of the bounding box of a tangram */

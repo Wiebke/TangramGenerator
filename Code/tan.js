@@ -164,7 +164,7 @@ var findMaxSegments = function (lastSegment, segments) {
 
 var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
     if (allPoints.length === 0 || allSegments.length === 0) {
-        console.log("No points or segments left");
+        //console.log("No points or segments left");
         return;
     }
     allPoints.sort(comparePoints);
@@ -215,7 +215,7 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
 
 var computeHole = function (allPoints, allSegments) {
     if (allPoints.length === 0 || allSegments.length === 0) {
-        console.log("No points or segments left");
+        //console.log("No points or segments left");
         return;
     }
     var numPointsBefore = allSegments.length * 2;
@@ -252,11 +252,13 @@ var computeOutline = function (tans) {
     allSegments = outlinePart[1];
     var area = outlineArea(outline[0]);
     /* Compute possible holes */
-    while (numberNEq(area, 16) && area > 16) {
+    while ((numberNEq(area, 16) && area > 16) || !outlineContainsAll(outline[0], allPoints)) {
         outlineId++;
         outlinePart = computeHole(allPoints, allSegments, findMinSegments);
         if (typeof outlinePart === 'undefined') {
-            console.log(JSON.stringify(tans));
+            /* Occurs for tangrams that consists of not connected, thus should
+             * only occur when placing tans, and the result is not connected yet */
+            //console.log(JSON.stringify(tans));
             return;
         }
         outline[outlineId] = outlinePart[0];
