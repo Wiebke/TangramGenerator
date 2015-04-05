@@ -6,7 +6,7 @@
 var evaluationMode = 0;
 
 function Evaluation(tans, outline){
-    /* TODO Vertices of the whole outline: between 3 and 17 (23-6)) */
+    /* TODO Vertices of the whole outline: between 3 and 29 (23+6)) */
     this.outlineVertices = 0;
     /* TODO Vertices of the outer outline (not including holes): between 3 and 17 */
     this.outerOutlineVertices = 0;
@@ -47,7 +47,7 @@ Evaluation.prototype.getValue = function(){
 Evaluation.prototype.updateEvaluation = function(){
     switch (evaluationMode){
         case 0:
-            this.finalEvalutation = this.numHoles;
+            this.finalEvalutation = (this.outlineVertices - 3)/26;
             break;
         case 1:
             var evaluationWeights = [];
