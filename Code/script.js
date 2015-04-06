@@ -573,7 +573,15 @@ var startGenerator = function () {
 };
 
 window.onload = function () {
-    // TODO provide fallBack if Workers are not supported
+    /* Provide fallBack if Workers or inline SVG are not supported */
+    if (typeof SVGRect === "undefined" || !window.Worker){
+        /* Show Browser fallback PNG */
+        var fallbackImage = document.createElement("img");
+        fallbackImage.src="fallback.jpg";
+        fallbackImage.alt ="browser does not support all needed functionalities";
+        document.getElementById('gameArea').appendChild(fallbackImage);
+        return;
+    }
     startGenerator();
     chosen = 0;
     resetPieces();
@@ -657,7 +665,9 @@ window.onload = function () {
     });
 
     document.getElementById("sol").addEventListener('click', function () {
+        /*  */
         setToSol();
+        /*  */
         var tangramPieces = document.getElementsByClassName("tan");
         for (var tanIndex = 0; tanIndex < tangramPieces.length; tanIndex++) {
             tangramPieces[tanIndex].setAttributeNS(null, "fill", "#3299BB");

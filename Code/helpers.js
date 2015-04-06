@@ -37,7 +37,7 @@ var numberEq = function (a, b) {
  * given range */
 var numberRange = function (a, b, range) {
     return Math.abs(a - b) < range;
-}
+};
 
 /* Returns true, if the two given numbers are not within a a set threshold of
  * each other */

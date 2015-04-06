@@ -36,6 +36,8 @@ var toggleButtonOn = function () {
 var toggleButtonOff = function () {
     if (!generating){
         var arrow = document.getElementById("arrowGroup");
+        /* Do not execute toggle after clicking */
+        if (!arrow) return;
         arrow.childNodes[0].setAttributeNS(null, "fill", '#BCBCBC');
         arrow.childNodes[3].setAttributeNS(null, "fill", '#3299BB');
         arrow.childNodes[5].setAttributeNS(null, "fill", '#3299BB');
@@ -65,6 +67,31 @@ var addLoading = function (){
     loadingSvg.appendChild(en);
     loadingSvg.appendChild(g);
     loadingSvg.appendChild(arrow);
+
+    /*var smiley = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    smiley.setAttributeNS(null, "x", "13");
+    smiley.setAttributeNS(null, "y", "13");
+    smiley.setAttributeNS(null, "font-size", "5");
+    smiley.setAttributeNS(null, "fill", "#3299BB");
+    smiley.textContent = "\uf119";
+    loadingSvg.appendChild(smiley);
+
+    var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttributeNS(null, "x", "4");
+    text.setAttributeNS(null, "y", "15");
+    text.setAttributeNS(null, "font-size", "0.75");
+    text.setAttributeNS(null, "fill", "#000000");
+    text.textContent = "Either you have Javascript switched off or your browser does not";
+    loadingSvg.appendChild(text);
+
+    var text2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text2.setAttributeNS(null, "x", "4");
+    text2.setAttributeNS(null, "y", "16");
+    text2.setAttributeNS(null, "font-size", "0.75");
+    text2.setAttributeNS(null, "fill", "#000000");
+    text2.textContent = "support the functionality needed for this site to function properly";
+    loadingSvg.appendChild(text2);*/
+
     var arrowCircle = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
     arrowCircle.setAttributeNS(null, "rx","4.25");
     arrowCircle.setAttributeNS(null, "ry","4.25");
@@ -171,7 +198,6 @@ var addLoading = function (){
 };
 
 var getPointAlongSegment = function (percentage, startPoint, segmentDirection){
-    console.log(percentage);
     if (numberNEq(percentage,0)){
         return startPoint.dup().add(segmentDirection.dup().scale(percentage));
     }

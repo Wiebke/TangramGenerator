@@ -36,6 +36,14 @@ header, #content, footer {
     border-radius: 10px;
 }
 
+img {
+    display:block;
+    width: 70%;
+    margin-top: 2%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 #game, #loading {
     display: none;
     width: 80%;
@@ -92,6 +100,10 @@ button:hover {
 
 svg text {
     font-family: FontAwesome, sans-serif;
+}
+
+#generate {
+    display:none;
 }
 
 #select, #set, #hint, #sol {
