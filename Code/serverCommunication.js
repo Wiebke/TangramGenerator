@@ -2,8 +2,8 @@
 function createCORSRequest(method, url) {
     var xhr = new XMLHttpRequest();
     if ("withCredentials" in xhr) {
-        // Check if the XMLHttpRequest object has a "withCredentials" property.
-        // "withCredentials" only exists on XMLHTTPRequest2 objects.
+        /* Check if the XMLHttpRequest object has a "withCredentials" property.
+         "withCredentials" only exists on XMLHTTPRequest2 objects. */
         xhr.open(method, url, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         /* IE support for CORS */
@@ -12,7 +12,7 @@ function createCORSRequest(method, url) {
         xhr.open(method, url);
         xhr.setRequestHeader('Content-Type', 'application/json');
     } else {
-        // Otherwise, CORS is not supported by the browser.
+        /* Otherwise, CORS is not supported by the browser. */
         xhr = null;
     }
     return xhr;
@@ -28,7 +28,7 @@ var sendPost = function (jsonString){
         console.log('CORS not supported');
         return;
     }
-    // Handle response
+    /* Handle response */
     xhr.onload = function() {
         var text = xhr.responseText;
         console.log('Response from CORS request to ' + url + ': ' + text);

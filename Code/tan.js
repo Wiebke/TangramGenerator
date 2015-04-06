@@ -10,7 +10,7 @@ function Tan(tanType, anchor, orientation) {
     this.tanType = tanType;
     this.anchor = anchor;
     this.orientation = orientation;
-    if ((!typeof generating === 'undefined') && generating){
+    if (!(typeof generating === 'undefined') && generating){
         this.points = this.getPoints();
         this.segments = this.getSegments();
         this.insidePoints = this.getInsidePoints();
@@ -26,6 +26,8 @@ Tan.prototype.area = function () {
     return areas[this.tanType];
 };
 
+/* Calculate the points involved in this tan, using anchor point and pre-
+ * calculated direction vectors */
 Tan.prototype.getPoints = function () {
     if (generating && typeof this.points != 'undefined'){
         return this.points;
@@ -41,6 +43,7 @@ Tan.prototype.getPoints = function () {
     return points;
 };
 
+/* Calculate segments from points (connect consecutive points to segments */
 Tan.prototype.getSegments = function () {
     if (generating && typeof this.segments != 'undefined'){
         return this.segments;
@@ -58,6 +61,7 @@ Tan.prototype.center = function () {
     return this.anchor.dup().add(InsideDirections[this.tanType][this.orientation][0]);
 };
 
+/* Calculate points inside this tan from anchor and pre-calculated directions */
 Tan.prototype.getInsidePoints = function () {
     if (generating && typeof this.insidePoints != 'undefined'){
         return this.insidePoints;
@@ -83,6 +87,7 @@ Tan.prototype.toSVG = function () {
 
 var getAllPoints = function (tans) {
     var points = [];
+    /* Add points of each tan */
     for (var i = 0; i < tans.length; i++) {
         var currentPoints = tans[i].getPoints();
         points = points.concat(currentPoints);
@@ -116,6 +121,7 @@ var tanSumArea = function (tans) {
     return area;
 };
 
+/* Check if a given outline contains all the given points */
 var outlineContainsAll = function (outline, allPoints) {
     for (var pointId = 0; pointId < allPoints.length; pointId++) {
         var contains = containsPoint(outline, allPoints[pointId]);
@@ -147,10 +153,13 @@ var computeSegments = function (allPoints, tans) {
             allSegments = allSegments.concat(currentSegments[segmentId].split(splitPoints));
         }
     }
+    /* Throw out all line segments that occur twice (they will not be part of
+     * the outline anyways */
     allSegments = eliminateDuplicates(allSegments, compareLineSegments, false);
     return allSegments;
 };
 
+/* Find segment with minimum angle to a given lastSegment */
 var findMinSegments = function (lastSegment, segments) {
     var minAngle = 360;
     var minIndex = -1;
@@ -164,6 +173,7 @@ var findMinSegments = function (lastSegment, segments) {
     return [minIndex, minAngle];
 };
 
+/* Find segment with maximum angle to a given lastSegment */
 var findMaxSegments = function (lastSegment, segments) {
     var maxAngle = 0;
     var maxIndex = -1;
@@ -179,22 +189,26 @@ var findMaxSegments = function (lastSegment, segments) {
 
 var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
     if (allPoints.length === 0 || allSegments.length === 0) {
-        //console.log("No points or segments left");
         return;
     }
     allPoints.sort(comparePoints);
     var lastPoint = allPoints[0];
     var helperPoint = lastPoint.dup();
+    /* First last segment is a downwards horizontal segment*/
     helperPoint.subtract(new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(1, 0)));
     var outline = [];
     outline.push(lastPoint);
     var lastSegment = new LineSegment(helperPoint, lastPoint);
     var firstSegment = true;
     do {
+        /* Get all segments that are adjacent to the lastPoint and find the segment
+         * with maximum or minimum angle */
         var currentSegments = allSegments.filter(function (element) {
             return !lastSegment.eq(element) && (element.point1.eq(lastPoint) || element.point2.eq(lastPoint));
         });
         var foundAngle;
+        /* On the first segment, always use the segment with maximum angle, so
+         * that all outline parts are traversed anti-clockwise */
         if (firstSegment) {
             foundAngle = findMaxSegments(lastSegment, currentSegments);
         } else {
@@ -205,9 +219,12 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
         if (index === -1) {
             break;
         }
+        /* If the found segment continues in the same direction, remove the last
+         * point, since it provides no additional information */
         if (angle === 180 && !firstSegment) {
             outline.pop();
         }
+        /* Add the other point of the found segment to the outline*/
         if (currentSegments[index].point1.eq(lastPoint)) {
             outline.push(currentSegments[index].point2);
             lastPoint = currentSegments[index].point2;
@@ -230,9 +247,10 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
 
 var computeHole = function (allPoints, allSegments) {
     if (allPoints.length === 0 || allSegments.length === 0) {
-        //console.log("No points or segments left");
         return;
     }
+    /* Filter out all points and segment that cannot be part of a closed sequence
+     * of line segments anymore (all holes consist of such a sequence */
     var numPointsBefore = allSegments.length * 2;
     var numPointsAfter = 0;
     while (numPointsBefore != numPointsAfter) {
@@ -251,6 +269,7 @@ var computeHole = function (allPoints, allSegments) {
         numPointsAfter = allSegments.length * 2;
     }
     allPoints = eliminateDuplicates(remainingPoints, comparePoints,true);
+    /* Use a minimum angle for holes */
     return computeOutlinePart(allPoints, allSegments, findMinSegments, true);
 };
 
@@ -273,7 +292,6 @@ var computeOutline = function (tans) {
         if (typeof outlinePart === 'undefined') {
             /* Occurs for tangrams that consists of not connected, thus should
              * only occur when placing tans, and the result is not connected yet */
-            //console.log(JSON.stringify(tans));
             return;
         }
         outline[outlineId] = outlinePart[0];
@@ -293,6 +311,7 @@ var computeBoundingBox = function (tans, outline) {
     var minY = new IntAdjoinSqrt2(100, 0);
     var maxX = new IntAdjoinSqrt2(-100, 0);
     var maxY = new IntAdjoinSqrt2(-100, 0);
+    /* Find min and max x and y coordinates */
     for (var pointId = 0; pointId < outline.length; pointId++) {
         var currentX = outline[pointId].x;
         var currentY = outline[pointId].y;

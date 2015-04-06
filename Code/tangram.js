@@ -4,7 +4,7 @@ function Tangram(tans) {
     this.tans = tans.sort(function (a, b) {
         return a.tanType - b.tanType;
     });
-    /* outline is an array of points describing the outline of the tangram */
+    /* Outline is an array of points describing the outline of the tangram */
     this.outline = computeOutline(this.tans);
     if (typeof this.outline != 'undefined'){
         this.evaluation = new Evaluation(this.tans, this.outline);
@@ -20,6 +20,7 @@ Tangram.prototype.center = function () {
     return center;
 };
 
+/* Centers the tangram, so that its center is position at (30,30) */
 Tangram.prototype.positionCentered = function () {
     var center = new Point(new IntAdjoinSqrt2(30, 0), new IntAdjoinSqrt2(30, 0));
     center.subtract(this.center());
@@ -29,9 +30,11 @@ Tangram.prototype.positionCentered = function () {
     this.outline = computeOutline(this.tans);
 };
 
+/* Create an SVG element with the outline of this tangram */
 Tangram.prototype.toSVGOutline = function (elementName) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
     var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    /* Add each outline point to the path */
     var pathdata = "M " + this.outline[0][0].toFloatX() + ", " + this.outline[0][0].toFloatY() + " ";
     for (var i = 1; i < this.outline[0].length; i++) {
         pathdata += "L " + this.outline[0][i].toFloatX() + ", " + this.outline[0][i].toFloatY() + " ";
@@ -46,6 +49,7 @@ Tangram.prototype.toSVGOutline = function (elementName) {
         pathdata += "Z";
     }
     shape.setAttributeNS(null, "d", pathdata);
+    /* Set fill-rule for correctly displayed holes */
     shape.setAttributeNS(null, "fill-rule", "evenodd");
     tangramSVG.appendChild(shape);
     /* Clear old content */
@@ -57,15 +61,13 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     element.appendChild(tangramSVG);
 };
 
+/* Create svg element for each tan */
 Tangram.prototype.toSVGTans = function (elementName) {
     var tangramSVG = document.createElementNS("http://www.w3.org/2000/svg", "g");
     for (var i = 0; i < this.tans.length; i++) {
         var shape = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
         shape.setAttributeNS(null, "points", this.tans[i].toSVG());
-        // Fill with random color for now
-        // shape.setAttributeNS(null, "fill", '#' + Math.random().toString(16).substr(-6));
         shape.setAttributeNS(null, "fill", '#FF9900');
-        //shape.setAttributeNS(null, "fill", 'none');
         shape.setAttributeNS(null, "stroke", "#3299BB");
         shape.setAttributeNS(null, "stroke-width", "0.05");
         tangramSVG.appendChild(shape);
@@ -73,6 +75,7 @@ Tangram.prototype.toSVGTans = function (elementName) {
     document.getElementById(elementName).appendChild(tangramSVG);
 };
 
+/* Comparison of tangrams for sorting */
 var compareTangrams = function (tangramA, tangramB) {
     return tangramA.evaluation.getValue() - tangramB.evaluation.getValue();
 };

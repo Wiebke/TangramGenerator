@@ -102,12 +102,14 @@ var compareLineSegments = function (segmentA, segmentB) {
  * at the given splitPoints (given as an array)
  */
 LineSegment.prototype.split = function (splitPoints) {
-    /* Sort points along segment */
+    /* If no points are given, return this segment in an array*/
     if (splitPoints.length === 0) {
         return [this];
     }
+    /* Sort points along segment */
     splitPoints = splitPoints.sort(comparePoints);
-    /* Create new segments - staring from this */
+    /* Create new segments - staring from the first point of this segment, all
+     * following segments go from the last process point to the next split point */
     var segments = [];
     segments[0] = new LineSegment(this.point1, splitPoints[0]);
     var i;
@@ -205,12 +207,11 @@ LineSegment.prototype.intersectsIncludingSegment = function (other){
     return this.intersectsOrientations(other);
 };
 
-
-
 /* Returns true if the this segment and the other segment intersect in exactly one
  * point which is not equal to either of the endpoints of either segment */
 LineSegment.prototype.intersects = function (other) {
-    /* First check if any of the endpoints are equal*/
+    /* First check if any of the endpoints are contained in the respective other
+     * segment */
     if (this.onSegmentIncludingEndpoints(other.point1) || this.onSegmentIncludingEndpoints(other.point2) ||
         other.onSegmentIncludingEndpoints(this.point1) || other.onSegmentIncludingEndpoints(this.point2)) {
         return false;
@@ -243,6 +244,3 @@ LineSegment.prototype.angleTo = function (other) {
     /* Angle between those is Angle between the segments */
     return thisDirection.angleTo(otherDirection);
 };
-
-
-

@@ -118,6 +118,14 @@ svg text {
     padding-bottom: 2em;
 }
 
+#loadParagraph {
+    display: block;
+}
+
+#chooseParagraph, #gameParagraph {
+    display: none;
+}
+
 footer {
     font-size: 0.8em;
     height: 1.5em;

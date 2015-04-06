@@ -18,8 +18,8 @@ IntAdjoinSqrt2.prototype.toFloat = function () {
     return this.coeffInt + this.coeffSqrt * Math.SQRT2;
 };
 
-/* Checking if this number is equal to another one, since only whole numbers are
- * used === can be used for comparison */
+/* Checking if this number is equal to another one, in generating only whole
+ * numbers are used === can be used for comparison */
 IntAdjoinSqrt2.prototype.eq = function (other) {
     if (generating){
         return this.coeffInt === other.coeffInt && this.coeffSqrt === other.coeffSqrt;
@@ -28,6 +28,7 @@ IntAdjoinSqrt2.prototype.eq = function (other) {
     }
 };
 
+/* Check if two numbers have the same sign */
 IntAdjoinSqrt2.prototype.sameSign = function (other) {
     if (this.isZero() && other.isZero()) return true;
     var floatThis = this.toFloat();
@@ -52,14 +53,17 @@ IntAdjoinSqrt2.prototype.compare = function (other) {
     }
 };
 
+/* Compare function to be passed to sorting functions */
 var compareIntAdjoinSqrt2s = function (numberA, numberB) {
     return numberA.compare(numberB);
 };
 
+/* Check if two numbers lie withing a given range of oneanother */
 IntAdjoinSqrt2.prototype.closeNumbers = function (other, range) {
     return numberRange(this.toFloat(), other.toFloat(), range);
 };
 
+/* Check if this number is equal to zero, use === during generating */
 IntAdjoinSqrt2.prototype.isZero = function () {
     if (generating){
         return this.coeffInt === 0 && this.coeffSqrt === 0;
@@ -125,6 +129,7 @@ IntAdjoinSqrt2.prototype.abs = function () {
 IntAdjoinSqrt2.prototype.scale = function (factor) {
     if (numberEq(factor, 0)) {
         console.log("Scaling by 0 is not possible!");
+        /* Somehow this fixes strange Safari error ?? */
         console.log(JSON.stringify(this));
         return;
     }

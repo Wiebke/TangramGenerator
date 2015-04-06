@@ -1,9 +1,10 @@
-/* Moved here for order */
+/* Moved here for order - hide or show the 6 possible tangram choices */
 var changeTangramVisibility = function (hide) {
     var tangramClass = document.getElementsByClassName("tangram");
     for (var i = 0; i < tangramClass.length; i++) {
         tangramClass[i].style.display = hide ? 'none' : 'block';
     }
+    /* Show game buttons when hiding tangrams and regenerate button otherwise */
     document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
     document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
     document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
@@ -13,16 +14,21 @@ var changeTangramVisibility = function (hide) {
 
 var stopLoading = function (){
     if (!generating){
+        /* Hide loading things */
         var loadingSvg = document.getElementById("loading");
         loadingSvg.style.display = 'none';
         /* Remove children if there are any */
         while (loadingSvg.firstChild) {
             loadingSvg.removeChild(loadingSvg.firstChild);
         }
+        /* Show tangram choices */
         changeTangramVisibility(false);
+        document.getElementById("loadParagraph").style.display = 'none';
+        document.getElementById("chooseParagraph").style.display = 'block';
     }
 };
 
+/* Once generating is finished change colors of the progress button on hover */
 var toggleButtonOn = function () {
     if (!generating){
         var arrow = document.getElementById("arrowGroup");
@@ -32,7 +38,6 @@ var toggleButtonOn = function () {
         arrow.childNodes[2].setAttributeNS(null, "fill", '#BCBCBC');
     }
 };
-
 var toggleButtonOff = function () {
     if (!generating){
         var arrow = document.getElementById("arrowGroup");
@@ -53,6 +58,7 @@ var addLoading = function (){
     document.getElementById("set").style.display = 'none';
     document.getElementById("hint").style.display = 'none';
     document.getElementById("sol").style.display = 'none';
+    /* Create groups for each element */
     var loadingSvg = document.getElementById("loading");
     var t = document.createElementNS("http://www.w3.org/2000/svg", "g");
     var an = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -197,13 +203,16 @@ var addLoading = function (){
     loadingSvg.style.display = 'block';
 };
 
+/* Calculate the point along a segment with a given start point and an
+ * direction according to the equation for a line A + t*(A-B), where t
+ * corresponds to the percantage and is between 0 and 1 here */
 var getPointAlongSegment = function (percentage, startPoint, segmentDirection){
     if (numberNEq(percentage,0)){
         return startPoint.dup().add(segmentDirection.dup().scale(percentage));
     }
 };
 
-
+/* Depending on the given percentage fill the tans within playTangram */
 var updateLoading = function (percentage) {
     var arrow = document.getElementById("arrowGroup");
     if (percentage <= 0.5 || numberEq(percentage,0.5)){
@@ -284,7 +293,6 @@ var updateLoading = function (percentage) {
         arrow.childNodes[3].setAttributeNS(null, "points", pointsString);
     } else {
         arrow.childNodes[0].setAttributeNS(null, "stroke", "#E9E9E9");
-
     }
 };
 

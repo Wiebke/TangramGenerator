@@ -1,3 +1,5 @@
+/* Definition of some example tangrams */
+
 /* Test tangram - Square */
 var anchorBT1 = new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(12, 0));
 var bigTriangle1 = new Tan(0, anchorBT1, 1);
@@ -70,7 +72,6 @@ var parallelogram_4 = new Tan(4, anchorP_4, 0);
 
 var birdTangram = new Tangram([bigTriangle1_4, bigTriangle2_4, mediumTriangle_4, smallTriangle1_4, smallTriangle2_4, square_4, parallelogram_4]);
 
-
 /* Test tangram - Mountain */
 var anchorBT1_5 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(12, 6));
 var bigTriangle1_5 = new Tan(0, anchorBT1_5, 4);
@@ -107,19 +108,21 @@ var parallelogram_6 = new Tan(5, anchorP_6, 3);
 
 var arrowTangram = new Tangram([bigTriangle1_6, bigTriangle2_6, mediumTriangle_6, smallTriangle1_6, smallTriangle2_6, square_6, parallelogram_6]);
 
+var ExampleTangrams = [squareTangram, swanTangram, catTangram, birdTangram, mountainTangram, arrowTangram];
+
 /* Test tangram - Big T */
 var anchorBT1_7 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 0));
-var bigTriangle1_7 = new Tan(0, anchorBT1_7, 2);//
+var bigTriangle1_7 = new Tan(0, anchorBT1_7, 2);
 var anchorBT2_7 = new Point(new IntAdjoinSqrt2(0, 18), new IntAdjoinSqrt2(0, 18));
 var bigTriangle2_7 = new Tan(0, anchorBT2_7, 3);
 var anchorM_7 = new Point(new IntAdjoinSqrt2(0, 18), new IntAdjoinSqrt2(0, 0));
-var mediumTriangle_7 = new Tan(1, anchorM_7, 0);//
+var mediumTriangle_7 = new Tan(1, anchorM_7, 0);
 var anchorST1_7 = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 36));
-var smallTriangle1_7 = new Tan(2, anchorST1_7, 6);//
+var smallTriangle1_7 = new Tan(2, anchorST1_7, 6);
 var anchorST2_7 = new Point(new IntAdjoinSqrt2(0, 18), new IntAdjoinSqrt2(0, 36));
-var smallTriangle2_7 = new Tan(2, anchorST2_7, 2);//
+var smallTriangle2_7 = new Tan(2, anchorST2_7, 2);
 var anchorS_7 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 0));
-var square_7 = new Tan(3, anchorS_7, 0);//
+var square_7 = new Tan(3, anchorS_7, 0);
 var anchorP_7 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 36));
 var parallelogram_7 = new Tan(4, anchorP_7, 1);
 
@@ -127,23 +130,24 @@ var bigT = new Tangram([bigTriangle1_7, bigTriangle2_7, mediumTriangle_7, smallT
 
 /* Test tangram - Big G */
 var anchorBT1_8 = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(12, 0));
-var bigTriangle1_8 = new Tan(0, anchorBT1_8, 7);//
+var bigTriangle1_8 = new Tan(0, anchorBT1_8, 7);
 var anchorBT2_8 = new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(12, 12));
 var bigTriangle2_8 = new Tan(0, anchorBT2_8, 6);
 var anchorM_8 = new Point(new IntAdjoinSqrt2(12 ,0), new IntAdjoinSqrt2(0, 0));
-var mediumTriangle_8 = new Tan(1, anchorM_8, 0);//
+var mediumTriangle_8 = new Tan(1, anchorM_8, 0);
 var anchorST1_8 = new Point(new IntAdjoinSqrt2(-6, 12), new IntAdjoinSqrt2(18, 12));
-var smallTriangle1_8 = new Tan(2, anchorST1_8, 5);//
+var smallTriangle1_8 = new Tan(2, anchorST1_8, 5);
 var anchorST2_8 = new Point(new IntAdjoinSqrt2(-12, 24), new IntAdjoinSqrt2(12, 0));
-var smallTriangle2_8 = new Tan(2, anchorST2_8, 6);//
+var smallTriangle2_8 = new Tan(2, anchorST2_8, 6);
 var anchorS_8 = new Point(new IntAdjoinSqrt2(-6, 18), new IntAdjoinSqrt2(18, 36));
-var square_8 = new Tan(3, anchorS_8, 6);//
+var square_8 = new Tan(3, anchorS_8, 6);
 var anchorP_8 = new Point(new IntAdjoinSqrt2(-6, 12), new IntAdjoinSqrt2(18, 12));
 var parallelogram_8 = new Tan(4, anchorP_8, 7);
 
 var bigG = new Tangram([bigTriangle1_8, bigTriangle2_8, mediumTriangle_8, smallTriangle1_8, smallTriangle2_8, square_8, parallelogram_8]);
 
-/* Test tangram - Arrow */
+/* Test tangram - Arrow: smaller than the other tangrams, to be used for loading
+ * animation */
 var anchorBT1_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, -2));
 var bigTriangle1_9 = new Tan(0, anchorBT1_9, 2);
 var anchorBT2_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 2));
@@ -160,8 +164,6 @@ var anchorP_9 = new Point(new IntAdjoinSqrt2(5, 1), new IntAdjoinSqrt2(5, 0));
 var parallelogram_9 = new Tan(4, anchorP_9, 5);
 
 var playTangram = new Tangram([bigTriangle1_9, bigTriangle2_9, mediumTriangle_9, smallTriangle1_9, smallTriangle2_9, square_9, parallelogram_9]);
-
-
 
 /* Original outline for the game */
 var gameOutline;
@@ -183,13 +185,3 @@ var resetPieces = function () {
     var parallelogram_G = new Tan(5, anchorP_G, 0);
     gameOutline = [bigTriangle1_G, bigTriangle2_G, mediumTriangle_G, smallTriangle1_G, smallTriangle2_G, square_G, parallelogram_G];
 };
-
-
-var ExampleTangrams = [squareTangram, swanTangram, catTangram, birdTangram, mountainTangram, arrowTangram];
-
-/*ExampleTangrams[0].toSVGOutline("first");
- ExampleTangrams[1].toSVGOutline("second");
- ExampleTangrams[2].toSVGOutline("third");
- ExampleTangrams[3].toSVGOutline("fourth");
- ExampleTangrams[4].toSVGOutline("fifth");
- ExampleTangrams[5].toSVGOutline("sixth");*/

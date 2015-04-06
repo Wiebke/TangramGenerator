@@ -44,9 +44,11 @@ Point.prototype.compare = function (other) {
     }
 };
 
-
 /* Returns true if the given direction vector is the same or a multiple this one */
 Point.prototype.multipleOf = function (other){
+    /* Direction vectors are a multiple of each other if they either are both
+     * equal to (0,0), if they both have the form (0,a) or (a,0) where the a has
+     * has the same sign in both cases or (a,b) = s*(c,d) */
     var sameSignX = this.x.sameSign(other.x);
     var sameSignY = this.y.sameSign(other.y);
     if (!(sameSignX && sameSignY)) return false;
@@ -69,18 +71,22 @@ Point.prototype.multipleOf = function (other){
     }
 };
 
+/* Function for compating points used in sorting */
 var comparePoints = function (pointA, pointB) {
     return pointA.compare(pointB);
 };
 
+/* Points are equal if both coordinates are equal */
 Point.prototype.eq = function (other) {
     return this.x.eq(other.x) && this.y.eq(other.y);
 };
 
+/* check if both coordinates lie within a given range of each other */
 var closePoint = function (pointA, pointB, range) {
     return pointA.x.closeNumbers(pointB.x, range) && pointA.y.closeNumbers(pointB.y, range);
 };
 
+/* Check if this point is equal to (0,0) */
 Point.prototype.isZero = function () {
     return this.x.isZero() && this.y.isZero();
 };
@@ -96,6 +102,7 @@ Point.prototype.neg = function () {
     return this;
 };
 
+/* Compute angle of this point interpreted as a direction vector */
 Point.prototype.angle = function () {
     if (this.isZero()) {
         return 0;
@@ -131,7 +138,6 @@ Point.prototype.add = function (other) {
     this.y.add(other.y);
     return this;
 };
-
 
 Point.prototype.middle = function (other) {
     var result = new Point();
@@ -202,16 +208,17 @@ Point.prototype.translate = function (transX, transY) {
 };
 
 Point.prototype.rotate = function (angle) {
-    // Transform angle to that it falls in the interval [0;360]
+    /* Transform angle to that it falls in the interval [0;360] */
     angle = clipAngle(angle);
     var cos;
     var sin;
-    // If angle is not a multiple of 45 degrees
+    /* Handle cases where the angle is a multiple of 45 degrees first */
+    /* If angle is not a multiple of 45 degrees */
     if (angle % 45 != 0) {
         cos = new IntAdjoinSqrt2(Math.cos(toRadians(angle)), 0);
         sin = new IntAdjoinSqrt2(Math.sin(toRadians(angle)), 0);
     } else {
-        // Determine value of sin and cos
+        /* Determine value of sin and cos */
         if (angle % 90 != 0) {
             cos = new IntAdjoinSqrt2(0, 0.5);
             sin = new IntAdjoinSqrt2(0, 0.5);
@@ -222,7 +229,7 @@ Point.prototype.rotate = function (angle) {
             cos = new IntAdjoinSqrt2(1, 0);
             sin = new IntAdjoinSqrt2(0, 0);
         }
-        // Determine the sign of sin and cos
+        /* Determine the sign of sin and cos */
         if (angle > 180 && angle < 360) {
             sin.neg();
         }
@@ -240,7 +247,7 @@ Point.prototype.rotate = function (angle) {
 Point.prototype.scale = function (factor) {
     if (numberEq(0, factor)) {
         console.log("Attempt to scale by 0!");
-        /* TODO: Somehow this fixes strange Safari error ?? */
+        /* Somehow this fixes strange Safari error ?? */
         console.log(JSON.stringify(this));
         return;
     }
@@ -260,6 +267,7 @@ var relativeOrientation = function (pointA, pointB, pointC) {
     }
 };
 
+/* Checks if an array contains to points more than once */
 var bothPointsMultipleTimes = function (pointArray, pointA, pointB) {
     var occurrenceA = [];
     var occurrenceB = [];

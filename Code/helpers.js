@@ -2,7 +2,6 @@
 var generating = true;
 
 /* Conversion between different angle systems */
-
 var toRadians = function (degrees) {
     return degrees * Math.PI / 180.0;
 };
@@ -92,7 +91,6 @@ var eliminateDuplicates = function (array, compareFunction, keepDoubles) {
     return newArray;
 };
 
-
 /* Check if two array have equal content, based on a given compare function */
 var arrayEq = function (arrayA, arrayB, compareFunction) {
     if (arrayA.length != arrayB.length) {
@@ -108,6 +106,8 @@ var arrayEq = function (arrayA, arrayB, compareFunction) {
     return true;
 };
 
+/* Count the number of unique elements in an array, based on a given compare
+ * function */
 var numUniqueElements = function (array, compareFunction) {
     var unique = eliminateDuplicates(array.slice(0), compareFunction,true);
     return array.length;

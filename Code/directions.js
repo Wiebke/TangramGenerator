@@ -3,7 +3,7 @@
  * is at position x, the directions are defined in clockwise order (except for
  * the flipped parallelogram) and are the vectors to the points a,b,(c), where c
  * is only for four-sided tans, the pieces are all constructed from 16 basic
- * triangles, so that the square built from all 7 pieces has a side length of 4
+ * triangles, so that the square built from all 7 pieces has a side length of 24
  * x---a  x----a  x-----a        c-----b
  * |  /   |    |   \     \      /     /
  * | /    |    |    \     \    /     /
@@ -14,41 +14,41 @@ var InsideDirections = [];
 var SegmentDirections = [];
 var numOrientations = 8;
 
-// Create Array for each tan piece
+/* Create Array for each tan piece */
 for (var index = 0; index <= 5; index++) {
     InsideDirections[index] = [];
     Directions[index] = [];
     SegmentDirections[index] = [];
 }
-// Fill the first entry of each array with the direction vectors for when
-// a piece is not rotated
+
+/* Fill the first entry of each array with the direction vectors for when
+ * a piece is not rotated */
 Directions[0][0] =
     [new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 0)),
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 12))];
-//InsideDirections[0][0] = new Point(new IntAdjoinSqrt2(0, 1), new IntAdjoinSqrt2(0, 1));
 Directions[1][0] =
     [new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(0, 0)),
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(12, 0))];
-//InsideDirections[1][0] = new Point(new IntAdjoinSqrt2(0.5, 0), new IntAdjoinSqrt2(0.5, 0));
 Directions[2][0] =
     [new Point(new IntAdjoinSqrt2(0, 6), new IntAdjoinSqrt2(0, 0)),
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6))];
-//InsideDirections[2][0] = new Point(new IntAdjoinSqrt2(0, 0.25), new IntAdjoinSqrt2(0, 0.25));
 Directions[3][0] =
     [new Point(new IntAdjoinSqrt2(0, 6), new IntAdjoinSqrt2(0, 0)),
         new Point(new IntAdjoinSqrt2(0, 6), new IntAdjoinSqrt2(0, 6)),
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6))];
-//InsideDirections[3][0] = new Point(new IntAdjoinSqrt2(0, 0.5), new IntAdjoinSqrt2(0, 0.5));
 Directions[4][0] =
     [new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(0, 0)),
         new Point(new IntAdjoinSqrt2(18, 0), new IntAdjoinSqrt2(6, 0)),
         new Point(new IntAdjoinSqrt2(6, 0), new IntAdjoinSqrt2(6, 0))];
-//InsideDirections[4][0] = new Point(new IntAdjoinSqrt2(1.5,0), new IntAdjoinSqrt2(0.5,0));
 Directions[5][0] =
     [new Point(new IntAdjoinSqrt2(12, 0), new IntAdjoinSqrt2(0, 0)),
         new Point(new IntAdjoinSqrt2(18, 0), new IntAdjoinSqrt2(-6, 0)),
         new Point(new IntAdjoinSqrt2(6, 0), new IntAdjoinSqrt2(-6, 0))];
-//InsideDirections[5][0] = new Point(new IntAdjoinSqrt2(1.5,0), new IntAdjoinSqrt2(-0.5,0));
+
+/* Calculate some direction vectors to points that lie inside each tan, for fast
+ * overlap rejection, this includes the center of each tan, for four-sided tans
+ * the center of three out of four vertices and for medium and large triangles
+ * the center in each half of the triangle */
 for (var tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     var centerPoint = new Point();
     for (var pointId = 0; pointId < Directions[tanTypeId][0].length; pointId++) {
@@ -66,6 +66,8 @@ for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
     InsideDirections[tanTypeId][0][1] = insidePoint1;
     insidePoint2.scale(1 / (Directions[tanTypeId][0].length));
     InsideDirections[tanTypeId][0][2] = insidePoint2;
+    /* Add center of a triangle formed by the anchor and the middle of the two
+     * adjacent segments for the large triangle tan */
     if (tanTypeId === 0){
         var middle2 = Directions[tanTypeId][0][0].dup().scale(0.5);
         var middle3 = Directions[tanTypeId][0][1].dup().scale(0.5);
@@ -74,7 +76,6 @@ for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
         insidePoint3.scale(1 / (Directions[tanTypeId][0].length));
     }
 }
-
 for (tanTypeId = 3; tanTypeId <= 5; tanTypeId++){
      insidePoint1 = new Point();
      insidePoint2 = new Point();
@@ -110,7 +111,8 @@ for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     }
 }
 
-/* */
+/* Pre-calculate the directions of the segments from each point to avoid
+ * calculating them over and over again */
 for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     for (orientId = 0; orientId <= 7; orientId++) {
         SegmentDirections[tanTypeId][orientId] = [];
@@ -147,6 +149,9 @@ for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     }
 }
 
+/* Translation vectors that have to be applied to the anchor when flipping the
+ * parallelogram, the first half of the array are the vectors when switching
+ * between tan type 5 and 4, the second half are for the switch back */
 var FlipDirections = [[new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6, 0)), /* 0 */
     new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, 6)), /* 1 */
     new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(18, 0)), /* 2 */
@@ -162,5 +167,4 @@ var FlipDirections = [[new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6, 0)), /* 4 */
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -12)), /* 5 */
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-18, 0)), /* 6 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -6))]];
-/* 7 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -6))]]; /* 7 */
