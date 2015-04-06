@@ -23,6 +23,27 @@ var stopLoading = function (){
     }
 };
 
+var toggleButtonOn = function () {
+    if (!generating){
+        var arrow = document.getElementById("arrowGroup");
+        arrow.childNodes[0].setAttributeNS(null, "fill", '#3299BB');
+        arrow.childNodes[3].setAttributeNS(null, "fill", '#BCBCBC');
+        arrow.childNodes[5].setAttributeNS(null, "fill", '#BCBCBC');
+        arrow.childNodes[2].setAttributeNS(null, "fill", '#BCBCBC');
+    }
+};
+
+var toggleButtonOff = function () {
+    if (!generating){
+        var arrow = document.getElementById("arrowGroup");
+        arrow.childNodes[0].setAttributeNS(null, "fill", '#BCBCBC');
+        arrow.childNodes[3].setAttributeNS(null, "fill", '#3299BB');
+        arrow.childNodes[5].setAttributeNS(null, "fill", '#3299BB');
+        arrow.childNodes[2].setAttributeNS(null, "fill", '#3299BB');
+    }
+};
+
+
 var addLoading = function (){
     /* Hide Buttons */
     document.getElementById("generate").style.display = 'none';
@@ -37,12 +58,26 @@ var addLoading = function (){
     var g = document.createElementNS("http://www.w3.org/2000/svg", "g");
     g.setAttributeNS(null, "transform", "translate(12)");
     var arrow = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    arrow.setAttributeNS(null, "transform", "translate(27.5,1) scale(0.75)");
+    arrow.setAttributeNS(null, "transform", "translate(10.5,8)");
+    arrow.setAttributeNS(null, "id", "arrowGroup");
     loadingSvg.appendChild(t);
     loadingSvg.appendChild(an);
     loadingSvg.appendChild(en);
     loadingSvg.appendChild(g);
     loadingSvg.appendChild(arrow);
+    var arrowCircle = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
+    arrowCircle.setAttributeNS(null, "rx","4.25");
+    arrowCircle.setAttributeNS(null, "ry","4.25");
+    arrowCircle.setAttributeNS(null, "cy","5");
+    arrowCircle.setAttributeNS(null, "cx","4.5");
+    arrowCircle.setAttributeNS(null, "fill","#BCBCBC");
+    arrowCircle.setAttributeNS(null, "id","arrow");
+    arrowCircle.setAttributeNS(null, "stroke", "#3299BB");
+    arrowCircle.setAttributeNS(null, "stroke-width","0.1");
+    arrowCircle.addEventListener('click', stopLoading);
+    arrowCircle.addEventListener('mouseover', toggleButtonOn);
+    arrowCircle.addEventListener('mouseout', toggleButtonOff);
+    arrow.appendChild(arrowCircle);
     var tTans = [];
     var gTans = [];
     var arrowTans = [];
@@ -53,6 +88,8 @@ var addLoading = function (){
         g.appendChild(gTans[index]);
         arrowTans.push(document.createElementNS("http://www.w3.org/2000/svg", "polygon"));
         arrowTans[index].addEventListener('click', stopLoading);
+        arrowTans[index].addEventListener('mouseover', toggleButtonOn);
+        arrowTans[index].addEventListener('mouseout', toggleButtonOff);
         arrow.appendChild(arrowTans[index]);
     }
     tTans[0].setAttributeNS(null, "points",
@@ -97,7 +134,13 @@ var addLoading = function (){
     gTans[6].setAttributeNS(null, "points",
         "4.5, 7.914213562373095 5.914213562373095, 6.5 7.32842712474619, 6.5 5.914213562373095, 7.914213562373095 ");
     gTans[6].setAttributeNS(null, "fill", "#3299BB");
-
+    arrowTans[0].setAttributeNS(null, "fill", "#FF9900");
+    arrowTans[1].setAttributeNS(null, "fill", "#3299BB");
+    arrowTans[2].setAttributeNS(null, "fill", "#3299BB");
+    arrowTans[3].setAttributeNS(null, "fill", "#E9E9E9");
+    arrowTans[4].setAttributeNS(null, "fill", "#3299BB");
+    arrowTans[5].setAttributeNS(null, "fill", "#FF9900");
+    arrowTans[6].setAttributeNS(null, "fill", "#E9E9E9");
     var anA = document.createElementNS("http://www.w3.org/2000/svg", "path");
     anA.setAttributeNS(null, "fill", "#3299BB");
     anA.setAttributeNS(null, "d","m 8.1253633,6.1616282 q -0.328125,0 -0.4951171,0.1113282 -0.1640625,0.1113281 -0.1640625,0.328125 0,0.1992187 0.1318359,0.3134765 0.1347656,0.1113282 0.3720703,0.1113282 0.2958984,0 0.4980469,-0.2109375 0.2021484,-0.2138672 0.2021484,-0.5332032 l 0,-0.1201172 -0.5449219,0 z m 1.6025391,-0.3955078 0,1.8720703 -1.0576172,0 0,-0.4863281 Q 8.4593477,7.4506907 8.1956758,7.5883861 7.932004,7.7231517 7.5540743,7.7231517 q -0.5097656,0 -0.8291016,-0.2958985 -0.3164062,-0.2988281 -0.3164062,-0.7734375 0,-0.5771484 0.3955078,-0.8466796 0.3984375,-0.2695313 1.2480469,-0.2695313 l 0.618164,0 0,-0.082031 q 0,-0.2490235 -0.196289,-0.3632813 Q 8.2777071,4.975105 7.8616915,4.975105 q -0.3369141,0 -0.6269532,0.067383 -0.290039,0.067383 -0.5390625,0.2021485 l 0,-0.7998047 q 0.3369141,-0.082031 0.6767579,-0.1230469 0.3398437,-0.043945 0.6796875,-0.043945 0.8876953,0 1.2802734,0.3515625 0.3955078,0.3486328 0.3955078,1.1367187 z");
@@ -114,29 +157,108 @@ var addLoading = function (){
     enN.setAttributeNS(null, "fill", "#3299BB");
     enN.setAttributeNS(null, "d","m 27.236189,5.8027143 0,1.9980469 -1.054688,0 0,-0.3251953 0,-1.2041016 q 0,-0.4248046 -0.02051,-0.5859375 Q 26.143415,5.524394 26.09654,5.4482222 26.035017,5.3456831 25.929548,5.290019 25.82408,5.2314253 25.689314,5.2314253 q -0.328125,0 -0.515625,0.2548828 -0.1875,0.2519531 -0.1875,0.7001953 l 0,1.6142578 -1.048828,0 0,-3.28125 1.048828,0 0,0.4804688 q 0.237305,-0.2871094 0.503906,-0.421875 0.266602,-0.1376953 0.588867,-0.1376953 0.56836,0 0.861328,0.3486328 0.295899,0.3486328 0.295899,1.0136718 z");
     en.appendChild(enN);
-
-    var arrowCircle = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
-    arrowCircle.setAttributeNS(null, "rx","4.25");
-    arrowCircle.setAttributeNS(null, "ry","4.25");
-    arrowCircle.setAttributeNS(null, "cy","5");
-    arrowCircle.setAttributeNS(null, "cx","4.5");
-    arrowCircle.setAttributeNS(null, "fill","#BCBCBC");
-    arrowCircle.setAttributeNS(null, "id","arrow");
-    arrowCircle.addEventListener('click', stopLoading);
-    arrow.appendChild(arrowCircle);
     var arrowOutline = document.createElementNS("http://www.w3.org/2000/svg", "path");
     arrowOutline.setAttributeNS(null, "stroke", "#3299BB");
     arrowOutline.setAttributeNS(null, "fill","none");
-    arrowOutline.setAttributeNS(null, "stroke-width","0.05");
+    arrowOutline.setAttributeNS(null, "stroke-width","0.1");
     arrowOutline.setAttributeNS(null, "d","M 2.1715728752538097, 2.1715728752538097 L 5, 5 L 2.1715728752538097, 7.82842712474619 L 5, 7.82842712474619 L 7.82842712474619, 5 L 5, 2.1715728752538097 Z ");
     arrowOutline.setAttributeNS(null, "id","arrow");
     arrowOutline.addEventListener('click', stopLoading);
+    arrowOutline.addEventListener('mouseover', toggleButtonOn);
+    arrowOutline.addEventListener('mouseout', toggleButtonOff);
     arrow.appendChild(arrowOutline);
-
     loadingSvg.style.display = 'block';
 };
 
-var updateLoading = function (percentage) {
+var getPointAlongSegment = function (percentage, startPoint, segmentDirection){
+    console.log(percentage);
+    if (numberNEq(percentage,0)){
+        return startPoint.dup().add(segmentDirection.dup().scale(percentage));
+    }
+};
 
+
+var updateLoading = function (percentage) {
+    var arrow = document.getElementById("arrowGroup");
+    if (percentage <= 0.5 || numberEq(percentage,0.5)){
+        var point0 = playTangram.tans[0].anchor.dup().add(Directions[0][2][1].dup().scale(1/6));
+        var segment1 = SegmentDirections[0][2][2][0].dup().scale(1/6);
+        var point1 = getPointAlongSegment(percentage/0.5, point0, segment1);
+        var segment2 = SegmentDirections[0][2][2][1].dup().scale(1/6);
+        var point2 = getPointAlongSegment(percentage/0.5, point0, segment2);
+        var pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+            + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+            + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[1].setAttributeNS(null, "points", pointsString);
+        point0 = playTangram.tans[1].anchor.dup().add(Directions[0][4][0].dup().scale(1/6));
+        segment1 = SegmentDirections[0][4][1][0].dup().scale(1/6);
+        point1 = getPointAlongSegment(percentage/0.5, point0, segment1);
+        segment2 = SegmentDirections[0][4][1][1].dup().scale(1/6);
+        point2 = getPointAlongSegment(percentage/0.5, point0, segment2);
+        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+            + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+            + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[2].setAttributeNS(null, "points", pointsString);
+    } else if (percentage <= 0.75 || numberEq(percentage,0.75)){
+        point0 = playTangram.tans[3].anchor.dup();
+        segment1 = SegmentDirections[2][0][0][0].dup().scale(1/6);
+        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
+        point2 = playTangram.tans[3].anchor.dup().add(Directions[2][0][1].dup().scale(1/6));
+        segment2 = SegmentDirections[2][0][2][1].dup().scale(1/6);
+        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
+        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[4].setAttributeNS(null, "points", pointsString);
+        point0 = playTangram.tans[4].anchor.dup();
+        segment1 = SegmentDirections[2][6][0][1].dup().scale(1/6);
+        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
+        point2 = playTangram.tans[4].anchor.dup().add(Directions[2][6][0].dup().scale(1/6));
+        segment2 = SegmentDirections[2][6][1][1].dup().scale(1/6);
+        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
+        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[5].setAttributeNS(null, "points", pointsString);
+        point0 = playTangram.tans[5].anchor.dup();
+        segment1 = SegmentDirections[3][0][0][0].dup().scale(1/6);
+        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
+        point2 = playTangram.tans[5].anchor.dup().add(Directions[3][0][2].dup().scale(1/6));
+        segment2 = SegmentDirections[3][0][3][1].dup().scale(1/6);
+        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
+        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[6].setAttributeNS(null, "points", pointsString);
+        point0 = playTangram.tans[6].anchor.dup().add(Directions[4][5][1].dup().scale(1/6));
+        segment1 = SegmentDirections[4][5][2][1].dup().scale(1/6);
+        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
+        point2 = playTangram.tans[6].anchor.dup().add(Directions[4][5][0].dup().scale(1/6));
+        segment2 = SegmentDirections[4][5][1][0].dup().scale(1/6);
+        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
+        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[7].setAttributeNS(null, "points", pointsString);
+    } else if (percentage <= 1 || numberEq(percentage,1)){
+        point0 = playTangram.tans[2].anchor.dup().add(Directions[1][3][0].dup().scale(1/6));
+        segment1 = SegmentDirections[1][3][1][0].dup().scale(1/6);
+        point1 = getPointAlongSegment((percentage-0.75)/0.25, point0, segment1);
+        point2 = playTangram.tans[2].anchor.dup().add(Directions[1][3][1].dup().scale(1/6));
+        segment2 = SegmentDirections[1][3][2][0].dup().scale(1/6);
+        var point3 = getPointAlongSegment((percentage-0.75)/0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
+        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
+        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
+        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        arrow.childNodes[3].setAttributeNS(null, "points", pointsString);
+    } else {
+        arrow.childNodes[0].setAttributeNS(null, "stroke", "#E9E9E9");
+
+    }
 };
 

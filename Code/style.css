@@ -15,9 +15,9 @@ header, footer, section, aside {
 }
 
 header, #content, footer {
-    padding-left: 5%;
-    padding-right: 5%;
-    width: 90%;
+    padding-left: 10%;
+    padding-right: 10%;
+    width: 80%;
 }
 
 #gameArea {
@@ -107,7 +107,8 @@ svg text {
 }
 
 footer {
-    height: 2em;
+    font-size: 0.8em;
+    height: 1.5em;
     position: absolute;
     bottom: 0;
     left: 0;

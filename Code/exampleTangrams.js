@@ -144,19 +144,19 @@ var parallelogram_8 = new Tan(4, anchorP_8, 7);
 var bigG = new Tangram([bigTriangle1_8, bigTriangle2_8, mediumTriangle_8, smallTriangle1_8, smallTriangle2_8, square_8, parallelogram_8]);
 
 /* Test tangram - Arrow */
-var anchorBT1_9 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 0));
+var anchorBT1_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, -2));
 var bigTriangle1_9 = new Tan(0, anchorBT1_9, 2);
-var anchorBT2_9 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 24));
+var anchorBT2_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 2));
 var bigTriangle2_9 = new Tan(0, anchorBT2_9, 4);
-var anchorM_9 = new Point(new IntAdjoinSqrt2(0, 24), new IntAdjoinSqrt2(0, 12));
+var anchorM_9 = new Point(new IntAdjoinSqrt2(5, 2), new IntAdjoinSqrt2(5, 0));
 var mediumTriangle_9 = new Tan(1, anchorM_9, 3);
-var anchorST1_9 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 18));
+var anchorST1_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 1));
 var smallTriangle1_9 = new Tan(2, anchorST1_9, 0);
-var anchorST2_9 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 12));
+var anchorST2_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 0));
 var smallTriangle2_9 = new Tan(2, anchorST2_9, 6);
-var anchorS_9 = new Point(new IntAdjoinSqrt2(0, 12), new IntAdjoinSqrt2(0, 12));
+var anchorS_9 = new Point(new IntAdjoinSqrt2(5, 0), new IntAdjoinSqrt2(5, 0));
 var square_9 = new Tan(3, anchorS_9, 0);
-var anchorP_9 = new Point(new IntAdjoinSqrt2(0, 18), new IntAdjoinSqrt2(0, 12));
+var anchorP_9 = new Point(new IntAdjoinSqrt2(5, 1), new IntAdjoinSqrt2(5, 0));
 var parallelogram_9 = new Tan(4, anchorP_9, 5);
 
 var playTangram = new Tangram([bigTriangle1_9, bigTriangle2_9, mediumTriangle_9, smallTriangle1_9, smallTriangle2_9, square_9, parallelogram_9]);

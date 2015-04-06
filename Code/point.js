@@ -240,6 +240,8 @@ Point.prototype.rotate = function (angle) {
 Point.prototype.scale = function (factor) {
     if (numberEq(0, factor)) {
         console.log("Attempt to scale by 0!");
+        /* TODO: Somehow this fixes strange Safari error ?? */
+        console.log(JSON.stringify(this));
         return;
     }
     this.x.scale(factor);

@@ -10,7 +10,7 @@ function Tan(tanType, anchor, orientation) {
     this.tanType = tanType;
     this.anchor = anchor;
     this.orientation = orientation;
-    if (generating){
+    if ((!typeof generating === 'undefined') && generating){
         this.points = this.getPoints();
         this.segments = this.getSegments();
         this.insidePoints = this.getInsidePoints();

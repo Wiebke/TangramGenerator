@@ -1,6 +1,7 @@
-var numTangrams = 500;
+var numTangrams = 1000;
 var generated = [];
 var chosen;
+var worker;
 /* Variables used during solving */
 var currentTan = -1;
 var move = false;
@@ -544,28 +545,29 @@ var addTangrams = function () {
 
      generated[4].toSVGTans("fifth4",false);
      generated[5].toSVGTans("sixth5",false);*/
+    worker.terminate();
 };
 
 var startGenerator = function () {
     addLoading();
-    var worker = new Worker("generator.js");
+    worker = new Worker("generator.js");
     worker.onmessage = function(event) {
         var message = event.data;
         if (typeof message === 'string'){
-            if (message === "Worker started" || message === "Generating done"){
+            if (message === "Worker started!"){
+                generating = true;
                 console.log('Worker said: ', message);
-            } else {
+            } else if (message === "Generating done!") {
                 generating = false;
+                addTangrams();
+                updateLoading(2);
+            } else {
                 generated.push(parseTanArray(message));
-                if (generated.length === numTangrams){
-                    addTangrams();
-                }
             }
         } else {
             console.log('Worker said: ', "Generated!");
             updateLoading((message+1)/numTangrams);
         }
-
     };
     worker.postMessage(numTangrams);
 };

@@ -276,15 +276,15 @@ var generateTangrams = function (number) {
     }
     generated = generated.sort(compareTangrams);
     generating = false;
-    for (var index = 0; index < number; index++) {
+    for (var index = 0; index < 6; index++) {
         self.postMessage(JSON.stringify(generated[index].tans));
     }
-    self.postMessage("Generating done");
+    self.postMessage("Generating done!");
     return generated;
 };
 
 self.addEventListener('message', function(e) {
     var numTangrams = e.data;
-    self.postMessage("Worker started");
+    self.postMessage("Worker started!");
     generateTangrams(numTangrams);
 }, false);
