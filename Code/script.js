@@ -640,6 +640,9 @@ window.onload = function () {
             console.log(JSON.stringify(generated[chosen].tans));
             //generated[chosen].toSVGTans("game");
             document.getElementById("game").style.display = "block";
+            document.getElementById("loadParagraph").style.display = 'none';
+            document.getElementById("chooseParagraph").style.display = 'none';
+            document.getElementById("gameParagraph").style.display = 'block';
             addTangramPieces();
             addFlipButton();
             addIcons();
@@ -657,6 +660,9 @@ window.onload = function () {
         generated = [];
         startGenerator();
         resetPieces();
+        document.getElementById("loadParagraph").style.display = 'block';
+        document.getElementById("chooseParagraph").style.display = 'none';
+        document.getElementById("gameParagraph").style.display = 'none';
     });
 
     document.getElementById("select").addEventListener('click', function () {
@@ -672,6 +678,9 @@ window.onload = function () {
         hints = [0, 1, 2, 3, 4, 5, 6];
         numHints = 0;
         snapped = [false, false, false, false, false, false, false];
+        document.getElementById("loadParagraph").style.display = 'none';
+        document.getElementById("chooseParagraph").style.display = 'block';
+        document.getElementById("gameParagraph").style.display = 'none';
     });
 
     document.getElementById("set").addEventListener('click', function () {
@@ -717,4 +726,3 @@ window.onload = function () {
         }
     });
 };
-

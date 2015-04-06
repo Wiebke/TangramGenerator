@@ -25,6 +25,7 @@ var stopLoading = function (){
         changeTangramVisibility(false);
         document.getElementById("loadParagraph").style.display = 'none';
         document.getElementById("chooseParagraph").style.display = 'block';
+        document.getElementById("gameParagraph").style.display = 'none';
     }
 };
 
