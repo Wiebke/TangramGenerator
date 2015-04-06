@@ -1,4 +1,4 @@
-var numTangrams = 100;
+var numTangrams = 500;
 var generated = [];
 var chosen;
 /* Variables used during solving */
@@ -17,18 +17,6 @@ var minutes;
 var seconds;
 var rotations;
 var translations;
-
-var changeTangramVisibility = function (hide) {
-    var tangramClass = document.getElementsByClassName("tangram");
-    for (var i = 0; i < tangramClass.length; i++) {
-        tangramClass[i].style.display = hide ? 'none' : 'block';
-    }
-    document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
-    document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
-    document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
-    document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
-    document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
-};
 
 var changeIconVisibility = function (showMove, showRotate) {
     var element = document.getElementById("game");
@@ -558,26 +546,33 @@ var addTangrams = function () {
      generated[5].toSVGTans("sixth5",false);*/
 };
 
+var startGenerator = function () {
+    addLoading();
+    var worker = new Worker("generator.js");
+    worker.onmessage = function(event) {
+        var message = event.data;
+        if (typeof message === 'string'){
+            if (message === "Worker started" || message === "Generating done"){
+                console.log('Worker said: ', message);
+            } else {
+                generating = false;
+                generated.push(parseTanArray(message));
+                if (generated.length === numTangrams){
+                    addTangrams();
+                }
+            }
+        } else {
+            console.log('Worker said: ', "Generated!");
+            updateLoading((message+1)/numTangrams);
+        }
+
+    };
+    worker.postMessage(numTangrams);
+};
 
 window.onload = function () {
     // TODO provide fallBack if Workers are not supported
-    var worker = new Worker("generator.js");
-    var counter;
-    worker.onmessage = function(event) {
-        var message = event.data;
-        if (message === "Worker started" || message === "Generated!" || message === "Generating done"){
-            console.log('Worker said: ', message);
-        } else {
-            generating = false;
-            console.log(JSON.stringify(generated.length));
-            generated.push(parseTanArray(message));
-            if (generated.length === numTangrams){
-                addTangrams();
-                changeTangramVisibility(false);
-            }
-        }
-    };
-    worker.postMessage(numTangrams);
+    startGenerator();
     chosen = 0;
     resetPieces();
     /* Show larger version of the chosen tangram */
@@ -614,10 +609,9 @@ window.onload = function () {
 
     document.getElementById("generate").addEventListener('click', function () {
         changeTangramVisibility(true);
-        generated = generateTangrams(numTangrams*20);
+        generated = [];
+        startGenerator();
         resetPieces();
-        addTangrams(generated);
-        changeTangramVisibility(false);
     });
 
     document.getElementById("select").addEventListener('click', function () {

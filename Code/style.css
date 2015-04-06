@@ -36,7 +36,7 @@ header, #content, footer {
     border-radius: 10px;
 }
 
-#game {
+#game, #loading {
     display: none;
     width: 80%;
     margin-right: 10%;
@@ -50,6 +50,9 @@ header, #content, footer {
     -o-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+#loading{
+    background-color: #E9E9E9;
 }
 
 .tangram:hover {

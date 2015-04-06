@@ -266,7 +266,7 @@ var generateTangrams = function (number) {
     var generated = [];
     for (var index = 0; index < number; index++) {
         generated[index] = generateTangramEdges();
-        self.postMessage("Generated!");
+        self.postMessage(index);
         /* Clean up objects */
         for (var tanId = 0; tanId < 7; tanId++){
             delete generated[index].tans[tanId].points;
