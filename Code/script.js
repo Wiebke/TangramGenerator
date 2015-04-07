@@ -3,6 +3,7 @@ var numTangrams = 1000;
 var generated = [];
 var chosen;
 var worker;
+var firstGeneration = true;
 /* Variables used during solving */
 var currentTan = -1;
 var move = false;
@@ -25,7 +26,7 @@ var translations;
 var getMouseCoordinates = function (event) {
     var svg = document.getElementById("game");
     var pt = svg.createSVGPoint();
-    if ('touches' in event){
+    if ('touches' in event) {
         var touch = event.changedTouches[0];
         pt.x = touch.clientX;
         pt.y = touch.clientY;
@@ -55,7 +56,7 @@ var changeIconVisibility = function (showMove, showRotate) {
     } else {
         document.getElementById("rotate").setAttributeNS(null, "display", "none");
     }
-    if (!showMove && !showRotate){
+    if (!showMove && !showRotate) {
         element.style.cursor = "auto";
     }
 };
@@ -132,7 +133,7 @@ var checkSolved = function () {
     line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
     watch.appendChild(line2);
     /* Send statistics to server */
-    sendGame(minutes,seconds,numHints,translations,rotations,generated[chosen]);
+    sendGame(minutes, seconds, numHints, translations, rotations, generated[chosen]);
 };
 
 /* Game logic - Sets every piece to the solution */
@@ -416,15 +417,15 @@ var addTangramPieces = function () {
         tangramPieces[tanIndex].addEventListener('mouseout', function () {
             if (currentTan === -1) changeIconVisibility(false, false);
         });
-        tangramPieces[tanIndex].addEventListener('touchstart', function(event){
+        tangramPieces[tanIndex].addEventListener('touchstart', function (event) {
             selectTan(event);
             showAction(event);
         });
-        tangramPieces[tanIndex].addEventListener('touchend', function(event){
+        tangramPieces[tanIndex].addEventListener('touchend', function (event) {
             //event.preventDefault();
             deselectTan(event);
         });
-        tangramPieces[tanIndex].addEventListener('touchmove', function(event){
+        tangramPieces[tanIndex].addEventListener('touchmove', function (event) {
             event.preventDefault();
             moveTan(event);
         });
@@ -432,13 +433,13 @@ var addTangramPieces = function () {
     document.getElementById("game").addEventListener('mousemove', moveTan);
     document.getElementById("game").addEventListener('mouseup', deselectTan);
     /* Prevent other touch events on game (that are not inside a tan */
-    document.getElementById("game").addEventListener('touchstart', function(event){
+    document.getElementById("game").addEventListener('touchstart', function (event) {
         event.preventDefault();
     });
-    document.getElementById("game").addEventListener('touchend', function(event){
+    document.getElementById("game").addEventListener('touchend', function (event) {
         event.preventDefault();
     });
-    document.getElementById("game").addEventListener('touchmove', function(event){
+    document.getElementById("game").addEventListener('touchmove', function (event) {
         event.preventDefault();
     });
 };
@@ -536,7 +537,7 @@ var flipParallelogram = function () {
 };
 
 /* Parse jsonString of an array of tans into a tangram */
-var parseTanArray = function(jsonString){
+var parseTanArray = function (jsonString) {
     var tangram = JSON.parse(jsonString);
     var tans = [];
     var newTan;
@@ -552,7 +553,7 @@ var parseTanArray = function(jsonString){
 
 /* After generating is finished: show the first 6 tangrams */
 var addTangrams = function () {
-    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":-12}},"orientation":3},{"tanType":0,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":12}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":-12}},"orientation":1},{"tanType":2,"anchor":{"x":{"coeffInt":18,"coeffSqrt":3},"y":{"coeffInt":48,"coeffSqrt":-6}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":0}},"orientation":0},{"tanType":3,"anchor":{"x":{"coeffInt":30,"coeffSqrt":9},"y":{"coeffInt":36,"coeffSqrt":0}},"orientation":4},{"tanType":5,"anchor":{"x":{"coeffInt":30,"coeffSqrt":3},"y":{"coeffInt":36,"coeffSqrt":12}},"orientation":7}]';
+    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":30,"coeffSqrt":-6},"y":{"coeffInt":24,"coeffSqrt":3}},"orientation":7},{"tanType":0,"anchor":{"x":{"coeffInt":42,"coeffSqrt":6},"y":{"coeffInt":48,"coeffSqrt":3}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":42,"coeffSqrt":-6},"y":{"coeffInt":48,"coeffSqrt":3}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":24,"coeffSqrt":-6},"y":{"coeffInt":30,"coeffSqrt":3}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":42,"coeffSqrt":-6},"y":{"coeffInt":36,"coeffSqrt":3}},"orientation":3},{"tanType":3,"anchor":{"x":{"coeffInt":18,"coeffSqrt":-6},"y":{"coeffInt":36,"coeffSqrt":3}},"orientation":7},{"tanType":5,"anchor":{"x":{"coeffInt":42,"coeffSqrt":-6},"y":{"coeffInt":12,"coeffSqrt":3}},"orientation":5}]';
     failTangram = parseTanArray(failTangram);
     generated[0] = failTangram;*/
     /* Center the tangrams */
@@ -582,24 +583,27 @@ var addTangrams = function () {
 
 /* Start generating process in a web worker */
 var startGenerator = function () {
-    addLoading();
     worker = new Worker("generator.js");
-    worker.onmessage = function(event) {
+    worker.onmessage = function (event) {
         var message = event.data;
-        if (typeof message === 'string'){
-            if (message === "Worker started!"){
+        if (typeof message === 'string') {
+            if (message === "Worker started!") {
                 generating = true;
                 console.log('Worker said: ', message);
             } else if (message === "Generating done!") {
                 addTangrams();
+                if (firstGeneration)
                 updateLoading(2);
+                firstGeneration = false;
             } else {
                 generating = false;
                 generated.push(parseTanArray(message));
             }
         } else {
             console.log('Worker said: ', "Generated!");
-            updateLoading((message+1)/numTangrams);
+            if (firstGeneration){
+                updateLoading((message + 1) / numTangrams);
+            }
         }
     };
     worker.postMessage(numTangrams);
@@ -607,18 +611,18 @@ var startGenerator = function () {
 
 window.onload = function () {
     /* Provide fallBack if Workers or inline SVG are not supported */
-    if (typeof SVGRect === "undefined" || !window.Worker){
+    if (typeof SVGRect === "undefined" || !window.Worker) {
         /* Show Browser fallback PNG */
         var fallbackImage = document.createElement("img");
-        fallbackImage.src="fallback.jpg";
-        fallbackImage.alt ="browser does not support all needed functionalities";
+        fallbackImage.src = "fallback.jpg";
+        fallbackImage.alt = "browser does not support all needed functionalities";
         document.getElementById('gameArea').appendChild(fallbackImage);
         return;
     }
-    startGenerator();
+    addLoading();
     chosen = 0;
     resetPieces();
-
+    startGenerator();
     /* Show larger version of the chosen tangram */
     var tangramClass = document.getElementsByClassName("tangram");
     for (var i = 0; i < tangramClass.length; i++) {
@@ -632,7 +636,7 @@ window.onload = function () {
                 sourceId = target.id;
             }
             /* Prevent error when click event fires on content (?) */
-            if (sourceId === 'content'){
+            if (sourceId === 'content') {
                 return;
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
@@ -650,19 +654,19 @@ window.onload = function () {
             translations = 0;
             startWatch();
             /* Send choice to server */
-            sendChoice(chosen, generated.slice(0,6));
+            sendChoice(chosen, generated.slice(0, 6));
         });
     }
 
     document.getElementById("generate").addEventListener('click', function () {
         /* Hide tangrams and generate new tangrams */
-        changeTangramVisibility(true);
+        //changeTangramVisibility(true);
         generated = [];
         startGenerator();
         resetPieces();
-        document.getElementById("loadParagraph").style.display = 'block';
+        /*document.getElementById("loadParagraph").style.display = 'block';
         document.getElementById("chooseParagraph").style.display = 'none';
-        document.getElementById("gameParagraph").style.display = 'none';
+        document.getElementById("gameParagraph").style.display = 'none';*/
     });
 
     document.getElementById("select").addEventListener('click', function () {

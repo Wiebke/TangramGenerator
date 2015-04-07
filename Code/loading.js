@@ -12,8 +12,8 @@ var changeTangramVisibility = function (hide) {
     document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
 };
 
-var stopLoading = function (){
-    if (!generating){
+var stopLoading = function () {
+    if (!generating) {
         /* Hide loading things */
         var loadingSvg = document.getElementById("loading");
         loadingSvg.style.display = 'none';
@@ -31,7 +31,7 @@ var stopLoading = function (){
 
 /* Once generating is finished change colors of the progress button on hover */
 var toggleButtonOn = function () {
-    if (!generating){
+    if (!generating) {
         var arrow = document.getElementById("arrowGroup");
         arrow.childNodes[0].setAttributeNS(null, "fill", '#3299BB');
         arrow.childNodes[3].setAttributeNS(null, "fill", '#BCBCBC');
@@ -40,7 +40,7 @@ var toggleButtonOn = function () {
     }
 };
 var toggleButtonOff = function () {
-    if (!generating){
+    if (!generating) {
         var arrow = document.getElementById("arrowGroup");
         /* Do not execute toggle after clicking */
         if (!arrow) return;
@@ -52,7 +52,7 @@ var toggleButtonOff = function () {
 };
 
 
-var addLoading = function (){
+var addLoading = function () {
     /* Hide Buttons */
     document.getElementById("generate").style.display = 'none';
     document.getElementById("select").style.display = 'none';
@@ -76,38 +76,38 @@ var addLoading = function (){
     loadingSvg.appendChild(arrow);
 
     /*var smiley = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    smiley.setAttributeNS(null, "x", "13");
-    smiley.setAttributeNS(null, "y", "13");
-    smiley.setAttributeNS(null, "font-size", "5");
-    smiley.setAttributeNS(null, "fill", "#3299BB");
-    smiley.textContent = "\uf119";
-    loadingSvg.appendChild(smiley);
+     smiley.setAttributeNS(null, "x", "13");
+     smiley.setAttributeNS(null, "y", "13");
+     smiley.setAttributeNS(null, "font-size", "5");
+     smiley.setAttributeNS(null, "fill", "#3299BB");
+     smiley.textContent = "\uf119";
+     loadingSvg.appendChild(smiley);
 
-    var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text.setAttributeNS(null, "x", "4");
-    text.setAttributeNS(null, "y", "15");
-    text.setAttributeNS(null, "font-size", "0.75");
-    text.setAttributeNS(null, "fill", "#000000");
-    text.textContent = "Either you have Javascript switched off or your browser does not";
-    loadingSvg.appendChild(text);
+     var text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+     text.setAttributeNS(null, "x", "4");
+     text.setAttributeNS(null, "y", "15");
+     text.setAttributeNS(null, "font-size", "0.75");
+     text.setAttributeNS(null, "fill", "#000000");
+     text.textContent = "Either you have Javascript switched off or your browser does not";
+     loadingSvg.appendChild(text);
 
-    var text2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    text2.setAttributeNS(null, "x", "4");
-    text2.setAttributeNS(null, "y", "16");
-    text2.setAttributeNS(null, "font-size", "0.75");
-    text2.setAttributeNS(null, "fill", "#000000");
-    text2.textContent = "support the functionality needed for this site to function properly";
-    loadingSvg.appendChild(text2);*/
+     var text2 = document.createElementNS("http://www.w3.org/2000/svg", "text");
+     text2.setAttributeNS(null, "x", "4");
+     text2.setAttributeNS(null, "y", "16");
+     text2.setAttributeNS(null, "font-size", "0.75");
+     text2.setAttributeNS(null, "fill", "#000000");
+     text2.textContent = "support the functionality needed for this site to function properly";
+     loadingSvg.appendChild(text2);*/
 
     var arrowCircle = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
-    arrowCircle.setAttributeNS(null, "rx","4.25");
-    arrowCircle.setAttributeNS(null, "ry","4.25");
-    arrowCircle.setAttributeNS(null, "cy","5");
-    arrowCircle.setAttributeNS(null, "cx","4.5");
-    arrowCircle.setAttributeNS(null, "fill","#BCBCBC");
-    arrowCircle.setAttributeNS(null, "id","arrow");
+    arrowCircle.setAttributeNS(null, "rx", "4.25");
+    arrowCircle.setAttributeNS(null, "ry", "4.25");
+    arrowCircle.setAttributeNS(null, "cy", "5");
+    arrowCircle.setAttributeNS(null, "cx", "4.5");
+    arrowCircle.setAttributeNS(null, "fill", "#BCBCBC");
+    arrowCircle.setAttributeNS(null, "id", "arrow");
     arrowCircle.setAttributeNS(null, "stroke", "#3299BB");
-    arrowCircle.setAttributeNS(null, "stroke-width","0.1");
+    arrowCircle.setAttributeNS(null, "stroke-width", "0.1");
     arrowCircle.addEventListener('click', stopLoading);
     arrowCircle.addEventListener('mouseover', toggleButtonOn);
     arrowCircle.addEventListener('mouseout', toggleButtonOff);
@@ -115,7 +115,7 @@ var addLoading = function (){
     var tTans = [];
     var gTans = [];
     var arrowTans = [];
-    for (var index = 0; index < 7; index++){
+    for (var index = 0; index < 7; index++) {
         tTans.push(document.createElementNS("http://www.w3.org/2000/svg", "polygon"));
         t.appendChild(tTans[index]);
         gTans.push(document.createElementNS("http://www.w3.org/2000/svg", "polygon"));
@@ -177,26 +177,26 @@ var addLoading = function (){
     arrowTans[6].setAttributeNS(null, "fill", "#E9E9E9");
     var anA = document.createElementNS("http://www.w3.org/2000/svg", "path");
     anA.setAttributeNS(null, "fill", "#3299BB");
-    anA.setAttributeNS(null, "d","m 8.1253633,6.1616282 q -0.328125,0 -0.4951171,0.1113282 -0.1640625,0.1113281 -0.1640625,0.328125 0,0.1992187 0.1318359,0.3134765 0.1347656,0.1113282 0.3720703,0.1113282 0.2958984,0 0.4980469,-0.2109375 0.2021484,-0.2138672 0.2021484,-0.5332032 l 0,-0.1201172 -0.5449219,0 z m 1.6025391,-0.3955078 0,1.8720703 -1.0576172,0 0,-0.4863281 Q 8.4593477,7.4506907 8.1956758,7.5883861 7.932004,7.7231517 7.5540743,7.7231517 q -0.5097656,0 -0.8291016,-0.2958985 -0.3164062,-0.2988281 -0.3164062,-0.7734375 0,-0.5771484 0.3955078,-0.8466796 0.3984375,-0.2695313 1.2480469,-0.2695313 l 0.618164,0 0,-0.082031 q 0,-0.2490235 -0.196289,-0.3632813 Q 8.2777071,4.975105 7.8616915,4.975105 q -0.3369141,0 -0.6269532,0.067383 -0.290039,0.067383 -0.5390625,0.2021485 l 0,-0.7998047 q 0.3369141,-0.082031 0.6767579,-0.1230469 0.3398437,-0.043945 0.6796875,-0.043945 0.8876953,0 1.2802734,0.3515625 0.3955078,0.3486328 0.3955078,1.1367187 z");
+    anA.setAttributeNS(null, "d", "m 8.1253633,6.1616282 q -0.328125,0 -0.4951171,0.1113282 -0.1640625,0.1113281 -0.1640625,0.328125 0,0.1992187 0.1318359,0.3134765 0.1347656,0.1113282 0.3720703,0.1113282 0.2958984,0 0.4980469,-0.2109375 0.2021484,-0.2138672 0.2021484,-0.5332032 l 0,-0.1201172 -0.5449219,0 z m 1.6025391,-0.3955078 0,1.8720703 -1.0576172,0 0,-0.4863281 Q 8.4593477,7.4506907 8.1956758,7.5883861 7.932004,7.7231517 7.5540743,7.7231517 q -0.5097656,0 -0.8291016,-0.2958985 -0.3164062,-0.2988281 -0.3164062,-0.7734375 0,-0.5771484 0.3955078,-0.8466796 0.3984375,-0.2695313 1.2480469,-0.2695313 l 0.618164,0 0,-0.082031 q 0,-0.2490235 -0.196289,-0.3632813 Q 8.2777071,4.975105 7.8616915,4.975105 q -0.3369141,0 -0.6269532,0.067383 -0.290039,0.067383 -0.5390625,0.2021485 l 0,-0.7998047 q 0.3369141,-0.082031 0.6767579,-0.1230469 0.3398437,-0.043945 0.6796875,-0.043945 0.8876953,0 1.2802734,0.3515625 0.3955078,0.3486328 0.3955078,1.1367187 z");
     an.appendChild(anA);
     var anN = document.createElementNS("http://www.w3.org/2000/svg", "path");
     anN.setAttributeNS(null, "fill", "#3299BB");
-    anN.setAttributeNS(null, "d","m 13.996457,5.6401439 0,1.9980468 -1.054687,0 0,-0.3251953 0,-1.2041015 q 0,-0.4248047 -0.02051,-0.5859375 -0.01758,-0.1611328 -0.06445,-0.2373047 -0.06152,-0.1025391 -0.166993,-0.1582031 -0.105468,-0.058594 -0.240234,-0.058594 -0.328125,0 -0.515625,0.2548828 -0.1875,0.2519531 -0.1875,0.7001953 l 0,1.6142578 -1.048828,0 0,-3.28125 1.048828,0 0,0.4804688 q 0.237305,-0.2871094 0.503906,-0.421875 0.266602,-0.1376953 0.588868,-0.1376953 0.568359,0 0.861328,0.3486328 0.295898,0.3486328 0.295898,1.0136719 z");
+    anN.setAttributeNS(null, "d", "m 13.996457,5.6401439 0,1.9980468 -1.054687,0 0,-0.3251953 0,-1.2041015 q 0,-0.4248047 -0.02051,-0.5859375 -0.01758,-0.1611328 -0.06445,-0.2373047 -0.06152,-0.1025391 -0.166993,-0.1582031 -0.105468,-0.058594 -0.240234,-0.058594 -0.328125,0 -0.515625,0.2548828 -0.1875,0.2519531 -0.1875,0.7001953 l 0,1.6142578 -1.048828,0 0,-3.28125 1.048828,0 0,0.4804688 q 0.237305,-0.2871094 0.503906,-0.421875 0.266602,-0.1376953 0.588868,-0.1376953 0.568359,0 0.861328,0.3486328 0.295898,0.3486328 0.295898,1.0136719 z");
     an.appendChild(anN);
     var enE = document.createElementNS("http://www.w3.org/2000/svg", "path");
     enE.setAttributeNS(null, "fill", "#3299BB");
-    enE.setAttributeNS(null, "d","m 23.134626,6.1513472 0,0.2988281 -2.452148,0 q 0.03809,0.3691406 0.266602,0.5537109 0.228515,0.1845703 0.638671,0.1845703 0.331055,0 0.676758,-0.09668 0.348633,-0.099609 0.714844,-0.2988281 l 0,0.8085938 q -0.37207,0.140625 -0.744141,0.2109375 -0.37207,0.073242 -0.74414,0.073242 -0.890625,0 -1.385742,-0.4511719 -0.492188,-0.4541016 -0.492188,-1.2714844 0,-0.8027344 0.483398,-1.2626953 0.486329,-0.4599609 1.335938,-0.4599609 0.773437,0 1.236328,0.4658203 0.46582,0.4658203 0.46582,1.2451172 z M 22.056501,5.8027143 q 0,-0.2988281 -0.175781,-0.4804687 -0.172851,-0.1845703 -0.454101,-0.1845703 -0.304688,0 -0.495118,0.1728515 -0.190429,0.1699219 -0.237304,0.4921875 l 1.362304,0 z");
+    enE.setAttributeNS(null, "d", "m 23.134626,6.1513472 0,0.2988281 -2.452148,0 q 0.03809,0.3691406 0.266602,0.5537109 0.228515,0.1845703 0.638671,0.1845703 0.331055,0 0.676758,-0.09668 0.348633,-0.099609 0.714844,-0.2988281 l 0,0.8085938 q -0.37207,0.140625 -0.744141,0.2109375 -0.37207,0.073242 -0.74414,0.073242 -0.890625,0 -1.385742,-0.4511719 -0.492188,-0.4541016 -0.492188,-1.2714844 0,-0.8027344 0.483398,-1.2626953 0.486329,-0.4599609 1.335938,-0.4599609 0.773437,0 1.236328,0.4658203 0.46582,0.4658203 0.46582,1.2451172 z M 22.056501,5.8027143 q 0,-0.2988281 -0.175781,-0.4804687 -0.172851,-0.1845703 -0.454101,-0.1845703 -0.304688,0 -0.495118,0.1728515 -0.190429,0.1699219 -0.237304,0.4921875 l 1.362304,0 z");
     en.appendChild(enE);
     var enN = document.createElementNS("http://www.w3.org/2000/svg", "path");
     enN.setAttributeNS(null, "fill", "#3299BB");
-    enN.setAttributeNS(null, "d","m 27.236189,5.8027143 0,1.9980469 -1.054688,0 0,-0.3251953 0,-1.2041016 q 0,-0.4248046 -0.02051,-0.5859375 Q 26.143415,5.524394 26.09654,5.4482222 26.035017,5.3456831 25.929548,5.290019 25.82408,5.2314253 25.689314,5.2314253 q -0.328125,0 -0.515625,0.2548828 -0.1875,0.2519531 -0.1875,0.7001953 l 0,1.6142578 -1.048828,0 0,-3.28125 1.048828,0 0,0.4804688 q 0.237305,-0.2871094 0.503906,-0.421875 0.266602,-0.1376953 0.588867,-0.1376953 0.56836,0 0.861328,0.3486328 0.295899,0.3486328 0.295899,1.0136718 z");
+    enN.setAttributeNS(null, "d", "m 27.236189,5.8027143 0,1.9980469 -1.054688,0 0,-0.3251953 0,-1.2041016 q 0,-0.4248046 -0.02051,-0.5859375 Q 26.143415,5.524394 26.09654,5.4482222 26.035017,5.3456831 25.929548,5.290019 25.82408,5.2314253 25.689314,5.2314253 q -0.328125,0 -0.515625,0.2548828 -0.1875,0.2519531 -0.1875,0.7001953 l 0,1.6142578 -1.048828,0 0,-3.28125 1.048828,0 0,0.4804688 q 0.237305,-0.2871094 0.503906,-0.421875 0.266602,-0.1376953 0.588867,-0.1376953 0.56836,0 0.861328,0.3486328 0.295899,0.3486328 0.295899,1.0136718 z");
     en.appendChild(enN);
     var arrowOutline = document.createElementNS("http://www.w3.org/2000/svg", "path");
     arrowOutline.setAttributeNS(null, "stroke", "#3299BB");
-    arrowOutline.setAttributeNS(null, "fill","none");
-    arrowOutline.setAttributeNS(null, "stroke-width","0.1");
-    arrowOutline.setAttributeNS(null, "d","M 2.1715728752538097, 2.1715728752538097 L 5, 5 L 2.1715728752538097, 7.82842712474619 L 5, 7.82842712474619 L 7.82842712474619, 5 L 5, 2.1715728752538097 Z ");
-    arrowOutline.setAttributeNS(null, "id","arrow");
+    arrowOutline.setAttributeNS(null, "fill", "none");
+    arrowOutline.setAttributeNS(null, "stroke-width", "0.1");
+    arrowOutline.setAttributeNS(null, "d", "M 2.1715728752538097, 2.1715728752538097 L 5, 5 L 2.1715728752538097, 7.82842712474619 L 5, 7.82842712474619 L 7.82842712474619, 5 L 5, 2.1715728752538097 Z ");
+    arrowOutline.setAttributeNS(null, "id", "arrow");
     arrowOutline.addEventListener('click', stopLoading);
     arrowOutline.addEventListener('mouseover', toggleButtonOn);
     arrowOutline.addEventListener('mouseout', toggleButtonOff);
@@ -207,8 +207,8 @@ var addLoading = function (){
 /* Calculate the point along a segment with a given start point and an
  * direction according to the equation for a line A + t*(A-B), where t
  * corresponds to the percantage and is between 0 and 1 here */
-var getPointAlongSegment = function (percentage, startPoint, segmentDirection){
-    if (numberNEq(percentage,0)){
+var getPointAlongSegment = function (percentage, startPoint, segmentDirection) {
+    if (numberNEq(percentage, 0)) {
         return startPoint.dup().add(segmentDirection.dup().scale(percentage));
     }
 };
@@ -216,81 +216,81 @@ var getPointAlongSegment = function (percentage, startPoint, segmentDirection){
 /* Depending on the given percentage fill the tans within playTangram */
 var updateLoading = function (percentage) {
     var arrow = document.getElementById("arrowGroup");
-    if (percentage <= 0.5 || numberEq(percentage,0.5)){
-        var point0 = playTangram.tans[0].anchor.dup().add(Directions[0][2][1].dup().scale(1/6));
-        var segment1 = SegmentDirections[0][2][2][0].dup().scale(1/6);
-        var point1 = getPointAlongSegment(percentage/0.5, point0, segment1);
-        var segment2 = SegmentDirections[0][2][2][1].dup().scale(1/6);
-        var point2 = getPointAlongSegment(percentage/0.5, point0, segment2);
-        var pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-            + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-            + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+    if (percentage <= 0.5 || numberEq(percentage, 0.5)) {
+        var point0 = playTangram.tans[0].anchor.dup().add(Directions[0][2][1].dup().scale(1 / 6));
+        var segment1 = SegmentDirections[0][2][2][0].dup().scale(1 / 6);
+        var point1 = getPointAlongSegment(percentage / 0.5, point0, segment1);
+        var segment2 = SegmentDirections[0][2][2][1].dup().scale(1 / 6);
+        var point2 = getPointAlongSegment(percentage / 0.5, point0, segment2);
+        var pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+            + point1.toFloatX() + ", " + point1.toFloatY() + " "
+            + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[1].setAttributeNS(null, "points", pointsString);
-        point0 = playTangram.tans[1].anchor.dup().add(Directions[0][4][0].dup().scale(1/6));
-        segment1 = SegmentDirections[0][4][1][0].dup().scale(1/6);
-        point1 = getPointAlongSegment(percentage/0.5, point0, segment1);
-        segment2 = SegmentDirections[0][4][1][1].dup().scale(1/6);
-        point2 = getPointAlongSegment(percentage/0.5, point0, segment2);
-        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-            + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-            + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        point0 = playTangram.tans[1].anchor.dup().add(Directions[0][4][0].dup().scale(1 / 6));
+        segment1 = SegmentDirections[0][4][1][0].dup().scale(1 / 6);
+        point1 = getPointAlongSegment(percentage / 0.5, point0, segment1);
+        segment2 = SegmentDirections[0][4][1][1].dup().scale(1 / 6);
+        point2 = getPointAlongSegment(percentage / 0.5, point0, segment2);
+        pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+        + point1.toFloatX() + ", " + point1.toFloatY() + " "
+        + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[2].setAttributeNS(null, "points", pointsString);
-    } else if (percentage <= 0.75 || numberEq(percentage,0.75)){
+    } else if (percentage <= 0.75 || numberEq(percentage, 0.75)) {
         point0 = playTangram.tans[3].anchor.dup();
-        segment1 = SegmentDirections[2][0][0][0].dup().scale(1/6);
-        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
-        point2 = playTangram.tans[3].anchor.dup().add(Directions[2][0][1].dup().scale(1/6));
-        segment2 = SegmentDirections[2][0][2][1].dup().scale(1/6);
-        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
-        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
-        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        segment1 = SegmentDirections[2][0][0][0].dup().scale(1 / 6);
+        point1 = getPointAlongSegment((percentage - 0.5) / 0.25, point0, segment1);
+        point2 = playTangram.tans[3].anchor.dup().add(Directions[2][0][1].dup().scale(1 / 6));
+        segment2 = SegmentDirections[2][0][2][1].dup().scale(1 / 6);
+        var point3 = getPointAlongSegment((percentage - 0.5) / 0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+        + point1.toFloatX() + ", " + point1.toFloatY() + " "
+        + point3.toFloatX() + ", " + point3.toFloatY() + " "
+        + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[4].setAttributeNS(null, "points", pointsString);
         point0 = playTangram.tans[4].anchor.dup();
-        segment1 = SegmentDirections[2][6][0][1].dup().scale(1/6);
-        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
-        point2 = playTangram.tans[4].anchor.dup().add(Directions[2][6][0].dup().scale(1/6));
-        segment2 = SegmentDirections[2][6][1][1].dup().scale(1/6);
-        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
-        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
-        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        segment1 = SegmentDirections[2][6][0][1].dup().scale(1 / 6);
+        point1 = getPointAlongSegment((percentage - 0.5) / 0.25, point0, segment1);
+        point2 = playTangram.tans[4].anchor.dup().add(Directions[2][6][0].dup().scale(1 / 6));
+        segment2 = SegmentDirections[2][6][1][1].dup().scale(1 / 6);
+        var point3 = getPointAlongSegment((percentage - 0.5) / 0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+        + point1.toFloatX() + ", " + point1.toFloatY() + " "
+        + point3.toFloatX() + ", " + point3.toFloatY() + " "
+        + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[5].setAttributeNS(null, "points", pointsString);
         point0 = playTangram.tans[5].anchor.dup();
-        segment1 = SegmentDirections[3][0][0][0].dup().scale(1/6);
-        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
-        point2 = playTangram.tans[5].anchor.dup().add(Directions[3][0][2].dup().scale(1/6));
-        segment2 = SegmentDirections[3][0][3][1].dup().scale(1/6);
-        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
-        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
-        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        segment1 = SegmentDirections[3][0][0][0].dup().scale(1 / 6);
+        point1 = getPointAlongSegment((percentage - 0.5) / 0.25, point0, segment1);
+        point2 = playTangram.tans[5].anchor.dup().add(Directions[3][0][2].dup().scale(1 / 6));
+        segment2 = SegmentDirections[3][0][3][1].dup().scale(1 / 6);
+        var point3 = getPointAlongSegment((percentage - 0.5) / 0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+        + point1.toFloatX() + ", " + point1.toFloatY() + " "
+        + point3.toFloatX() + ", " + point3.toFloatY() + " "
+        + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[6].setAttributeNS(null, "points", pointsString);
-        point0 = playTangram.tans[6].anchor.dup().add(Directions[4][5][1].dup().scale(1/6));
-        segment1 = SegmentDirections[4][5][2][1].dup().scale(1/6);
-        point1 = getPointAlongSegment((percentage-0.5)/0.25, point0, segment1);
-        point2 = playTangram.tans[6].anchor.dup().add(Directions[4][5][0].dup().scale(1/6));
-        segment2 = SegmentDirections[4][5][1][0].dup().scale(1/6);
-        var point3 = getPointAlongSegment((percentage-0.5)/0.25, point2, segment2);
-        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
-        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+        point0 = playTangram.tans[6].anchor.dup().add(Directions[4][5][1].dup().scale(1 / 6));
+        segment1 = SegmentDirections[4][5][2][1].dup().scale(1 / 6);
+        point1 = getPointAlongSegment((percentage - 0.5) / 0.25, point0, segment1);
+        point2 = playTangram.tans[6].anchor.dup().add(Directions[4][5][0].dup().scale(1 / 6));
+        segment2 = SegmentDirections[4][5][1][0].dup().scale(1 / 6);
+        var point3 = getPointAlongSegment((percentage - 0.5) / 0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+        + point1.toFloatX() + ", " + point1.toFloatY() + " "
+        + point3.toFloatX() + ", " + point3.toFloatY() + " "
+        + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[7].setAttributeNS(null, "points", pointsString);
-    } else if (percentage <= 1 || numberEq(percentage,1)){
-        point0 = playTangram.tans[2].anchor.dup().add(Directions[1][3][0].dup().scale(1/6));
-        segment1 = SegmentDirections[1][3][1][0].dup().scale(1/6);
-        point1 = getPointAlongSegment((percentage-0.75)/0.25, point0, segment1);
-        point2 = playTangram.tans[2].anchor.dup().add(Directions[1][3][1].dup().scale(1/6));
-        segment2 = SegmentDirections[1][3][2][0].dup().scale(1/6);
-        var point3 = getPointAlongSegment((percentage-0.75)/0.25, point2, segment2);
-        pointsString = "" + point0.toFloatX() + ", "+ point0.toFloatY() + " "
-        + point1.toFloatX() + ", "+ point1.toFloatY() + " "
-        + point3.toFloatX() + ", "+ point3.toFloatY() + " "
-        + point2.toFloatX() + ", "+ point2.toFloatY() + " ";
+    } else if (percentage <= 1 || numberEq(percentage, 1)) {
+        point0 = playTangram.tans[2].anchor.dup().add(Directions[1][3][0].dup().scale(1 / 6));
+        segment1 = SegmentDirections[1][3][1][0].dup().scale(1 / 6);
+        point1 = getPointAlongSegment((percentage - 0.75) / 0.25, point0, segment1);
+        point2 = playTangram.tans[2].anchor.dup().add(Directions[1][3][1].dup().scale(1 / 6));
+        segment2 = SegmentDirections[1][3][2][0].dup().scale(1 / 6);
+        var point3 = getPointAlongSegment((percentage - 0.75) / 0.25, point2, segment2);
+        pointsString = "" + point0.toFloatX() + ", " + point0.toFloatY() + " "
+        + point1.toFloatX() + ", " + point1.toFloatY() + " "
+        + point3.toFloatX() + ", " + point3.toFloatY() + " "
+        + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[3].setAttributeNS(null, "points", pointsString);
     } else {
         arrow.childNodes[0].setAttributeNS(null, "stroke", "#E9E9E9");

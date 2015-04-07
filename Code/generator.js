@@ -1,5 +1,5 @@
-importScripts("helpers.js","intadjoinsqrt2.js","point.js", "lineSegement.js",
-    "directions.js","tan.js","evaluation.js","tangram.js");
+importScripts("helpers.js", "intadjoinsqrt2.js", "point.js", "lineSegement.js",
+    "directions.js", "tan.js", "evaluation.js", "tangram.js");
 
 /* Maximum range in x/y a tangram can have, maximum it should be set to is 60 */
 var range = new IntAdjoinSqrt2(50, 0);
@@ -131,13 +131,13 @@ var generateTangram = function () {
 };
 
 /* Given an array of values, normalize the values so that sum of all values is 1*/
-var normalizeProbability = function (distribution){
+var normalizeProbability = function (distribution) {
     var sum = 0;
-    for (var index = 0; index < distribution.length; index++){
+    for (var index = 0; index < distribution.length; index++) {
         sum += distribution[index];
     }
-    if (numberEq(sum,0)) return;
-    for (index = 0; index < distribution.length; index++){
+    if (numberEq(sum, 0)) return;
+    for (index = 0; index < distribution.length; index++) {
         distribution[index] /= sum;
     }
     return distribution;
@@ -152,22 +152,22 @@ var computeOrientationProbability = function (tans, point, tanType, pointId, all
     var segmentDirections = [];
     /* Get directions of the segments that are adjacent with the given connecting
      * point in a way that the directions point to the respective other point */
-    for (var segmentId = 0; segmentId < allSegments.length; segmentId++){
-        if (allSegments[segmentId].point1.eq(point)){
+    for (var segmentId = 0; segmentId < allSegments.length; segmentId++) {
+        if (allSegments[segmentId].point1.eq(point)) {
             segmentDirections.push(allSegments[segmentId].direction());
-        } else if (allSegments[segmentId].point2.eq(point)){
+        } else if (allSegments[segmentId].point2.eq(point)) {
             segmentDirections.push(allSegments[segmentId].direction().neg());
         }
     }
     /* Segments align is the direction vectors are a multiple of each other */
-    for (var orientId = 0; orientId < numOrientations; orientId++){
+    for (var orientId = 0; orientId < numOrientations; orientId++) {
         distribution.push(1);
-        for (segmentId = 0; segmentId < segmentDirections.length; segmentId++){
-            if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][0])){
-                distribution[orientId]+=increaseProbability;
+        for (segmentId = 0; segmentId < segmentDirections.length; segmentId++) {
+            if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][0])) {
+                distribution[orientId] += increaseProbability;
             }
-            if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][1])){
-                distribution[orientId]+=increaseProbability;
+            if (segmentDirections[segmentId].multipleOf(SegmentDirections[tanType][orientId][pointId][1])) {
+                distribution[orientId] += increaseProbability;
             }
         }
     }
@@ -183,26 +183,26 @@ var sampleOrientation = function (distribution) {
      * that index */
     distribution = distribution.slice(0);
     if (sample < distribution[0]) return 0;
-    for (var index = 1; index < numOrientations; index++){
-        distribution[index] += distribution[index-1];
-        if (sample <= distribution[index]){
+    for (var index = 1; index < numOrientations; index++) {
+        distribution[index] += distribution[index - 1];
+        if (sample <= distribution[index]) {
             return index;
         }
     }
-    return numOrientations-1;
+    return numOrientations - 1;
 };
 
 /* Add the points of the new tan to an array of points of the already placed
  * tans */
-var updatePoints = function (currentPoints, newTan){
+var updatePoints = function (currentPoints, newTan) {
     var newPoints = newTan.getPoints();
     currentPoints = currentPoints.concat(newPoints);
-    return eliminateDuplicates(currentPoints,comparePoints,true);
+    return eliminateDuplicates(currentPoints, comparePoints, true);
 };
 
 /* Add the segments of the new tan to an array of segments of the already placed
  * tans while also splitting the segments of points */
-var updateSegments = function (currentSegments, newTan){
+var updateSegments = function (currentSegments, newTan) {
     /* Only the points of the new Tan can split any of the already present segments */
     var newPoints = newTan.getPoints();
     var allSegments = [];
@@ -223,7 +223,7 @@ var updateSegments = function (currentSegments, newTan){
 };
 
 /* Function to randomly generate a tangram with more overlapping edges */
-var generateTangramEdges = function (){
+var generateTangramEdges = function () {
     /* Generate an order in which the tan pieces are to be placed and decide on
      * whether the parallelogram is flipped or not */
     var flipped = Math.floor(Math.random() * 2);
@@ -253,19 +253,19 @@ var generateTangramEdges = function (){
                 var orientationDistribution = computeOrientationProbability(tans, anchor,
                     tanOrder[tanId], pointOrder[pointId], allSegments);
                 /* Sample a new orientation */
-                while (typeof orientationDistribution != 'undefined' && !tanPlaced){
+                while (typeof orientationDistribution != 'undefined' && !tanPlaced) {
                     orientation = sampleOrientation(orientationDistribution);
                     if (pointOrder[pointId] === 0) {
                         newTan = new Tan(tanOrder[tanId], anchor, orientation);
                     } else {
                         var tanAnchor = anchor.dup().subtract(Directions[tanOrder[tanId]]
-                        [orientation][pointOrder[pointId] - 1]);
+                            [orientation][pointOrder[pointId] - 1]);
                         newTan = new Tan(tanOrder[tanId], tanAnchor, orientation);
                     }
                     if (checkNewTan(tans, newTan)) {
                         tans[tanId] = newTan;
                         tanPlaced = true;
-                        allPoints = updatePoints(allPoints,newTan);
+                        allPoints = updatePoints(allPoints, newTan);
                         allSegments = updateSegments(allSegments, newTan);
                     }
                     /* Set probability of the just failed orientation to 0, so it
@@ -297,7 +297,7 @@ var generateTangrams = function (number) {
         self.postMessage(index);
         /* Clean up objects - delete keys that have just been set to avoid
          * computing these properties multiple times */
-        for (var tanId = 0; tanId < 7; tanId++){
+        for (var tanId = 0; tanId < 7; tanId++) {
             delete generated[index].tans[tanId].points;
             delete generated[index].tans[tanId].segments;
             delete generated[index].tans[tanId].insidePoints;
@@ -305,7 +305,7 @@ var generateTangrams = function (number) {
     }
     generated = generated.sort(compareTangrams);
     generating = false;
-    for (var index = 0; index < 6; index++) {
+    for (var index = 0; index < number; index++) {
         self.postMessage(JSON.stringify(generated[index].tans));
     }
     self.postMessage("Generating done!");
@@ -314,7 +314,7 @@ var generateTangrams = function (number) {
 /* Receive the starting message from the main script, where the data of the
  * event is the number of tangrams to be generated, also send message back that
  * Worker has started */
-self.addEventListener('message', function(event) {
+self.addEventListener('message', function (event) {
     var numTangrams = event.data;
     self.postMessage("Worker started!");
     generateTangrams(numTangrams);

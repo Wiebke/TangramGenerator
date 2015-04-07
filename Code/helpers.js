@@ -78,12 +78,12 @@ var shuffleArray = function (array) {
 var eliminateDuplicates = function (array, compareFunction, keepDoubles) {
     array = array.sort(compareFunction);
     var newArray = [array[0]];
-    for (var index = 1; index < array.length; index++){
+    for (var index = 1; index < array.length; index++) {
         newArray.push(array[index]);
-        if (compareFunction(array[index], array[index - 1]) === 0){
+        if (compareFunction(array[index], array[index - 1]) === 0) {
             newArray.pop();
             /* Throw the other part of the duplicate away as well */
-            if (!keepDoubles){
+            if (!keepDoubles) {
                 newArray.pop();
             }
         }
@@ -109,7 +109,7 @@ var arrayEq = function (arrayA, arrayB, compareFunction) {
 /* Count the number of unique elements in an array, based on a given compare
  * function */
 var numUniqueElements = function (array, compareFunction) {
-    var unique = eliminateDuplicates(array.slice(0), compareFunction,true);
+    var unique = eliminateDuplicates(array.slice(0), compareFunction, true);
     return array.length;
 };
 

@@ -44,26 +44,39 @@ Point.prototype.compare = function (other) {
     }
 };
 
+/* Comparison of Points by first y- and then x-coordinate, returns -1 if
+ * this point is "smaller" than the other one and 1, if this one is "bigger" than
+ * the other one*/
+Point.prototype.compareYX = function (other) {
+    var xCompare = this.x.compare(other.x);
+    var yCompare = this.y.compare(other.y);
+    if (yCompare != 0) {
+        return yCompare;
+    } else {
+        return xCompare;
+    }
+};
+
 /* Returns true if the given direction vector is the same or a multiple this one */
-Point.prototype.multipleOf = function (other){
+Point.prototype.multipleOf = function (other) {
     /* Direction vectors are a multiple of each other if they either are both
      * equal to (0,0), if they both have the form (0,a) or (a,0) where the a has
      * has the same sign in both cases or (a,b) = s*(c,d) */
     var sameSignX = this.x.sameSign(other.x);
     var sameSignY = this.y.sameSign(other.y);
     if (!(sameSignX && sameSignY)) return false;
-    if (this.x.isZero() && other.x.isZero()){
-        if (this.y.isZero() && other.y.isZero()){
+    if (this.x.isZero() && other.x.isZero()) {
+        if (this.y.isZero() && other.y.isZero()) {
             return true;
         } else {
             return sameSignY;
         }
-    } else if (this.y.isZero() && other.y.isZero()){
-            return sameSignX;
+    } else if (this.y.isZero() && other.y.isZero()) {
+        return sameSignX;
     } else {
         var xFactor = this.x.div(other.x);
         var yFactor = this.y.div(other.y);
-        if (typeof xFactor === 'undefined' || typeof yFactor === 'undefined'){
+        if (typeof xFactor === 'undefined' || typeof yFactor === 'undefined') {
             return false;
         } else {
             return xFactor.eq(yFactor);
@@ -71,9 +84,13 @@ Point.prototype.multipleOf = function (other){
     }
 };
 
-/* Function for compating points used in sorting */
+/* Function for comparing points used in sorting */
 var comparePoints = function (pointA, pointB) {
     return pointA.compare(pointB);
+};
+
+var comparePointsYX = function (pointA, pointB) {
+    return pointA.compareYX(pointB);
 };
 
 /* Points are equal if both coordinates are equal */

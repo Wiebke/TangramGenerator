@@ -1,5 +1,5 @@
 /** Class for a Tan */
-var areaSum = new IntAdjoinSqrt2(576,0);
+var areaSum = new IntAdjoinSqrt2(576, 0);
 
 /* Constructor: tanType is a number from 0 to 5, depending on which tan the object
  * describes where 0: big triangle, 1: medium triangle, 2: small triangle,
@@ -10,7 +10,7 @@ function Tan(tanType, anchor, orientation) {
     this.tanType = tanType;
     this.anchor = anchor;
     this.orientation = orientation;
-    if (!(typeof generating === 'undefined') && generating){
+    if (!(typeof generating === 'undefined') && generating) {
         this.points = this.getPoints();
         this.segments = this.getSegments();
         this.insidePoints = this.getInsidePoints();
@@ -29,7 +29,7 @@ Tan.prototype.area = function () {
 /* Calculate the points involved in this tan, using anchor point and pre-
  * calculated direction vectors */
 Tan.prototype.getPoints = function () {
-    if (generating && typeof this.points != 'undefined'){
+    if (generating && typeof this.points != 'undefined') {
         return this.points;
     }
     var points = [];
@@ -45,12 +45,12 @@ Tan.prototype.getPoints = function () {
 
 /* Calculate segments from points (connect consecutive points to segments */
 Tan.prototype.getSegments = function () {
-    if (generating && typeof this.segments != 'undefined'){
+    if (generating && typeof this.segments != 'undefined') {
         return this.segments;
     }
     var segments = [];
     var points = this.getPoints();
-    for (var pointId = 0; pointId < points.length-1; pointId++) {
+    for (var pointId = 0; pointId < points.length - 1; pointId++) {
         segments[pointId] = new LineSegment(points[pointId], points[(pointId + 1)]);
     }
     segments[pointId] = new LineSegment(points[pointId], points[0]);
@@ -63,12 +63,12 @@ Tan.prototype.center = function () {
 
 /* Calculate points inside this tan from anchor and pre-calculated directions */
 Tan.prototype.getInsidePoints = function () {
-    if (generating && typeof this.insidePoints != 'undefined'){
+    if (generating && typeof this.insidePoints != 'undefined') {
         return this.insidePoints;
     }
     var insidePoints = [];
     var numInsidePoints = InsideDirections[this.tanType][this.orientation].length;
-    for (var pointId = 0; pointId < numInsidePoints; pointId++){
+    for (var pointId = 0; pointId < numInsidePoints; pointId++) {
         insidePoints.push(this.anchor.dup().add(InsideDirections[this.tanType][this.orientation][pointId]));
     }
     return insidePoints;
@@ -93,12 +93,12 @@ var getAllPoints = function (tans) {
         points = points.concat(currentPoints);
     }
     /* Eliminate duplicates */
-    points = eliminateDuplicates(points, comparePoints,true);
+    points = eliminateDuplicates(points, comparePoints, true);
     return points;
 };
 
 var outlineArea = function (outline) {
-    var area = new IntAdjoinSqrt2(0,0);
+    var area = new IntAdjoinSqrt2(0, 0);
     for (var pointId = 0; pointId < outline.length - 1; pointId++) {
         /* Calculate the cross product of consecutive points. This corresponds
          * to twice the area of the triangle (0,0) - vertices[p] -
@@ -220,10 +220,11 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
             break;
         }
         /* If the found segment continues in the same direction, remove the last
-         * point, since it provides no additional information */
+         * point, since it provides no additional information - taken out since
+         * this complicates computation in evaluation
         if (angle === 180 && !firstSegment) {
             outline.pop();
-        }
+        } */
         /* Add the other point of the found segment to the outline*/
         if (currentSegments[index].point1.eq(lastPoint)) {
             outline.push(currentSegments[index].point2);
@@ -268,7 +269,7 @@ var computeHole = function (allPoints, allSegments) {
          * before */
         numPointsAfter = allSegments.length * 2;
     }
-    allPoints = eliminateDuplicates(remainingPoints, comparePoints,true);
+    allPoints = eliminateDuplicates(remainingPoints, comparePoints, true);
     /* Use a minimum angle for holes */
     return computeOutlinePart(allPoints, allSegments, findMinSegments, true);
 };
@@ -332,7 +333,7 @@ var containsPoint = function (outline, point) {
     var winding = 0;
     for (var pointId = 0; pointId < outline.length; pointId++) {
         var firstPoint = outline[pointId];
-        var secondPoint = pointId === outline.length-1 ? outline[0] : outline[(pointId + 1)];
+        var secondPoint = pointId === outline.length - 1 ? outline[0] : outline[(pointId + 1)];
         /* Check each segment for containment */
         if (point.eq(firstPoint) || point.eq(secondPoint)
             || new LineSegment(firstPoint, secondPoint).onSegment(point)) {

@@ -21,7 +21,7 @@ IntAdjoinSqrt2.prototype.toFloat = function () {
 /* Checking if this number is equal to another one, in generating only whole
  * numbers are used === can be used for comparison */
 IntAdjoinSqrt2.prototype.eq = function (other) {
-    if (generating){
+    if (generating) {
         return this.coeffInt === other.coeffInt && this.coeffSqrt === other.coeffSqrt;
     } else {
         return numberEq(this.coeffInt, other.coeffInt) && numberEq(this.coeffSqrt, other.coeffSqrt);
@@ -58,6 +58,13 @@ var compareIntAdjoinSqrt2s = function (numberA, numberB) {
     return numberA.compare(numberB);
 };
 
+/* Compute the absolute distance between this and another number */
+IntAdjoinSqrt2.prototype.distance = function (other){
+    var result = this.dup();
+    result.subtract(other);
+    return result.abs();
+};
+
 /* Check if two numbers lie withing a given range of oneanother */
 IntAdjoinSqrt2.prototype.closeNumbers = function (other, range) {
     return numberRange(this.toFloat(), other.toFloat(), range);
@@ -65,7 +72,7 @@ IntAdjoinSqrt2.prototype.closeNumbers = function (other, range) {
 
 /* Check if this number is equal to zero, use === during generating */
 IntAdjoinSqrt2.prototype.isZero = function () {
-    if (generating){
+    if (generating) {
         return this.coeffInt === 0 && this.coeffSqrt === 0;
     } else {
         return (numberEq(this.coeffInt, 0) && numberEq(this.coeffSqrt, 0));
@@ -120,8 +127,10 @@ IntAdjoinSqrt2.prototype.neg = function () {
 
 /* Basic arithmetic - Absolute Value */
 IntAdjoinSqrt2.prototype.abs = function () {
-    this.coeffInt = Math.abs(this.coeffInt);
-    this.coeffSqrt = Math.abs(this.coeffSqrt);
+    if (this.toFloat() < 0){
+        this.coeffInt = -this.coeffInt;
+        this.coeffSqrt = -this.coeffSqrt;
+    }
     return this;
 };
 

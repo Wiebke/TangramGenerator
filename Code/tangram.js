@@ -6,7 +6,7 @@ function Tangram(tans) {
     });
     /* Outline is an array of points describing the outline of the tangram */
     this.outline = computeOutline(this.tans);
-    if (typeof this.outline != 'undefined'){
+    if (typeof this.outline != 'undefined') {
         this.evaluation = new Evaluation(this.tans, this.outline);
     }
 }
@@ -36,15 +36,15 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     var shape = document.createElementNS("http://www.w3.org/2000/svg", "path");
     /* Add each outline point to the path */
     var pathdata = "M " + this.outline[0][0].toFloatX() + ", " + this.outline[0][0].toFloatY() + " ";
-    for (var i = 1; i < this.outline[0].length; i++) {
-        pathdata += "L " + this.outline[0][i].toFloatX() + ", " + this.outline[0][i].toFloatY() + " ";
+    for (var pointId = 1; pointId < this.outline[0].length; pointId++) {
+        pathdata += "L " + this.outline[0][pointId].toFloatX() + ", " + this.outline[0][pointId].toFloatY() + " ";
     }
     pathdata += "Z ";
     shape.setAttributeNS(null, "fill", '#3299BB');
     for (var outlineId = 1; outlineId < this.outline.length; outlineId++) {
         pathdata += "M " + this.outline[outlineId][0].toFloatX() + ", " + this.outline[outlineId][0].toFloatY() + " ";
-        for (var i = 1; i < this.outline[outlineId].length; i++) {
-            pathdata += "L " + this.outline[outlineId][i].toFloatX() + ", " + this.outline[outlineId][i].toFloatY() + " ";
+        for (var pointId = 1; pointId < this.outline[outlineId].length; pointId++) {
+            pathdata += "L " + this.outline[outlineId][pointId].toFloatX() + ", " + this.outline[outlineId][pointId].toFloatY() + " ";
         }
         pathdata += "Z";
     }
@@ -52,6 +52,23 @@ Tangram.prototype.toSVGOutline = function (elementName) {
     /* Set fill-rule for correctly displayed holes */
     shape.setAttributeNS(null, "fill-rule", "evenodd");
     tangramSVG.appendChild(shape);
+
+    /*Test convex hull */
+    /*var allPoints = getAllPoints(this.tans);
+    allPoints = allPoints.sort(comparePointsYX);
+    var convexHull = this.evaluation.computeConvexHull(this.outline[0],allPoints[0]);
+    var pathdataHull = "M " + convexHull[0].toFloatX() + ", " + convexHull[0].toFloatY() + " ";
+    for (var i = 1; i < convexHull.length; i++) {
+        pathdataHull += "L " + convexHull[i].toFloatX() + ", " + convexHull[i].toFloatY() + " ";
+    }
+    pathdataHull += "Z ";
+    var hull = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    hull.setAttributeNS(null, "stroke", '#FF9900');
+    hull.setAttributeNS(null, "stroke-width", '0.45');
+    hull.setAttributeNS(null, "fill", 'none');
+    hull.setAttributeNS(null, "d", pathdataHull);
+    tangramSVG.appendChild(hull);*/
+
     /* Clear old content */
     var element = document.getElementById(elementName);
     while (element.firstChild) {

@@ -181,7 +181,7 @@ LineSegment.prototype.onSegmentIncludingEndpoints = function (point) {
     return false;
 };
 
-LineSegment.prototype.intersectsOrientations = function (other){
+LineSegment.prototype.intersectsOrientations = function (other) {
     /* Find the four relative orientations for all combinations of one line segments
      * and one point from the respective other line segment */
     var orient1 = relativeOrientation(this.point1, this.point2, other.point1);
@@ -199,9 +199,9 @@ LineSegment.prototype.intersectsOrientations = function (other){
 
 /* Returns true if the this segment and the other segment intersect in exactly one
  * point but none of the endpoints are equal */
-LineSegment.prototype.intersectsIncludingSegment = function (other){
+LineSegment.prototype.intersectsIncludingSegment = function (other) {
     if (this.point1.eq(other.point1) || this.point2.eq(other.point1)
-     || this.point1.eq(other.point2) || this.point2.eq(other.point2)){
+        || this.point1.eq(other.point2) || this.point2.eq(other.point2)) {
         return false;
     }
     return this.intersectsOrientations(other);

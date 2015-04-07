@@ -58,7 +58,7 @@ for (var tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
     InsideDirections[tanTypeId][0] = [];
     InsideDirections[tanTypeId][0][0] = centerPoint;
 }
-for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
+for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++) {
     var middle1 = Directions[tanTypeId][0][0].dup().add(Directions[tanTypeId][0][1]).scale(0.5);
     var insidePoint1 = Directions[tanTypeId][0][0].dup().add(middle1);
     var insidePoint2 = Directions[tanTypeId][0][1].dup().add(middle1);
@@ -68,7 +68,7 @@ for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
     InsideDirections[tanTypeId][0][2] = insidePoint2;
     /* Add center of a triangle formed by the anchor and the middle of the two
      * adjacent segments for the large triangle tan */
-    if (tanTypeId === 0){
+    if (tanTypeId === 0) {
         var middle2 = Directions[tanTypeId][0][0].dup().scale(0.5);
         var middle3 = Directions[tanTypeId][0][1].dup().scale(0.5);
         var insidePoint3 = middle2.add(middle3);
@@ -76,11 +76,11 @@ for (tanTypeId = 0; tanTypeId <= 1; tanTypeId++){
         insidePoint3.scale(1 / (Directions[tanTypeId][0].length));
     }
 }
-for (tanTypeId = 3; tanTypeId <= 5; tanTypeId++){
-     insidePoint1 = new Point();
-     insidePoint2 = new Point();
-    for ( pointId = 0; pointId < Directions[tanTypeId][0].length; pointId++) {
-        if (pointId != Directions[tanTypeId][0].length-1){
+for (tanTypeId = 3; tanTypeId <= 5; tanTypeId++) {
+    insidePoint1 = new Point();
+    insidePoint2 = new Point();
+    for (pointId = 0; pointId < Directions[tanTypeId][0].length; pointId++) {
+        if (pointId != Directions[tanTypeId][0].length - 1) {
             insidePoint1.add(Directions[tanTypeId][0][pointId]);
         }
         insidePoint2.add(Directions[tanTypeId][0][pointId])
@@ -119,7 +119,7 @@ for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
         /* Anchor point, take first and last direction */
         SegmentDirections[tanTypeId][orientId][0] =
             [Directions[tanTypeId][orientId][0].dup(), Directions[tanTypeId]
-                [orientId][(tanTypeId < 3) ? 1:2].dup()];
+                [orientId][(tanTypeId < 3) ? 1 : 2].dup()];
         /* First point, take negated direction to the point from the anchor, for
          * the second segment, add Direction to the second point to the direction
          * for the first segment */
@@ -130,7 +130,7 @@ for (tanTypeId = 0; tanTypeId <= 5; tanTypeId++) {
         /* Second point, calculation depends on tan type, for three-sided tans
          * handle the same way as first point, for four-sided tans first calculate
          * direction to the anchor, then add respective direction vectors */
-        if (tanTypeId < 3){
+        if (tanTypeId < 3) {
             SegmentDirections[tanTypeId][orientId][2] =
                 [Directions[tanTypeId][orientId][1].dup().neg(),
                     Directions[tanTypeId][orientId][1].dup().neg().add(Directions
@@ -167,4 +167,5 @@ var FlipDirections = [[new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-6, 0)), /* 4 */
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -12)), /* 5 */
         new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(-18, 0)), /* 6 */
-        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -6))]]; /* 7 */
+        new Point(new IntAdjoinSqrt2(0, 0), new IntAdjoinSqrt2(0, -6))]];
+/* 7 */

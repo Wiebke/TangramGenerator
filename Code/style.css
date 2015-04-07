@@ -37,7 +37,7 @@ header, #content, footer {
 }
 
 img {
-    display:block;
+    display: block;
     width: 70%;
     margin-top: 2%;
     margin-right: auto;
@@ -57,9 +57,10 @@ img {
     -moz-user-select: none;
     -o-user-select: none;
     user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
-#loading{
+
+#loading {
     background-color: #E9E9E9;
 }
 
@@ -103,7 +104,7 @@ svg text {
 }
 
 #generate {
-    display:none;
+    display: none;
 }
 
 #select, #set, #hint, #sol {
