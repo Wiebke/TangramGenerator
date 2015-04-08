@@ -57,10 +57,10 @@ Evaluation.prototype.getValue = function (mode) {
     var evaluation;
     switch (evaluationMode) {
         case 0:
-            evaluation = -this.matchedVertices;
-            //evaluation = this.longestEdge;
+            //evaluation = -this.matchedVertices;
+            //evaluation = this.shortestEdge;
             //evaluation = this.hangingPieces === 0 ? 50 : this.hangingPieces;
-            //evaluation = 1.0-this.convexPercentage;
+            evaluation = 1.0-this.convexPercentage;
             //evaluation = 2- this.symmetry;
             //evaluation = (this.outlineVertices - 3) / 26;
             break;

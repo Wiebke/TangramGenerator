@@ -20,6 +20,7 @@ var minutes;
 var seconds;
 var rotations;
 var translations;
+var user;
 
 
 /* Game logic - compute mouse coordinates */
@@ -133,7 +134,7 @@ var checkSolved = function () {
     line2.textContent = "\uf047  " + translations + " and \uf01e  " + rotations;
     watch.appendChild(line2);
     /* Send statistics to server */
-    sendGame(minutes, seconds, numHints, translations, rotations, generated[chosen]);
+    sendGame(user, minutes, seconds, numHints, translations, rotations, generated[chosen]);
 };
 
 /* Game logic - Sets every piece to the solution */
@@ -433,12 +434,6 @@ var addTangramPieces = function () {
     document.getElementById("game").addEventListener('mousemove', moveTan);
     document.getElementById("game").addEventListener('mouseup', deselectTan);
     /* Prevent other touch events on game (that are not inside a tan */
-    document.getElementById("game").addEventListener('touchstart', function (event) {
-        event.preventDefault();
-    });
-    document.getElementById("game").addEventListener('touchend', function (event) {
-        event.preventDefault();
-    });
     document.getElementById("game").addEventListener('touchmove', function (event) {
         event.preventDefault();
     });
@@ -610,6 +605,7 @@ var startGenerator = function () {
 };
 
 window.onload = function () {
+    user = new Date().getTime();
     /* Provide fallBack if Workers or inline SVG are not supported */
     if (typeof SVGRect === "undefined" || !window.Worker) {
         /* Show Browser fallback PNG */
@@ -654,19 +650,21 @@ window.onload = function () {
             translations = 0;
             startWatch();
             /* Send choice to server */
-            sendChoice(chosen, generated.slice(0, 6));
+            sendChoice(user, chosen, generated.slice(0, 6));
         });
     }
 
     document.getElementById("generate").addEventListener('click', function () {
         /* Hide tangrams and generate new tangrams */
-        //changeTangramVisibility(true);
+        firstGeneration = true;
+        changeTangramVisibility(true);
         generated = [];
+        addLoading();
         startGenerator();
         resetPieces();
-        /*document.getElementById("loadParagraph").style.display = 'block';
+        document.getElementById("loadParagraph").style.display = 'block';
         document.getElementById("chooseParagraph").style.display = 'none';
-        document.getElementById("gameParagraph").style.display = 'none';*/
+        document.getElementById("gameParagraph").style.display = 'none';
     });
 
     document.getElementById("select").addEventListener('click', function () {

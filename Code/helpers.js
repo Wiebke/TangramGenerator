@@ -1,5 +1,6 @@
 /* generating variable -> True if still in generating process */
 var generating = true;
+var eval = false;
 
 /* Conversion between different angle systems */
 var toRadians = function (degrees) {

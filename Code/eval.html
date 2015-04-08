@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Random Tangram Generator</title>
+    <link rel="stylesheet" href="evalstyle.css">
+    <link rel="stylesheet"
+          href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"
+          type="text/css">
+    <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet'
+          type='text/css'>
+    <script src="helpers.js"></script>
+    <script src="intadjoinsqrt2.js"></script>
+    <script src="point.js"></script>
+    <script src="lineSegement.js"></script>
+    <script src="directions.js"></script>
+    <script src="tan.js"></script>
+    <script src="evaluation.js"></script>
+    <script src="tangram.js"></script>
+    <script src="exampleTangrams.js"></script>
+    <!--<script src="generator.js"></script>-->
+    <script src="serverCommunication.js"></script>
+    <script src="loading.js"></script>
+    <script src="evalscript.js"></script>
+</head>
+<body>
+<header>
+    <!--<img src="logo.svg" onerror="this.src='your.png'">-->
+</header>
+
+<!--Actual content, shapes and game goes here-->
+<section id="content">
+    <div id="gameArea">
+        <svg id="loading" xmlns="http://www.w3.org/2000/svg" width="100%"
+             height="100%" viewBox="0 0 30 18"
+             preserveAspectRatio="xMinYMin meet">
+        </svg>
+        <svg id="thanks" xmlns="http://www.w3.org/2000/svg" width="100%"
+             height="100%" viewBox="0 0 30 9"
+             preserveAspectRatio="xMinYMin meet">
+            <g>
+                <polygon points="4.707106781186548, 1.8786796564403572 4.707106781186548, 4.707106781186548 1.8786796564403572, 1.8786796564403572 " fill="#FF9900"></polygon>
+                <polygon points="6.121320343559643, 6.121320343559643 4.121320343559643, 8.121320343559642 4.121320343559643, 4.121320343559643 " fill="#BCBCBC"></polygon>
+                <polygon points="6.121320343559643, 1.8786796564403572 8.121320343559642, 1.8786796564403572 6.121320343559643, 3.878679656440357 " fill="#3299BB"></polygon>
+                <polygon points="1.8786796564403572, 3.2928932188134525 1.8786796564403572, 1.8786796564403572 3.2928932188134525, 3.2928932188134525 " fill="#3299BB"></polygon>
+                <polygon points="6.121320343559643, 3.2928932188134525 6.121320343559643, 4.707106781186548 4.707106781186548, 3.2928932188134525 " fill="#FF9900"></polygon>
+                <polygon points="4.707106781186548, 1.8786796564403572 6.121320343559643, 1.8786796564403572 6.121320343559643, 3.2928932188134525 4.707106781186548, 3.2928932188134525 " fill="#BCBCBC"></polygon>
+                <polygon points="4.707106781186548, 3.2928932188134525 6.121320343559643, 4.707106781186548 6.121320343559643, 6.121320343559643 4.707106781186548, 4.707106781186548 " fill="#3299BB"></polygon>
+            </g>
+            <path fill = "#3299BB" d="m 10.516116,5.5543666 0,2.0812988 -1.0986327,0 0,-0.3387451 0,-1.2481689 q 0,-0.4486084 -0.021362,-0.6164551 Q 9.3778105,5.2644496 9.3289824,5.1851039 9.2648954,5.0782924 9.1550322,5.020309 9.0451689,4.9592738 8.904788,4.9592738 q -0.3417969,0 -0.5371094,0.2655029 -0.1953125,0.2624512 -0.1953125,0.7293702 l 0,1.6815185 -1.0925293,0 0,-4.7485351 1.0925293,0 0,1.8310546 Q 8.4195585,4.4191127 8.6972685,4.2787318 8.9749784,4.1352992 9.3106718,4.1352992 q 0.592041,0 0.8972172,0.3631592 0.308227,0.3631592 0.308227,1.0559082 z"/>
+            <path fill = "#3299BB" d="m 13.067386,6.0975795 q -0.341797,0 -0.515747,0.1159668 -0.170899,0.1159668 -0.170899,0.3417969 0,0.2075195 0.137329,0.326538 0.140381,0.1159668 0.387574,0.1159668 0.308227,0 0.518798,-0.2197265 0.210572,-0.2227783 0.210572,-0.55542 l 0,-0.125122 -0.567627,0 z m 1.669311,-0.4119873 0,1.9500732 -1.101684,0 0,-0.5065918 q -0.219727,0.3112793 -0.494385,0.4547119 -0.274658,0.1403809 -0.668335,0.1403809 -0.531006,0 -0.863648,-0.3082275 -0.329589,-0.3112793 -0.329589,-0.8056641 0,-0.6011963 0.411987,-0.881958 0.415039,-0.2807617 1.300049,-0.2807617 l 0.643921,0 0,-0.085449 q 0,-0.2593994 -0.204468,-0.3784179 -0.204468,-0.1220703 -0.637818,-0.1220703 -0.350952,0 -0.653076,0.07019 -0.302124,0.07019 -0.561523,0.2105713 l 0,-0.8331299 q 0.350952,-0.085449 0.704956,-0.1281738 0.354004,-0.045776 0.708008,-0.045776 0.924682,0 1.333618,0.3662109 0.411987,0.3631592 0.411987,1.1840821 z"/>
+            <path fill = "#3299BB" d="m 19.183108,5.5543666 0,2.0812988 -1.098632,0 0,-0.3387451 0,-1.2542725 q 0,-0.4425048 -0.02136,-0.6103515 -0.01831,-0.1678467 -0.06714,-0.2471924 -0.06409,-0.1068115 -0.173951,-0.1647949 -0.109863,-0.061035 -0.250244,-0.061035 -0.341797,0 -0.537109,0.2655029 -0.195313,0.2624512 -0.195313,0.7293702 l 0,1.6815185 -1.092529,0 0,-3.4179687 1.092529,0 0,0.5004882 q 0.247193,-0.2990722 0.524903,-0.4394531 0.27771,-0.1434326 0.613403,-0.1434326 0.592041,0 0.897217,0.3631592 0.308227,0.3631592 0.308227,1.0559082 z"/>
+            <path fill = "#3299BB" d="m 20.202395,2.8871303 1.09253,0 0,2.5848388 1.257324,-1.2542724 1.269531,0 -1.669311,1.5686035 1.800537,1.8493652 -1.324463,0 -1.333618,-1.4251709 0,1.4251709 -1.09253,0 0,-4.7485351 z"/>
+            <path fill = "#3299BB" d="m 27.035281,4.3245082 0,0.8300781 q -0.350952,-0.1464844 -0.67749,-0.2197265 -0.326538,-0.073242 -0.616455,-0.073242 -0.311279,0 -0.463867,0.079346 -0.149536,0.076294 -0.149536,0.2380371 0,0.1312256 0.112915,0.201416 0.115966,0.07019 0.411987,0.1037598 l 0.192261,0.027466 q 0.839233,0.1068115 1.12915,0.3509521 0.289917,0.2441407 0.289917,0.7659912 0,0.5462647 -0.402832,0.8209229 -0.402832,0.2746582 -1.202393,0.2746582 -0.338745,0 -0.701904,-0.054932 -0.360107,-0.05188 -0.741577,-0.1586915 l 0,-0.8300781 q 0.326538,0.1586914 0.668335,0.2380371 0.344849,0.079346 0.698852,0.079346 0.320435,0 0.482178,-0.088501 0.161743,-0.088501 0.161743,-0.2624512 0,-0.1464844 -0.112915,-0.2166748 -0.109863,-0.073242 -0.442505,-0.1129151 l -0.19226,-0.024414 q -0.72937,-0.091553 -1.022339,-0.3387451 -0.292969,-0.2471924 -0.292969,-0.7507325 0,-0.5432129 0.372315,-0.805664 0.372314,-0.2624512 1.141357,-0.2624512 0.302124,0 0.634766,0.045776 0.332641,0.045776 0.723266,0.1434326 z"/>
+        </svg>
+        <div class="tangram">
+            <svg id="first0" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 60 60"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="second1" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 60 60"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="third2" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 60 60"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="fourth3" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 60 60"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="fifth4" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 60 60"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <div class="tangram">
+            <svg id="sixth5" xmlns="http://www.w3.org/2000/svg" width="100%"
+                 height="100%" viewBox="0 0 60 60"
+                 preserveAspectRatio="xMinYMin meet">
+            </svg>
+        </div>
+        <noscript><img src="fallback.png" alt="javascript is switched off">
+        </noscript>
+    </div>
+    <div class="clear"></div>
+    <div id="progress">
+        <svg id = "bubbles" xmlns="http://www.w3.org/2000/svg" width="100%"
+             height="100%" viewBox="0 0 110 7"
+             preserveAspectRatio="xMinYMin meet">
+            <circle id = "chosen0" cx="10" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen1" cx="20" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen2" cx="30" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen3" cx="40" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen4" cx="50" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen5" cx="60" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen6" cx="70" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen7" cx="80" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen8" cx="90" cy="5" r="2" fill="#BCBCBC"/>
+            <circle id = "chosen9" cx="100" cy="5" r="2" fill="#BCBCBC"/>
+        </svg>
+    </div>
+    <aside id="explain">
+        <p id="loadParagraph"><i class="fa fa-info-circle"></i> <b>Tangram</b>
+            is an old chinese puzzle, where 7 puzzle pieces called <b>tans</b>
+            have to be placed within a given shape in a way such that the whole
+            shape is covered and none of the pieces
+            overlap. For a university project, I am attempting to randomly generate tangrams and
+            automatically rank them according to how interesting they are. The ranking requires a
+            measure of "interestingness" and this is where you come into
+            play. In the following you will be presented with 6 shapes each and simply have to decide which of the
+            shapes you find most interesting. Click on the arrow above (once it has completely filled)
+            and decide which of the displayed shapes you find most interesting.</p>
+        <p id="chooseParagraph"><i class="fa fa-info-circle"></i> Above you can see 6 shapes.
+        Choose the one that you find most interesting by clicking or tapping on it!</p>
+        <p id="gameParagraph"><i class="fa fa-info-circle"></i> Thank you very much for your
+        participation! If you want to, you can now go and try to solve some of these tangrams
+            or rate some more tangrams of course. <i class="fa fa-smile-o"></i>
+        </p>
+    </aside>
+    <div id="buttons">
+        <button id=re><i class="fa fa-repeat"></i></i><span class=buttonText>  Rate again</span>
+        </button>
+        <button id=play><i class="fa fa-play"></i> <span class=buttonText>  Go play</span>
+        </button>
+    </div>
+</section>
+
+<footer><i class="fa fa-copyright"></i> 2015 Wiebke Koepp
+    <!--<i class="fa fa-envelope-o"></i> tangrams[at]wiebke-koepp.de--></footer>
+
+</body>
+</html>

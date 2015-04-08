@@ -35,8 +35,8 @@ var insertDb = function (collectionName, jsonObject) {
 
 /* Configure our HTTP server to respond to CORS requests OPTIONS and POST */
 var server = http.createServer(function (request, response) {
-    // Set CORS headers TODO change Origin from * to actual url
-    response.setHeader('Access-Control-Allow-Origin', '*');
+    // Set CORS headers: changed origin from * to actual url
+    response.setHeader('Access-Control-Allow-Origin', 'http://www.wiebke-koepp.de');
     response.setHeader('Access-Control-Request-Method', '*');
     response.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST');
     response.setHeader('Access-Control-Allow-Headers', 'X-Accept-Charset,X-Accept,Content-Type,Authorization,Accept,Origin');

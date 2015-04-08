@@ -303,19 +303,25 @@ var generateTangrams = function (number) {
             delete generated[index].tans[tanId].insidePoints;
         }
     }
-    generated = generated.sort(compareTangrams);
+    if (!eval){
+        generated = generated.sort(compareTangrams);
+    }
     generating = false;
     for (var index = 0; index < number; index++) {
         self.postMessage(JSON.stringify(generated[index].tans));
     }
+    eval = false;
     self.postMessage("Generating done!");
 };
 
 /* Receive the starting message from the main script, where the data of the
  * event is the number of tangrams to be generated, also send message back that
- * Worker has started */
+ * Worker has started - if message with  */
 self.addEventListener('message', function (event) {
-    var numTangrams = event.data;
+    var message = event.data;
+    if (message === 'Evaluation'){
+        eval = true;
+    }
     self.postMessage("Worker started!");
-    generateTangrams(numTangrams);
+    generateTangrams(message);
 }, false);

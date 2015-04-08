@@ -4,12 +4,14 @@ var changeTangramVisibility = function (hide) {
     for (var i = 0; i < tangramClass.length; i++) {
         tangramClass[i].style.display = hide ? 'none' : 'block';
     }
-    /* Show game buttons when hiding tangrams and regenerate button otherwise */
-    document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
-    document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
-    document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
-    document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
-    document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
+    if (!eval){
+        /* Show game buttons when hiding tangrams and regenerate button otherwise */
+        document.getElementById("generate").style.display = hide ? 'none' : 'inline-block';
+        document.getElementById("select").style.display = hide ? 'inline-block' : 'none';
+        document.getElementById("set").style.display = hide ? 'inline-block' : 'none';
+        document.getElementById("hint").style.display = hide ? 'inline-block' : 'none';
+        document.getElementById("sol").style.display = hide ? 'inline-block' : 'none';
+    }
 };
 
 var stopLoading = function () {
@@ -26,6 +28,9 @@ var stopLoading = function () {
         document.getElementById("loadParagraph").style.display = 'none';
         document.getElementById("chooseParagraph").style.display = 'block';
         document.getElementById("gameParagraph").style.display = 'none';
+        if (eval){
+            document.getElementById("bubbles").style.display = 'block';
+        }
     }
 };
 
@@ -53,12 +58,14 @@ var toggleButtonOff = function () {
 
 
 var addLoading = function () {
-    /* Hide Buttons */
-    document.getElementById("generate").style.display = 'none';
-    document.getElementById("select").style.display = 'none';
-    document.getElementById("set").style.display = 'none';
-    document.getElementById("hint").style.display = 'none';
-    document.getElementById("sol").style.display = 'none';
+    if (!eval){
+        /* Hide Buttons */
+        document.getElementById("generate").style.display = 'none';
+        document.getElementById("select").style.display = 'none';
+        document.getElementById("set").style.display = 'none';
+        document.getElementById("hint").style.display = 'none';
+        document.getElementById("sol").style.display = 'none';
+    }
     /* Create groups for each element */
     var loadingSvg = document.getElementById("loading");
     var t = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -236,6 +243,10 @@ var updateLoading = function (percentage) {
         + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[2].setAttributeNS(null, "points", pointsString);
     } else if (percentage <= 0.75 || numberEq(percentage, 0.75)) {
+        arrow.childNodes[1].setAttributeNS(null, "points",
+            '2.1715728752538097, 2.1715728752538097 5, 2.1715728752538097 5, 5');
+        arrow.childNodes[2].setAttributeNS(null, "points",
+            '2.1715728752538097, 7.82842712474619 5, 7.82842712474619 5, 5');
         point0 = playTangram.tans[3].anchor.dup();
         segment1 = SegmentDirections[2][0][0][0].dup().scale(1 / 6);
         point1 = getPointAlongSegment((percentage - 0.5) / 0.25, point0, segment1);
@@ -281,6 +292,14 @@ var updateLoading = function (percentage) {
         + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[7].setAttributeNS(null, "points", pointsString);
     } else if (percentage <= 1 || numberEq(percentage, 1)) {
+        arrow.childNodes[4].setAttributeNS(null, "points",
+            '5, 6.414213562373095 6.414213562373095, 6.414213562373095 5, 7.82842712474619');
+        arrow.childNodes[5].setAttributeNS(null, "points",
+            '5, 5 6.414213562373095, 5 6.414213562373095, 5 5, 3.585786437626905');
+        arrow.childNodes[6].setAttributeNS(null, "points",
+            '5, 5 6.414213562373095, 5 6.414213562373095, 6.414213562373095 5, 6.414213562373095');
+        arrow.childNodes[7].setAttributeNS(null, "points",
+            '5, 2.1715728752538097 6.414213562373095, 3.585786437626905 6.414213562373095, 5 5, 3.585786437626905');
         point0 = playTangram.tans[2].anchor.dup().add(Directions[1][3][0].dup().scale(1 / 6));
         segment1 = SegmentDirections[1][3][1][0].dup().scale(1 / 6);
         point1 = getPointAlongSegment((percentage - 0.75) / 0.25, point0, segment1);
@@ -293,6 +312,8 @@ var updateLoading = function (percentage) {
         + point2.toFloatX() + ", " + point2.toFloatY() + " ";
         arrow.childNodes[3].setAttributeNS(null, "points", pointsString);
     } else {
+        arrow.childNodes[3].setAttributeNS(null, "points",
+            '6.414213562373095, 6.414213562373095 7.82842712474619, 5 7.82842712474619, 5 6.414213562373095, 3.585786437626905');
         arrow.childNodes[0].setAttributeNS(null, "stroke", "#E9E9E9");
     }
 };

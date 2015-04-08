@@ -21,9 +21,9 @@ function createCORSRequest(method, url) {
 
 /* Mostly taken from http://www.html5rocks.com/en/tutorials/cors/ */
 var sendPost = function (jsonString) {
-    /* TODO: change to OpenShift (?)*/
-    //var url = 'http://tangen-wiebke.rhcloud.com:80';
-    var url = 'http://localhost:8080';
+    /* Changed to Openshift server */
+    var url = 'http://tangen-wiebke.rhcloud.com:80';
+    //var url = 'http://localhost:8080';
     var xhr = createCORSRequest('POST', url);
     if (!xhr) {
         console.log('CORS not supported');
@@ -41,21 +41,21 @@ var sendPost = function (jsonString) {
     xhr.send(jsonString);
 };
 
-var sendChoice = function (choice, availableTangrams) {
+var sendChoice = function (user, choice, availableTangrams) {
     /* Send only tans to server */
     for (var index = 0; index < availableTangrams.length; index++) {
         ;
         availableTangrams[index] = availableTangrams[index].tans;
     }
-    var data = {type: 0, choice: choice, tangrams: availableTangrams};
+    var data = {type: 0, user: user, eval:eval, choice: choice, tangrams: availableTangrams};
     sendPost(JSON.stringify(data));
 };
 
-var sendGame = function (minutes, seconds, hints, translations, rotations, tangram) {
+var sendGame = function (user, minutes, seconds, hints, translations, rotations, tangram) {
     /* Send only tans to server */
     tangram = tangram.tans;
     var data = {
-        type: 1, minutes: minutes, seconds: seconds, hints: hints,
+        type: 1, user: user, eval:eval, minutes: minutes, seconds: seconds, hints: hints,
         translations: translations, rotations: rotations, tangram: tangram
     };
     sendPost(JSON.stringify(data));
