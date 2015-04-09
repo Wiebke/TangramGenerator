@@ -27,37 +27,41 @@ Tangram is an old Chinese dissection puzzle whose rules are easily understood, b
 \caption{Dissection of a square into the 7 tans and an example for a given shape}
 \end{figure}
 
-frequentlly used in education 
+Tangram is said be one of the most popular dissection puzzles all over the world and is even frequently used in education to teach children about mathematical concepts like symmetry, area, perimeter, shape similarity and the pythagoras theorem \cite{koeller99}. 
 
 The objective of this project is to create a tangram game that can be played in a browser. The user should first be presented with a number of tangrams to choose from and then be able to attempt solving the chosen tangram. 
-While there exist many collections of tangrams published in books, adding them to database would require potentially time-consuming manual insertion. Therefore, a different approach will be applied here. Instead of displaying pre-defined shapes, the presented tangrams are supposed to be generated randomly. The resulting tangrams should not be entirely random however, but be interesting in some way, which is achieved generating a large number of tangrams that are then sorted according to an interestingness measure. Additionally, the the generation process is controlled in a way such that puzzles with immediately obvious solutions are avoided. 
-
-
-as well as interesting. Achieving the generation of interesting tangrams. 
-easuring the interestingness of a tangram is with possible candidates being the difficulty 
- explored as a part could incorporate visual aesthetics.
-The notion of interestingness of. 
-
-Within tangram collections, shapes are often explicitly categorized according to their correspondence to real world objects like animals, people, numbers, letters or simple geometrical forms and are usually not ordered according difficulty. 
-
-
-Previous publications about tangrams concern the history of tangrams. An overview on the history on tangrams can found in. This books also contains some analysis of the mathematical structure of tangrams 
-The earliest collections of tangram patterns date back to the beginning of the nineteenth century \cite{elffers76} and since then many collections, some even containing more than 1,000 different shapes have been published all over the world. A common element of these collections is that the tangrams are categorized according to which real world objects they could represent. Some examples for such categories 
-like people, animals, numbers, letters. An extensive enumeration of such collections can be found in \cite{slocum03}
+While there exist many collections of tangrams published in books, adding them to database would require potentially time-consuming manual insertion. Therefore, a different approach will be applied here. Instead of displaying pre-defined shapes, the presented tangrams are generated randomly. The generated tangrams should not be entirely random however, but be interesting in some way. This is achieved by generating a large number of tangrams that are then ranked according to an interestingness measure. Additionally, the generation process is controlled in a way such that puzzles with immediately obvious solutions are avoided. 
 
 \subsubsection*{Related Work}
 
+Previous publications about tangrams concern the history of tangrams. 
+An overview on the history on tangrams can found in. This books also contains some analysis of the mathematical structure of tangrams 
+The earliest collections of tangram patterns date back to the beginning of the nineteenth century \cite{elffers76} and since then many collections, some even containing more than 1,000 different shapes have been published all over the world. A common element of these collections is that the tangrams are categorized according to which real world objects they could represent. Some examples for such categories 
+like people, animals, numbers, letters. An extensive enumeration of such collections can be found in \cite{slocum03}
+
+mathematical consideration
 There have been some attempts to classify tangrams. 
 History , \cite{wang42} 
 Have been recently revisited by Fox-Epstein \cite{foxepstein14}, dealing with a Japanese variation of the tangram.
 Solution \cite{deutsch72} \cite{oflazer93} \cite{kovalsky14}
+
+Possible candidates for 
+
+Aside from the difficulty rating by Cai \etal \cite{cai08} no previous attempts for sorting tangrams could be found. Their approach 
+possible concepts for other 
+however possible candidates include the difficulty, visual aesthetics and. 
+Difficulty 
+difficulty lever off other well known puzzles like Sokoban \cite{jaruvsek10} or Soduko \cite{hunt07} konnte nicht abgeleitet werden. 
+incorporate visual aesthetics.
+Another obvious 
+possible candidates being the difficulty
 Aesthetics \cite{eberle14}
 Birkhoff's \cite{filonik09}
-Education and how to use tangrams in geometric concepts like \cite{koeller99} convexity
-difficulty lever off other well known puzzles like Sokoban \cite{jaruvsek10} or Soduko \cite{hunt07}
-\cite{cai08}
+
+
+Within tangram collections, shapes are often explicitly categorized according to their correspondence to real world objects like animals, people, numbers, letters or simple geometrical forms. 
+
 
 \subsubsection*{Outline}
 
 This report is organised as follows. Chapter \ref{chapter:background} describes which mathematical concepts are applied in generating tangrams, measuring their interestingness and conducting computations on individual and groups of tans in a game setting. The following chapter first introduces the structure of the overall application and then describes the algorithms involved. Some implementation details are presented in chapter \ref{chapter:implementation}. This chapter specifically shows which features of the used programming language JavaScript are advantageous for the implementation of a random tangram generator in a browser. Chapter \ref{chapter:results} shows the effect of different parameter settings during both generation and ranking of tangrams, as well as the results of a small user study. Finally, chapter \ref{chapter:conclusion} mentions potential future enhancements to different aspects of the application and concludes this report.
-
