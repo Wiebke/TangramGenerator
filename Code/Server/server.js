@@ -66,6 +66,9 @@ var server = http.createServer(function (request, response) {
                 } else if (type === 1) {
                     insertDb('tangram-statistics', jsonObject);
                     console.log("Game-Stats inserted");
+                } else if (type === 2){
+                    insertDb('tangram-eval', jsonObject);
+                    console.log("Eval-Choice inserted");
                 }
             }
         });

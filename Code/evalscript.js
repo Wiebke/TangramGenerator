@@ -12,6 +12,7 @@ var hangingPiece;
 var shortEdge;
 var interesting;
 var firstEval = true;
+var showing;
 
 /* Parse jsonString of an array of tans into a tangram */
 var parseTanArray = function (jsonString) {
@@ -24,6 +25,9 @@ var parseTanArray = function (jsonString) {
             currentTan.anchor.x.coeffSqrt), new IntAdjoinSqrt2(currentTan.anchor.y.coeffInt,
             currentTan.anchor.y.coeffSqrt));
         tans.push(new Tan(currentTan.tanType, anchor, currentTan.orientation));
+        delete tans[index].points;
+        delete tans[index].segments;
+        delete tans[index].insidePoints;
     }
     return new Tangram(tans);
 };
@@ -68,7 +72,6 @@ var addTangrams = function () {
     if (choicesMade > 9){
         thanks();
     }
-    var showing;
     switch (choicesMade){
         case 0:
             if (firstEval){
@@ -214,7 +217,7 @@ window.onload = function () {
                 return;
             }
             chosen = parseInt(sourceId[sourceId.length - 1]);
-            sendChoice(user, chosen, generated.slice(0, 6));
+            sendChoice(user, chosen, showing, choicesMade);
             document.getElementById("chosen" + choicesMade).setAttributeNS(null, "fill", "#17a768");
             document.getElementById("check" + choicesMade).setAttributeNS(null, "fill", "#E9E9E9");
             choicesMade++;

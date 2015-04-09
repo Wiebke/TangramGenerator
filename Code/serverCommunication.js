@@ -41,13 +41,16 @@ var sendPost = function (jsonString) {
     xhr.send(jsonString);
 };
 
-var sendChoice = function (user, choice, availableTangrams) {
+var sendChoice = function (user, choice, availableTangrams, choicesMade) {
     /* Send only tans to server */
     for (var index = 0; index < availableTangrams.length; index++) {
-        ;
         availableTangrams[index] = availableTangrams[index].tans;
     }
-    var data = {type: 0, user: user, eval:eval, choice: choice, tangrams: availableTangrams};
+    if (typeof choicesMade === 'undefined'){
+        var data = {type: 0, user: user, eval:eval, choice: choice, tangrams: availableTangrams};
+    } else {
+        data = {type: 2, user: user, eval:eval, evalId: choicesMade, choice: choice, tangrams: availableTangrams};
+    }
     sendPost(JSON.stringify(data));
 };
 
