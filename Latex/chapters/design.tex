@@ -30,24 +30,9 @@ Two approaches to randomly generate tangrams have been pursued. Both approaches 
 Determining if a placement is valid is done in three steps. The first step uses the point-in-polygon algorithm mentioned before. All points of the newly placed tan as well as between one and four points inside the tan are tested for containment in other tans. The points inside of a tan are needed to correctly detect cases where one puzzle piece is entirely contained in another one. The direction vectors to these points are are pre-calculated and include vectors to the center of each tan and depending on the size of a tan more vectors that are derived from partitioning tans in some way. Without modification this would introduce thirds and halfs into coordinates, which is why the direction vectors of tangrams have been scaled by 6 compared to the dimensions presented in chapter \ref{chapter:background}. This still does not correctly handle cases where a large tan is placed on top of a small tan such that it lies completely inside the newly placed tan. Thus the same test is conducted the other way around. The second steps uses line segment intersection to determine of any of the segments of already placed tans intersect with the segments of a new tan.
 Lastly, the bounding box of the tans including the newly placed tan is computed. The placement is then rejected if the the horizontal or vertical range is larger then a certain threshold. This step has been added in an attempt to avoid  sequences of tans that are only attached at one point and favour tangrams that are somewhat compact.
 
-As a first naive approach an orientation for each tan is sampled at very beginning. 
+As a first naive approach an orientation for each tan is sampled at very beginning. The attachment point at the already placed tans is chosen first. Then all points of the new tan are considered as possible attachment points in random order. If none of the points can be used, a new attachment point of the placed tans is samples. Unfortunately, the fixed orientations together with the range threshold imposes a very strong restriction on the generation process which can lead to configurations where some tans are still missing, but cannot be placed anymore. Furthermore, this generation process leads to mostly loosely connected tangrams. Therefore, the second approach chooses orientations dynamically. Additionally, this approach steers the computation towards tangrams where tans have many edges in common.
 
-
-Since the algorithm
-
-
-
-
-Since this approach leads to mostly loosely connected tangrams, another approach has been 
-
-Similarly 
-at which point touching edges, sample orientation based on a probability distribution 
-
-dynamic orientation no infinity loops 
-
-As a first step towards the generation of interesting tangrams, the generation algorithms should favour configurations in which tans do not only have vertices, but also edges in common. 
-
-The first  restriction on the range to avoid tangrams that are 
+The second approach starts out by sampling an orientation for the first tan and then places it. The process then continues to find two attachment points as before, however here, the orientation is sampled based on a probability distribution that favours orientations where the edges of the new tan align with already places pieces. This probability distribution is computed by checking if any of the segments meeting in the attachment point align for any of the orientations and apply a larger weight to such orientations. If the tan cannot be placed with the sampled orientation, a new orientation is sampled from the already computed probability distribution, where the probability of the just attempted orientation is set to zero. If none of the orientation lead to a valid placement, a new attachment point is chosen.
 
 \section{Interestingness Measures}
 \label{interesting}
