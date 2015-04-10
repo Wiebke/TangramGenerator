@@ -32,6 +32,22 @@ var parseTanArray = function (jsonString) {
     return new Tangram(tans);
 };
 
+
+var printEval = function (tangram) {
+    var line = "";
+    for (var key in tangram.evaluation) {
+        if (tangram.evaluation.hasOwnProperty(key)) {
+            if (tangram.evaluation[key] % 1 === 0){
+                line += ""+ tangram.evaluation[key] + ";";
+            } else{
+                line += ""+ tangram.evaluation[key].toFixed(5) + ";";
+            }
+
+        }
+    }
+    console.log(line)
+};
+
 var rateAgain = function(){
     document.getElementById("thanks").style.display = 'none';
     document.getElementById("loadParagraph").style.display = 'block';
@@ -102,6 +118,7 @@ var addTangrams = function () {
 
     for (var tanId = 0; tanId < 6; tanId++) {
         showing[tanId].positionCentered();
+        printEval(showing[tanId]);
     }
 
     showing[0].toSVGOutline("first0");
@@ -123,6 +140,11 @@ var startGenerator = function () {
     interesting[3] = parseTanArray(interesting3);
     interesting[4] = parseTanArray(interesting4);
     interesting[5] = parseTanArray(interesting5);
+    var line = "outlineVertices; outerOutlineVertices numHoles holeArea + " +
+        "holeVertices; holeType;perimeter; longestEdge; shortestEdge;" +
+        "rangeX; rangeY; convexPercentage; convexHullArea; symmetry; hangingPieces;" +
+        "matchedEdges ;matchedVertices;";
+    console.log(line);
     worker = new Worker("generator.js");
     worker.onmessage = function (event) {
         var message = event.data;

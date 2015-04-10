@@ -2,41 +2,18 @@
 
 Tangram is an old Chinese dissection puzzle whose rules are easily understood, but which can also be quite challenging. Seven puzzle pieces, called tans, have to be placed within a given shape in a way such that the entire shape is covered. Additionally, none of the pieces are allowed to overlap and all seven tans are to be used. As shown below, the seven puzzle pieces are three- and four-sided convex geometrical shapes and can be derived from cutting a square in a specific way.  
 
-\begin{figure}[h!]
-\centering
-\begin{tikzpicture}%[scale=0.9]
-\draw[help lines] (0,0) grid (4,4);
-\draw[fill = Color2] (0,0)--(4,0)--(2,2)--(0,0);
-\draw[fill = Color1] (4,0)--(4,4)--(2,2)--(4,0);
-\draw[fill = Color5] (4,4)--(3,3)--(1,3)--(2,4)--(4,4);
-\draw[fill = Color3] (2,4) -- (0,4) -- (0,2) -- (2,4);
-\draw[fill = Color7] (1,3)--(3,3)--(2,2)--(1,3);
-\draw[fill= Color4] (1,3) -- (2,2) -- (1,1) -- (0,2) -- (1,3);
-\draw[fill=Color6] (0,0) -- (1,1) -- (0,2) -- (0,0);
-\end{tikzpicture}
-\hspace{5em}
-\begin{tikzpicture} %[scale=0.9]
-\draw[white, fill = black] (2,0)--(4.82842,0)--(2,2.82842)--(2,0);
-\draw[white, fill = black] (2,2.82842)--(6,2.82842)--(4,0.82842)--(2,2.82842);
-\draw[white, fill = black] (2.585786,3.41421)--(2.585786,5.41421)--(1.585786,6.41421)--(1.585786,4.41421)--(2.585786,3.41421);
-\draw[white, fill = black] (2,2.82842) -- (2,0) -- (0.585786,1.41421) -- (2,2.82842);
-\draw[white, fill = black] (0.585786,1.41421)--(0.585786,3.41421)--(1.585786,2.41421)--(0.585786,1.41421);
-\draw[white, fill= black] (1.585786,2.41421) -- (0.585786,3.41421) -- (1.585786,4.41421) -- (2.585786,3.41421) -- (1.585786,2.41421);
-\draw[white, fill=black] (1.585786,6.41421) -- (0.171572,6.41421) -- (1.585786,5) -- (1.585786,6.41421);
-\end{tikzpicture}
-\caption{Dissection of a square into the 7 tans and an example for a given shape}
-\end{figure}
+\input{figures/tangram}
 
-Tangram is said be one of the most popular dissection puzzles all over the world and is even frequently used in education to teach children about mathematical concepts like symmetry, area, perimeter, shape similarity and the pythagoras theorem. 
+Tangram is said be one of the most popular dissection puzzles all over the world and is even frequently used in education to teach children about mathematical concepts like symmetry, area, perimeter, shape similarity and even the pythagoras theorem. 
 
 The objective of this project is to create a tangram game that can be played in a browser. The user should first be presented with a number of tangrams to choose from and then be able to attempt solving the chosen tangram. 
-While there exist many collections of tangrams published in books, adding them to database would require potentially time-consuming manual insertion. Therefore, a different approach will be applied here. Instead of displaying pre-defined shapes, the presented tangrams are generated randomly. The generated tangrams should not be entirely random however, but be interesting in some way. This is achieved by generating a large number of tangrams that are then ranked according to an interestingness measure. Additionally, the generation process is controlled in a way such that puzzles with immediately obvious solutions are avoided. 
+While there exist many collections of tangrams published in books, adding them to database would require potentially time-consuming manual insertion. Therefore, a different approach will be applied here. Instead of displaying pre-defined shapes, the presented tangrams are generated randomly. The generated tangrams should not be entirely random however, but be interesting in some way. This is achieved by generating a large number of tangrams that are then ranked according to an interestingness measure. Additionally, the generation process is controlled in a way such that puzzles with immediately obvious solutions are avoided. Another requirement that has to be taken into account during generation is that the generated tangrams have to be connected, meaning that a newly randomly placed tan has to have at least one point in common with another already placed tan. 
 
 \subsubsection*{Related Work}
 
 An overview on the history of tangrams can be found in either \cite{slocum03} or \cite{elffers76}. Aside from more than 2,000 tangram examples, Slocum's book contains an extensive enumeration of tangram collections published all over the world. Elffers, on the other hand, additionally deals with some mathematical properties of different subclasses of tangrams. This includes grid tangrams \cite{koeller99}, where the vertices of all tans can be placed in a coordinate system in way such that all coordinates are integers, and convex tangrams, of which only thirteen exist. The proof for the existence of only thirteen convex tangrams has first been published by Wang and Hsiung \cite{wang42} in 1942.
 
-Furthermore, there have been some attempts at computationally solving tangrams. Deutsch and Hayes \cite{deutsch72} suggest a heuristic approach based on recursively splitting the tangram and treating the newly created parts in a similar manner as the original puzzle. In \cite{oflazer93}, a connectionist approach to solving tangrams has been proposed. Kovalsky and \cite{kovalsky14} apply their approach to edge-matching puzzles to tangrams, where edge-matching refers to the process of placing puzzle pieces with coloured edges in way such that the colors of adjacent edges match.
+Furthermore, there have been some attempts at computationally solving tangrams. Deutsch and Hayes \cite{deutsch72} suggest a heuristic approach based on recursively splitting the tangram and treating the newly created parts in a similar manner as the original puzzle. In \cite{oflazer93}, a connectionist approach to solving tangrams has been proposed. Kovalsky and \cite{kovalsky14} apply their approach to edge-matching puzzles to tangrams, where edge-matching refers to the process of placing puzzle pieces with coloured edges in way such that the colours of adjacent edges match.
 
 Possible candidates for interestingness measures for tangrams are the difficulty and visual aesthetics of a shape. For other well known puzzles such as Sokoban \cite{jaruvsek10} or Soduko \cite{hunt07}, various difficulty metrics have been described. However, these are often based on strategies applied during solving, which have not yet been researched as extensively for tangrams \cite{baran07}. One example for an attempt to quantify the aesthetic value of polygons is Birkhoff's aesthetic measure. It can be calculated in terms of order and complexity of a shape, if these in turn can be quantified \cite{filonik09}. Nevertheless, many studies in this area also conclude that aesthetic preferences are usually biased due to a persons background \cite{eberle14}. Within tangram collections, shapes are often explicitly categorized according to their correspondence to real world objects like animals, people, numbers, letters or simple geometrical forms. Therefore, finding interesting tangrams also touches upon the subject of general purpose object recognition. 
 
