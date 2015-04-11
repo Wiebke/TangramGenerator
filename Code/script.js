@@ -1,5 +1,5 @@
 /* Settings/variables for generating */
-var numTangrams = 1000;
+var numTangrams = 10000;
 var generated = [];
 var chosen;
 var worker;

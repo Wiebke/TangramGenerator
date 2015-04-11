@@ -1,16 +1,7 @@
-\chapter{Future Work and Conclusion}\label{chapter:conclusion}
+\chapter{Conclusion and Future Work}\label{chapter:conclusion}
 
+In conclusion, this report showed that a tangram generator can be implemented as a browser application with solely client-side computations that is capable of generating a large number of tangrams within a reasonable time frame even on mobile devices. A first user study was conducted and showed that there exists at least a bit of consensus about which shapes are interesting. The game associated with the generator has received largely positive feedback. In just 2 days more than 150 tangrams have been solved by more than 40 users. 
 
-Interestingness:
-Finding the number of solutions. Even the number of possible locations for the large triangle could provide  
-Including combinations 
-Let the user decide on which properties he finds interesting potentially be providing sliders or checkmarks 
-Apply techniques from information retrieval like Learning to rank algorithms and relevance feedback \cite{he08}
+Potential enhancements for the generator include the improvement of interestingness measures and some additions to the game interface. Specifically a thorough examination of a larger scale evaluation should lead to promising combinations of existing properties. One possible measure for difficulty would be the number of solutions of a tangram or even just the number of possible locations for the large triangle as the placement of those restricts the possibilities for the other pieces most. Another feasible improvement which aims to enhance the user experience of the generator, would be to allow the user more control over the generation process by providing checkmarks or sliders for some selected properties. 
 
-Game:
-Hint based on already places tans
-Save and Share tangrams
-Local storage to come back later
-More advanced touch interaction. Rotation by two fingers
-Rotations by multiples of 15 degrees
-
+Currently, the game interface reacts to only one finger touches on mobile devices. A gesture using two fingers for rotating elements has become more common. By making use of HTML5 Local Storage, a game could be left and then continued later. Similarly, a possibility to share interesting tangrams with other users could introduce elements of a more competitive gameplay. Furthermore, different rotation angles and additional attachment points could be investigated. 
