@@ -5,7 +5,7 @@ function Tangram(tans) {
         return a.tanType - b.tanType;
     });
     /* Outline is an array of points describing the outline of the tangram */
-    this.outline = computeOutline(this.tans);
+    this.outline = computeOutline(this.tans, true);
     if (typeof this.outline != 'undefined') {
         this.evaluation = new Evaluation(this.tans, this.outline);
     }
@@ -27,7 +27,7 @@ Tangram.prototype.positionCentered = function () {
     for (var tansId = 0; tansId < this.tans.length; tansId++) {
         this.tans[tansId].anchor.translate(center.x, center.y);
     }
-    this.outline = computeOutline(this.tans);
+    this.outline = computeOutline(this.tans, true);
 };
 
 /* Create an SVG element with the outline of this tangram */

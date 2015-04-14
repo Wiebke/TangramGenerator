@@ -76,6 +76,7 @@ var generateTangram = function () {
      * for each piece */
     var flipped = Math.floor(Math.random() * 2);
     var tanOrder = [0, 0, 1, 2, 2, 3, 4 + flipped];
+    console.log(tanOrder);
     tanOrder = shuffleArray(tanOrder);
     var orientations = [];
     for (var tanId = 0; tanId < 7; tanId++) {

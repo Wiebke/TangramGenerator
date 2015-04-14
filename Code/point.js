@@ -74,11 +74,20 @@ Point.prototype.multipleOf = function (other) {
     } else if (this.y.isZero() && other.y.isZero()) {
         return sameSignX;
     } else {
-        var xFactor = this.x.div(other.x);
-        var yFactor = this.y.div(other.y);
+        var xFactor = this.x.dup().div(other.x);
+        var yFactor = this.y.dup().div(other.y);
         if (typeof xFactor === 'undefined' || typeof yFactor === 'undefined') {
+            console.log("Undefined");
+            console.log(this.x.coeffInt + "," + this.x.coeffSqrt + " - "  + this.y.coeffInt + "," + this.y.coeffSqrt);
+            console.log(other.x.coeffInt + "," + other.x.coeffSqrt + " - "  + other.y.coeffInt + "," + other.y.coeffSqrt);
             return false;
         } else {
+            var res = xFactor.eq(yFactor);
+            if (res) {
+                console.log("True");
+                console.log(this.x.coeffInt + "," + this.x.coeffSqrt + " - "  + this.y.coeffInt + "," + this.y.coeffSqrt);
+                console.log(other.x.coeffInt + "," + other.x.coeffSqrt + " - "  + other.y.coeffInt + "," + other.y.coeffSqrt);
+            }
             return xFactor.eq(yFactor);
         }
     }

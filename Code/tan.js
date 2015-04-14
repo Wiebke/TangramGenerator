@@ -187,7 +187,7 @@ var findMaxSegments = function (lastSegment, segments) {
     return [maxIndex, maxAngle];
 };
 
-var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
+var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole, reduce) {
     if (allPoints.length === 0 || allSegments.length === 0) {
         return;
     }
@@ -221,10 +221,10 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
         }
         /* If the found segment continues in the same direction, remove the last
          * point, since it provides no additional information - taken out since
-         * this complicates computation in evaluation
-        if (angle === 180 && !firstSegment) {
+         * this complicates computation in evaluation */
+        if (angle === 180 && !firstSegment && reduce) {
             outline.pop();
-        } */
+        }
         /* Add the other point of the found segment to the outline*/
         if (currentSegments[index].point1.eq(lastPoint)) {
             outline.push(currentSegments[index].point2);
@@ -246,7 +246,7 @@ var computeOutlinePart = function (allPoints, allSegments, angleFinder, hole) {
     return [outline, allSegments];
 };
 
-var computeHole = function (allPoints, allSegments) {
+var computeHole = function (allPoints, allSegments, reduce) {
     if (allPoints.length === 0 || allSegments.length === 0) {
         return;
     }
@@ -271,10 +271,10 @@ var computeHole = function (allPoints, allSegments) {
     }
     allPoints = eliminateDuplicates(remainingPoints, comparePoints, true);
     /* Use a minimum angle for holes */
-    return computeOutlinePart(allPoints, allSegments, findMinSegments, true);
+    return computeOutlinePart(allPoints, allSegments, findMinSegments, true, reduce);
 };
 
-var computeOutline = function (tans) {
+var computeOutline = function (tans, reduce) {
     /* First calculate all line segments involved in the tangram. These line
      * segments are the segments of each individual tan however split up at points
      * from other tans */
@@ -282,7 +282,7 @@ var computeOutline = function (tans) {
     var outlineId = 0;
     var allPoints = getAllPoints(tans);
     var allSegments = computeSegments(allPoints, tans);
-    var outlinePart = computeOutlinePart(allPoints, allSegments, findMaxSegments, false);
+    var outlinePart = computeOutlinePart(allPoints, allSegments, findMaxSegments, false, reduce);
     outline[outlineId] = outlinePart[0];
     allSegments = outlinePart[1];
     var area = outlineArea(outline[0]);

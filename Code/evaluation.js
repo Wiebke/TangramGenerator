@@ -45,24 +45,25 @@ function Evaluation(tans, outline) {
     this.matchedEdges = 0;
     /* Number of pairs of vertices in the same place */
     this.matchedVertices = 0;
-    this.finalEvaluation = 0;
+    //this.finalEvaluation = 0;
     this.computeEvaluation(tans, outline);
 }
 
 /* TODO */
 Evaluation.prototype.getValue = function (mode) {
     if (typeof mode === 'undefined') {
-        return this.finalEvaluation;
+        //return this.finalEvaluation;
+        mode = 0;
     }
     var evaluation;
     switch (evaluationMode) {
         case 0:
             //evaluation = this.perimeter;
-            evaluation = -this.matchedVertices;
+            //evaluation = -this.matchedVertices;
             //evaluation = this.hangingPieces === 0 ? 50 : this.hangingPieces;
-            //evaluation = 1.0-this.convexPercentage;
+            evaluation = 1.0-this.convexPercentage;
             //evaluation = 2- this.symmetry;
-            evaluation = 1.0-(this.outerOutlineVertices - 3) / 26 + 1.0-this.convexPercentage ;
+            //evaluation = 1.0-(this.outerOutlineVertices - 3) / 26 + 1.0-this.convexPercentage ;
             break;
         case 1:
             var evaluationWeights = [];
@@ -74,7 +75,7 @@ Evaluation.prototype.getValue = function (mode) {
 };
 
 Evaluation.prototype.updateEvaluation = function (mode) {
-    this.finalEvaluation = this.getValue(mode);
+    //this.finalEvaluation = this.getValue(mode);
 };
 
 /* Convex hull for less than three points */
@@ -178,23 +179,18 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
     for (var outlineId = 0; outlineId < outline.length; outlineId++) {
         if (outlineId != 0) {
             this.holeArea += outlineArea(outline[outlineId]).toFloat();
+            this.holeVertices += outline[outlineId].length;
         }
         this.outlineVertices += outline[outlineId].length;
     }
-    this.holeVertices = this.outlineVertices - this.outerOutlineVertices;
-
     /* Longest and shortest edge in the outer outline */
     this.longestEdge = -1;
     this.shortestEdge = 60;
     var currentEdge;
-    var outlineSorted = outline[0].slice().sort(comparePoints);
     for (var outerPointId = 0; outerPointId < outline[0].length; outerPointId++) {
         if (outerPointId != outline[0].length -1){
             currentEdge = outline[0][outerPointId].distance(outline[0][outerPointId + 1]);
             /* Point occurs multiple times in outer outline */
-            if (outlineSorted[outerPointId].eq(outlineSorted[outerPointId+1])){
-                this.hangingPieces++;
-            }
         } else {
             currentEdge = outline[0][outerPointId].distance(outline[0][0]);
         }
@@ -207,11 +203,18 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
         this.perimeter += currentEdge;
     }
 
-    for (var outlineId = 1; outlineId < outline.length; outlineId++){
+    /*var unreducedOutline = computeOutline(tans, false);
+    for (var outerPointId = 0; outerPointId < unreducedOutline[0].length; outerPointId++) {
+        if (unreducedOutline[outerPointId].eq(unreducedOutline[outerPointId + 1])) {
+            this.hangingPieces++;
+        }
+    }
+
+    for (var outlineId = 1; outlineId < unreducedOutline.length; outlineId++){
         var innerTouch = false;
-        for (var innerPointId = 0; innerPointId < outline[outlineId].length; innerPointId++){
-            for (var outerPointId = 0; outerPointId < outline[0].length; outerPointId++) {
-                innerTouch = innerTouch || outline[0][outerPointId].eq(outline[outlineId][innerPointId])
+        for (var innerPointId = 0; innerPointId < unreducedOutline[outlineId].length; innerPointId++){
+            for (var outerPointId = 0; outerPointId < unreducedOutline[0].length; outerPointId++) {
+                innerTouch = innerTouch || unreducedOutline[0][outerPointId].eq(unreducedOutline[outlineId][innerPointId])
             }
             if (innerTouch) {
                 break;

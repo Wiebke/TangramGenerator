@@ -1,5 +1,5 @@
 /* Settings/variables for generating */
-var numTangrams = 10000;
+var numTangrams = 1000;
 var generated = [];
 var chosen;
 var worker;
@@ -108,6 +108,15 @@ var checkSolved = function () {
     if (!solved) {
         return;
     }
+    /* Also check if any of the segments intersect */
+    var tanSegments = computeSegments(getAllPoints(gameOutline), gameOutline);
+    for (var segmentId = 0; segmentId < tanSegments.length; segmentId++) {
+        for (var otherSegmentsId = segmentId+1; otherSegmentsId < tanSegments.length; otherSegmentsId++) {
+            if (tanSegments[segmentId].intersects(tanSegments[otherSegmentsId])) {
+                return false;
+            }
+        }
+    }
     /* Color the tan pieces and display some statistics about the game play */
     stopWatch();
     var tangramPieces = document.getElementsByClassName("tan");
@@ -160,6 +169,7 @@ var hint = function () {
     shape.setAttributeNS(null, "fill", 'none');
     shape.setAttributeNS(null, "stroke", "#E9E9E9");
     shape.setAttributeNS(null, "stroke-width", "0.12");
+    shape.setAttributeNS(null, "class", "hint");
     document.getElementById("game").appendChild(shape);
     numHints++;
 };
@@ -548,7 +558,7 @@ var parseTanArray = function (jsonString) {
 
 /* After generating is finished: show the first 6 tangrams */
 var addTangrams = function () {
-    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":30,"coeffSqrt":-6},"y":{"coeffInt":24,"coeffSqrt":3}},"orientation":7},{"tanType":0,"anchor":{"x":{"coeffInt":42,"coeffSqrt":6},"y":{"coeffInt":48,"coeffSqrt":3}},"orientation":4},{"tanType":1,"anchor":{"x":{"coeffInt":42,"coeffSqrt":-6},"y":{"coeffInt":48,"coeffSqrt":3}},"orientation":4},{"tanType":2,"anchor":{"x":{"coeffInt":24,"coeffSqrt":-6},"y":{"coeffInt":30,"coeffSqrt":3}},"orientation":7},{"tanType":2,"anchor":{"x":{"coeffInt":42,"coeffSqrt":-6},"y":{"coeffInt":36,"coeffSqrt":3}},"orientation":3},{"tanType":3,"anchor":{"x":{"coeffInt":18,"coeffSqrt":-6},"y":{"coeffInt":36,"coeffSqrt":3}},"orientation":7},{"tanType":5,"anchor":{"x":{"coeffInt":42,"coeffSqrt":-6},"y":{"coeffInt":12,"coeffSqrt":3}},"orientation":5}]';
+    /*var failTangram = '[{"tanType":0,"anchor":{"x":{"coeffInt":39,"coeffSqrt":-12},"y":{"coeffInt":39,"coeffSqrt":0}},"orientation":6},{"tanType":0,"anchor":{"x":{"coeffInt":21,"coeffSqrt":0},"y":{"coeffInt":21,"coeffSqrt":0}},"orientation":7},{"tanType":1,"anchor":{"x":{"coeffInt":33,"coeffSqrt":0},"y":{"coeffInt":21,"coeffSqrt":0}},"orientation":6},{"tanType":2,"anchor":{"x":{"coeffInt":33,"coeffSqrt":0},"y":{"coeffInt":45,"coeffSqrt":0}},"orientation":5},{"tanType":2,"anchor":{"x":{"coeffInt":21,"coeffSqrt":0},"y":{"coeffInt":45,"coeffSqrt":0}},"orientation":5},{"tanType":3,"anchor":{"x":{"coeffInt":33,"coeffSqrt":0},"y":{"coeffInt":45,"coeffSqrt":0}},"orientation":3},{"tanType":5,"anchor":{"x":{"coeffInt":33,"coeffSqrt":0},"y":{"coeffInt":21,"coeffSqrt":0}},"orientation":2}]';
     failTangram = parseTanArray(failTangram);
     generated[0] = failTangram;*/
     /* Center the tangrams */
@@ -693,10 +703,16 @@ window.onload = function () {
         }
         rotations = 0;
         translations = 0;
+        hints = [0, 1, 2, 3, 4, 5, 6];
+        numHints = 0;
         snapped = [false, false, false, false, false, false, false];
         var watch = document.getElementById("watch");
         while (watch.firstChild) {
             watch.removeChild(watch.firstChild);
+        }
+        var hintElements = document.getElementsByClassName("hint");
+        while (hintElements.length > 0) {
+            hintElements[0].parentNode.removeChild(hintElements[0]);
         }
         watch.setAttributeNS(null, "x", "3");
         watch.setAttributeNS(null, "y", "58.5");
@@ -727,4 +743,5 @@ window.onload = function () {
             watch.removeChild(watch.firstChild);
         }
     });
+
 };

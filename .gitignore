@@ -3,3 +3,4 @@
 */.DS_Store
 /Code/Server/node_modules/
 /Latex/chapters/*.log
+/Code/Evaluation/node_modules/
