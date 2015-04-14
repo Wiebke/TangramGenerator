@@ -202,7 +202,6 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
         }
         this.perimeter += currentEdge;
     }
-
     /*var unreducedOutline = computeOutline(tans, false);
     for (var outerPointId = 0; outerPointId < unreducedOutline[0].length; outerPointId++) {
         if (unreducedOutline[outerPointId].eq(unreducedOutline[outerPointId + 1])) {
@@ -244,7 +243,7 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
             default:
                 break;
         }
-    }
+    }*/
 
     var boundingBox = computeBoundingBox(tans, outline);
     this.rangeX = boundingBox[2].dup().subtract(boundingBox[0]).toFloat();

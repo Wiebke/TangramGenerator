@@ -57,6 +57,30 @@ var parseTanArray = function (tangram) {
     return new Tangram(tans);
 };
 
+var computeRanks = function (tangrams, chosen){
+    var ranks = [];
+
+    for (var key in tangrams[0].evaluation) {
+        if (tangrams[0].evaluation.hasOwnProperty(key)) {
+            var values = [];
+            for (var tangramId = 0; tangramId < tangrams.length; tangramId++){
+                values.push(tangrams[tangramId].evaluation[key]);
+            }
+            values = values.sort(function (a,b) {return a-b});
+            ranks.push(values.indexOf(tangrams[chosen].evaluation[key]) + 1);
+        }
+    }
+    return ranks;
+};
+
+var ranksToString = function (ranks){
+    var line = "";
+    for (var rankId = 0; rankId < ranks.length; rankId++){
+        line += " " + ranks[rankId] + ";";
+    }
+    return line;
+};
+
 /* Connect to the database */
 MongoClient.connect('mongodb://' + connection_string, function (error, db) {
     if (error) throw error;
@@ -80,6 +104,9 @@ MongoClient.connect('mongodb://' + connection_string, function (error, db) {
     db.collection("tangram-eval").find().toArray(function(err, items) {
         var file0 = fs.createWriteStream('Code/Evaluation/eval0.csv');
         file0.on('error', function(err) { });
+        var choices0 = [0,0,0,0,0,0];
+        var tangrams0;
+        var ranks0 = [];
         var file1 = fs.createWriteStream('Code/Evaluation/eval1.csv');
         file1.on('error', function(err) { });
         var file2 = fs.createWriteStream('Code/Evaluation/eval2.csv');
@@ -91,15 +118,18 @@ MongoClient.connect('mongodb://' + connection_string, function (error, db) {
         var file5to9 = fs.createWriteStream('Code/Evaluation/eval5to9.csv');
         file5to9.on('error', function(err) { });
         var allRandom = fs.createWriteStream('Code/Evaluation/allRandom.csv');
-        file1.write(line +  '\n');
+        file0.write("choices; " + line +  '\n');
         file1.write(line +  '\n');
         file2.write(line +  '\n');
         file3.write(line +  '\n');
         file4.write(line +  '\n');
         file5to9.write(line +  '\n');
-        allRandom.write(line +  '\n');
+        allRandom.write("evalId; chosen;" + line +  '\n');
         items.forEach(function (item){
             var user = item.user - 1.4284E12;
+            if (item.tangrams[0] === null){
+                return;
+            }
             var tangram0 = parseTanArray(item.tangrams[0]);
             var tangram1 = parseTanArray(item.tangrams[1]);
             var tangram2 = parseTanArray(item.tangrams[2]);
@@ -109,10 +139,22 @@ MongoClient.connect('mongodb://' + connection_string, function (error, db) {
             var tangrams = [tangram0, tangram1, tangram2,tangram3, tangram4, tangram5];
             var chosen = item.choice;
             var currentFile;
+            var first = false;
             switch (item.evalId){
                 case 0:
-                    if (true){
-                        currentFile = file0;
+                    if (numberEq(tangram0.evaluation.convexPercentage, 0.6470418323180936) &&
+                        numberEq(tangram1.evaluation.convexPercentage, 0.8) &&
+                        numberEq(tangram2.evaluation.convexPercentage, 0.7387961250362585) &&
+                    numberEq(tangram3.evaluation.convexPercentage, 0.8655535004351027) &&
+                    numberEq(tangram4.evaluation.convexPercentage, 0.6363818984771545) &&
+                    numberEq(tangram5.evaluation.convexPercentage, 0.7008805255205637)){
+                        first = true;
+                        if (ranks0.length == 0){
+                            ranks0 = [computeRanks(tangrams,0),computeRanks(tangrams,1),
+                                computeRanks(tangrams,2), computeRanks(tangrams,3),
+                                computeRanks(tangrams,4),computeRanks(tangrams,5)];
+                        }
+                        tangrams0 = tangrams;
                     } else {
                         currentFile = file5to9
                     }
@@ -130,14 +172,36 @@ MongoClient.connect('mongodb://' + connection_string, function (error, db) {
                 case 4:
                     currentFile = file4;
                     break;
-                case 5,6,7,8,9:
+                default:
                     currentFile = file5to9;
                     break;
-                default:
-                    break;
             }
-            currentFile.write(line + "\n");
+            if (item.evalId === 0 && first){
+                choices0[chosen]++;
+            } else {
+                var currentLine = ranksToString(computeRanks(tangrams, chosen));
+                currentFile.write(currentLine + "\n");
+                for (var tangramId = 0; tangramId < tangrams.length; tangramId++){
+                    currentLine = item.evalId + "; ";
+                    if (tangramId === chosen){
+                        currentLine += 1 + "; ";
+                    } else {
+                        currentLine += 0 + "; ";
+                    }
+                    currentLine += getEval(tangrams[tangramId]);
+                    allRandom.write(currentLine + "\n");
+                }
+            }
         });
+        /* Fill file 0 with choices */
+        for (var tangramId = 0; tangramId < ranks0.length; tangramId++){
+            var currentLine = choices0[tangramId] + "; " + ranksToString(ranks0[tangramId]);
+            file0.write(currentLine + "\n");
+        }
+        for (var tangramId = 0; tangramId < ranks0.length; tangramId++){
+            var currentLine = choices0[tangramId] + "; " + getEval(tangrams0[tangramId]);
+            file0.write(currentLine + "\n");
+        }
         /* End all files */
         file0.end();
         file1.end();
@@ -147,6 +211,6 @@ MongoClient.connect('mongodb://' + connection_string, function (error, db) {
         file5to9.end();
         allRandom.end();
     });
-
+    console.log("Written to all files :)");
     //db.close();
 });
