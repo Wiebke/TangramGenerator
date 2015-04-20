@@ -52,30 +52,38 @@ function Evaluation(tans, outline) {
 /* TODO */
 Evaluation.prototype.getValue = function (mode) {
     if (typeof mode === 'undefined') {
-        //return this.finalEvaluation;
         mode = 0;
     }
     var evaluation;
     switch (evaluationMode) {
         case 0:
-            //evaluation = this.perimeter;
-            //evaluation = -this.matchedVertices;
-            //evaluation = this.hangingPieces === 0 ? 50 : this.hangingPieces;
-            evaluation = 1.0-this.convexPercentage;
-            //evaluation = 2- this.symmetry;
-            //evaluation = 1.0-(this.outerOutlineVertices - 3) / 26 + 1.0-this.convexPercentage ;
+            /* Order according to a high convex percentage */
+            evaluation = 1.0 - this.convexPercentage;
             break;
         case 1:
-            var evaluationWeights = [];
+            /* Order according to a low number of outline vertices */
+            evaluation = this.outlineVertices;
             break;
+        case 2:
+            /* Order according to a low number of outer Outline vertices */
+            evaluation = this.outerOutlineVertices;
+            break;
+        case 3:
+            /* Order according to a small perimeter */
+            evaluation = this.perimeter;
+            break;
+        case 4:
+            /* Order according to a high number of matched Vertices */
+            evaluation = - this.matchedVertices;
+            break;
+        case 5:
+            /* Order according to both a low number of outer outline vertices
+             * and a high convex percentage */
+            evaluation = (this.outerOutlineVertices - 3) / 26 + 1.0-this.convexPercentage ;
         default:
             evaluation = 0;
     }
     return evaluation
-};
-
-Evaluation.prototype.updateEvaluation = function (mode) {
-    //this.finalEvaluation = this.getValue(mode);
 };
 
 /* Convex hull for less than three points */
@@ -202,7 +210,7 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
         }
         this.perimeter += currentEdge;
     }
-    /*var unreducedOutline = computeOutline(tans, false);
+    var unreducedOutline = computeOutline(tans, false)[0];
     for (var outerPointId = 0; outerPointId < unreducedOutline[0].length; outerPointId++) {
         if (unreducedOutline[outerPointId].eq(unreducedOutline[outerPointId + 1])) {
             this.hangingPieces++;
@@ -243,7 +251,7 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
             default:
                 break;
         }
-    }*/
+    }
 
     var boundingBox = computeBoundingBox(tans, outline);
     this.rangeX = boundingBox[2].dup().subtract(boundingBox[0]).toFloat();
@@ -349,7 +357,4 @@ Evaluation.prototype.computeEvaluation = function (tans, outline) {
     var convexHull = this.computeConvexHull(outline[0], allPoints.sort(comparePointsYX)[0]);
     this.convexHullArea = outlineArea(convexHull).toFloat();
     this.convexPercentage = 576/this.convexHullArea;
-
-    /* Compute final evaluation value */
-    this.updateEvaluation(evaluationMode);
 };

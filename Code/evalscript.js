@@ -4,7 +4,7 @@ var generated = [];
 var chosen;
 var choicesMade;
 var worker;
-/* C*/
+/* Arrays for shown tangrams */
 var random;
 var holes;
 var compact;

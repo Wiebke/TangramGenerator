@@ -30,10 +30,8 @@ IntAdjoinSqrt2.prototype.eq = function (other) {
 
 /* Check if two numbers have the same sign */
 IntAdjoinSqrt2.prototype.sameSign = function (other) {
-    if (this.isZero() && other.isZero()) return true;
-    var floatThis = this.toFloat();
-    var floatOther = other.toFloat();
-    return (floatThis < 0 && floatOther < 0) || (floatThis > 0 && floatOther > 0);
+    var zero = new IntAdjoinSqrt2(0,0);
+    return zero.compare(this) === zero.compare(other);
 };
 
 /* Compare this number to another one, returns 0 is the numbers are equal, -1 is
@@ -51,6 +49,36 @@ IntAdjoinSqrt2.prototype.compare = function (other) {
             return 1;
         }
     }
+    /* Other possible method without conversion to float
+     * if (this.eq(other)){
+     *    return 0;
+     * } else if ((this.coeffInt > other.coeffInt && this.coeffSqrt >= other.coeffSqrt)
+     *   || (this.coeffInt >= other.coeffInt && this.coeffSqrt > other.coeffSqrt)){
+     *   return 1;
+     * }  else if ((this.coeffInt < other.coeffInt && this.coeffSqrt <= other.coeffSqrt) ||
+     *    this.coeffInt <= other.coeffInt && this.coeffSqrt < other.coeffSqrt){
+     *    return -1;
+     * } else{
+     *  // a + bx < c + dx -> a-c < (d-b)x
+     *  var bothPositive = (this.coeffInt - other.coeffInt > 0 && other.coeffSqrt - this.coeffSqrt > 0);
+     *  var bothNegative = (this.coeffInt - other.coeffInt < 0 && other.coeffSqrt - this.coeffSqrt < 0);
+     *  var left = this.coeffInt*this.coeffInt + other.coeffInt*other.coeffInt;
+     *  left -= this.coeffInt * other.coeffInt * 2;
+     *   var right = other.coeffSqrt*other.coeffSqrt + this.coeffSqrt*this.coeffSqrt;
+     *    right -= other.coeffSqrt * this.coeffSqrt * 2;
+     *   right *= 2;
+     *   if (bothPositive && left > right){
+     *       return 1;
+     *   } else if (bothPositive && left < right){
+     *       return -1;
+     *   } else if (bothNegative && left < right){
+     *       return 1;
+     *   } else if (bothNegative && left > right) {
+     *       return -1;
+     *   } else {
+     *       ??
+     *   }
+     * }  */
 };
 
 /* Compare function to be passed to sorting functions */

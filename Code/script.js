@@ -744,4 +744,6 @@ window.onload = function () {
         }
     });
 
+    new IntAdjoinSqrt2(42,6).compare(new IntAdjoinSqrt2(30,12));
+
 };
