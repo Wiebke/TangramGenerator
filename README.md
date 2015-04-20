@@ -37,18 +37,18 @@ already defined `<svg>`-tags, once the generating process has finished)
 mostly event listeners attached to individual tans or the entire game area)
 * functions containing the game logic, which includes checking if the tangram
 has been solved, snapping once an action has been performed and displaying the current
-action (translation or rotation) as well as solution and hints if the user clicks
-the respective button
+action (translation or rotation) as well as displaying solution and hints if the
+user clicks the respective button
 * functions to start and stop the watch
 
-`loading.js` contains the functions to create and update (fill
- according to progress) the loading screen
+`loading.js` contains the functions to create and update (thus fill
+ according to the progress of the generation) the loading screen
 
 #### `directions.js, exampleTangrams.js`
 `directions.js` contains the pre-computation of direction vectors for the vertices
 of the individual tans and points within the tans (from a specific anchor vertex)
 for each possible orientation as well as direction vectors for all segments (thus
-extending the directions for vertices to include direction vector starting from
+extending the directions for vertices to include direction vectors starting from
 the other points as well) and direction vectors used when flipping the parallelogram
 (specifying how the anchor has to be moved). These can then later accessed by e.g.
  `Direction[tantype][orientation][id]`.
@@ -64,7 +64,7 @@ including functions for:
 * basic arithmetic: addition, subtraction, multiplication and division of two numbers,
 scaling, negation and computation of the absolute value of one number
 * conversion to a floating point number
-* comparison of two numbers: general compare function (retuning -1, 0 or 1),
+* comparison of two numbers: general compare function (returning -1, 0 or 1),
 equality check, comparison to zero, and function for checking if two numbers have
 the same sign
 * min and max operations for two given numbers
@@ -107,9 +107,10 @@ and an orientation. Functions defined here are used for getting the points, segm
 or the area of the tan.
 
 Additionally, some functions based on multiple tans (but not necessarily a whole
-tangram) and the outline are defined here:
+tangram) and an outline are defined here:
 * computation of the outline of multiple tans and all related functions like computation
- of all segments and points involved or finding the segment with maximum or minimum angle with respect to a given segment
+ of all segments and points involved or finding the segment with maximum or minimum angle
+ with respect to a given segment
 * computation of the bounding box of multiple tans based on either points or outline
 * containment test for a point within an outline (can also be a tan defined by its
 points)
@@ -120,7 +121,7 @@ Contains a wrapper class for a tangram defined by an array of individual tans.
 Additionally, the tangram contains its outline and an evaluation object.
 The file also includes functions for:
 * computing the center of a tangram and centering the tangram in the drawing area
-* creating SVG-elements for the outline an individual tans and attaching them to a
+* creating SVG-elements for the outline and individual tans and attaching them to a
 given element
 * comparing tangrams according to their evaluation value
 
@@ -135,8 +136,8 @@ all tangrams have an evaluation value of 0).
 
 #### `generator.js`
 Contains a function to generate a given number of tangrams which calls one of two
-functions that will generate one tangram. This script is the one passed to the
-Web Worker in the main script and therefore runs independently of the remaining
+functions that will generate one tangram. This script is passed to a web worker,
+created in the main script, and therefore runs independently of the remaining
 code. This file thus contains some commands not present in other JavaScript
 files (like `importScripts(...)`). Integrating the file in a HTML-document within
 a `<script>`-tag will lead to an error. Apart from the functions to generate a given
@@ -151,7 +152,7 @@ Contains two functions that create a JSON Object that is to be send to the serve
 (one for sending the choice of a tangram and one for sending statistics once a
  tangram has been solved) and functions for creating a `XMLHttpRequest` and actually
  sending the JSON Object to the Server. In the current state the server-address is set
- to an [Openshift](https://www.openshift.com)-address, where the server-side part of
+ to an [OpenShift](https://www.openshift.com)-address, where the server-side part of
  this project is hosted.
 
 #### `helpers.js`
@@ -165,26 +166,60 @@ application
 
 ## Server
 
-If run locally, [Node.js](https://nodejs.org) and [MongoDb](https://www.mongodb.org)
-have to be installed
+`server.js` defines the server-side part of this project, a web server receiving
+JSON objects (by HTTP Put requests) and writing them to a database.
+This part uses [Node.js](https://nodejs.org) and [MongoDb](https://www.mongodb.org),
+which have to be installed if the server is run locally. The file is configured so
+that is uses OpenShift values, if they are defined but defaults to a `localhost`
+environment if not. The database contains different collections defined for
+saving game stats and choices within generator and evaluation (see below). Which
+database a received JSON object is written into depends on the type within the
+objects. The type is just used for this decision and subsequently deleted from
+the object and therefore not saved.
 
+`server.js` requires the `mongodb` module, which has to be added using
 ```javascript
 npm install
 ```
-
-will install the necessary dependencies listen in `package.json`. Here, only `mongodb`
- will be installed.
-
+if the server is to be tested locally. This will install the necessary dependencies
+listed in `package.json`.
 
 ## Evaluation (Application)
 
-#### `eval.html, evalstyle.css`
-
-#### `evaluation.js`
+#### `eval.html, evalstyle.css, evaluation.js`
+These three files define an additional page used for collecting some data. The
+structure of the page and content of the script are very similar to the page for
+the generator. However, no game play is possible here. Instead the user is asked
+to choose the most interesting tangram out of six for ten times and his/her choice
+is then send to the server. For the first choice, the tangrams are always the
+same (the ones defined as `interesting0`, `interesting1`, ... in `exampleTangrams.js`).
+For the other 9 choices the tangrams are generated randomly. For the second, third,
+fourth and fifth choice, the presented tangrams have certain properties (a
+convex percentage larger than 0.6, contain a hole with an area smaller than 50,
+contain a hanging piece and have a shortest edge with length smaller than 4), for
+all choices, the tangrams are completely random.
 
 ## Evaluation (Data Extraction)
 
-takes like Server required Node.js and MongoDb to be installed
+`getData.js` defines a locally running Node.js application that takes the data
+collected with both the evaluation and the generated (contained in a local MongoDB
+database) and computes the evaluation properties of the tangrams saved there, as
+well as in same cases, a rank for each property and saves this information to
+file. The rank specifies in which place the chosen tangram out of the six presented ones
+would have ended up in if sorted according to that property. When analyzing the
+data from the evaluation only the number of times a tangram has been chosen is
+computed for the first choice. For all other choices, the rank is computed and the
+tangram properties are added to a file containing all properties.
+This requires for the database to be exported in Openshift/RockMongo and then to
+be imported on the local machine by using
 ```javascript
-
+load(file)
 ```
+(where `file` is the filename of the exported `.js`-File) in a `mongo` shell environment,
+as well as having both Node.js and MongoDB installed.
+
+
+
+
+
+
