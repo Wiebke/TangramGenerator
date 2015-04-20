@@ -167,10 +167,10 @@ application
 ## Server
 
 `server.js` defines the server-side part of this project, a web server receiving
-JSON objects (by HTTP Put requests) and writing them to a database.
+JSON objects (by HTTP POST requests) and writing them to a database.
 This part uses [Node.js](https://nodejs.org) and [MongoDb](https://www.mongodb.org),
 which have to be installed if the server is run locally. The file is configured so
-that is uses OpenShift values, if they are defined but defaults to a `localhost`
+that is uses OpenShift values, if they are defined, but defaults to a `localhost`
 environment if not. The database contains different collections defined for
 saving game stats and choices within generator and evaluation (see below). Which
 database a received JSON object is written into depends on the type within the
