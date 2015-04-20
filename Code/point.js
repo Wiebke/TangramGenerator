@@ -293,7 +293,7 @@ var relativeOrientation = function (pointA, pointB, pointC) {
     }
 };
 
-/* Checks if an array contains to points more than once */
+/* Checks if an array contains two points more than once */
 var bothPointsMultipleTimes = function (pointArray, pointA, pointB) {
     var occurrenceA = [];
     var occurrenceB = [];

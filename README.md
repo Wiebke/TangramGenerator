@@ -37,27 +37,92 @@ already defined `<svg>`-tags, once the generating process has finished)
 mostly event listeners attached to individual tans or the entire game area)
 * functions containing the game logic, which includes checking if the tangram
 has been solved, snapping once an action has been performed and displaying the current
-action as well as solution and hints if the user clicks the respective button
+action (translation or rotation) as well as solution and hints if the user clicks
+the respective button
 * functions to start and stop the watch
-
 
 `loading.js` contains the functions to create and update (fill
  according to progress) the loading screen
 
 #### `directions.js, exampleTangrams.js`
-Contains
-ThePre-Computations
-The examples have been used in the beginning stages
+`directions.js` contains the pre-computation of direction vectors for the vertices
+of the individual tans and points within the tans (from a specific anchor vertex)
+for each possible orientation as well as direction vectors for all segments (thus
+extending the directions for vertices to include direction vector starting from
+the other points as well) and direction vectors used when flipping the parallelogram
+(specifying how the anchor has to be moved). These can then later accessed by e.g.
+ `Direction[tantype][orientation][id]`.
+
+`exampleTangrams.js` contains some example tangrams (a square, a swan, a cat, a
+mountain, ... ) that have been used in the beginning stages of the project and
+for testing. Additionally, the positions for the tans that have to be moved within
+the game are defined here. This means that the variable `gameOutline` is set here.
 
 #### `intadjoinsqrt2.js`
+Contains a wrapper class for numbers in the ring of integers adjoined square root of 2
+including functions for:
+* basic arithmetic: addition, subtraction, multiplication and division of two numbers,
+scaling, negation and computation of the absolute value of one number
+* conversion to a floating point number
+* comparison of two numbers: general compare function (retuning -1, 0 or 1),
+equality check, comparison to zero, and function for checking if two numbers have
+the same sign
+* min and max operations for two given numbers
 
 #### `point.js`
+Contains a wrapper class for a point defined by an x- and a y-coordinate
+(both being numbers in the ring of integers adjoined square root of 2) including
+functions for:
+* computation of combinations of two points (add, subtract, middle)
+* computation of properties of one (length, angle) or two points (distance, angle to
+another point)
+* comparison of two points according to their coordinates (both equality and general
+comparison are provided as well as comparison function for both comparing by x-coordinate
+and then y-coordinate first as well as the other way around)
+* checking if a point if equal to (0,0), checking if one point/vector is a multiple of
+a given other one and checking if points lie within a given range of each other
+* transformation of a point (scaling, rotation, translation)
+* computation of dot product and determinant of two points
+* getting the floating point value of the coordinates
+
+Additionally, some functions related to multiple points can be found here. These
+are the computation of the relative orientation of three points and a function that
+checks if a given array contains two given points both more than once (needed for
+filtering segments).
 
 #### `lineSegment.js`
+Contains a wrapper class for a line segment defined by two end points, which are
+sorted when creating the line segment, (so that the first point is always the one
+with lower x and lower y values) including functions for:
+* computation of properties (length, direction, angle to another segment)
+* comparison of line segments according to their end points
+* intersection tests for two line segments and containment test for a segment
+and a point
+* splitting one line segment according to a given array of split points
 
 #### `tan.js`
+Contains a wrapper class for an individual tan, defined by its type (0 for large
+triangles, 1 for the medium triangle, ...), a point defining the anchor position
+and an orientation. Functions defined here are used for getting the points, segments
+or the area of the tan.
+
+Additionally, some functions based on multiple tans (but not necessarily a whole
+tangram) and the outline are defined here:
+* computation of the outline of multiple tans and all related functions like computation
+ of all segments and points involved or finding the segment with maximum or minimum angle with respect to a given segment
+* computation of the bounding box of multiple tans based on either points or outline
+* containment test for a point within an outline (can also be a tan defined by its
+points)
+* computation of the area of an outline
 
 #### `tangram.js`
+Contains a wrapper class for a tangram defined by an array of individual tans.
+Additionally, the tangram contains its outline and an evaluation object.
+The file also includes functions for:
+* computing the center of a tangram and centering the tangram in the drawing area
+* creating SVG-elements for the outline an individual tans and attaching them to a
+given element
+* comparing tangrams according to their evaluation value
 
 #### `evaluation.js`
 Contains a wrapper class for all properties of a tangram, most of which are computed
